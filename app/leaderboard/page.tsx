@@ -6,7 +6,7 @@ import getHispanicLeaderboard from "@/lib/actions/getHispanicLeaderboard"
 
 export const metadata = {
   title: "leaderboard — mcsr ranked hispana",
-  description: "leaderboard de elo para corredores de minecraft speedrunning ranked en países de habla hispana.",
+  description: "leaderboard de elo y tiempos de speedrunners hispanos en mcsrranked :p",
 }
 
 export default async function LeaderboardPage() {
