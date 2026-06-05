@@ -1,0 +1,195 @@
+"use client"
+
+import * as React from "react"
+import Link from "next/link"
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
+
+import { Input } from "@/components/ui/input"
+import { Runner } from "@/app/leaderboard/columns"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+interface TimeDataTableProps {
+  columns: ColumnDef<Runner, any>[]
+  data: Runner[]
+}
+
+export function TimeDataTable({ columns, data }: TimeDataTableProps) {
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  
+  // Toggle: season (seasonTime vs totalTime)
+  const [isSeason, setIsSeason] = React.useState<boolean>(true) // true = temporada actual, false = histórico
+
+  // Column visibility: hide "season" column when viewing current season, show in historical
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+    season: false, // hidden by default (current season view)
+  })
+
+  // Sync column visibility with isSeason toggle
+  React.useEffect(() => {
+    setColumnVisibility((prev) => ({
+      ...prev,
+      season: !isSeason, // show season column only in historical mode
+    }))
+  }, [isSeason])
+
+  // Compute processed data based on toggle
+  const processedData = React.useMemo(() => {
+    // 1. Map selected time source
+    let mapped = data.map((runner) => {
+      const selectedTime = isSeason ? runner.seasonTime : runner.totalTime
+      return {
+        ...runner,
+        time: selectedTime,
+      }
+    })
+
+    // 2. Filter out runners without times in this category
+    let filtered = mapped.filter((runner) => runner.time !== undefined && runner.time > 0)
+
+    // 3. Sort ascending (fastest first)
+    const sorted = filtered.sort((a, b) => {
+      return (a.time || Infinity) - (b.time || Infinity)
+    })
+
+    // 4. Re-assign ranks
+    return sorted.map((runner, index) => ({
+      ...runner,
+      rank: index + 1,
+    }))
+  }, [data, isSeason])
+
+  const table = useReactTable({
+    data: processedData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    state: {
+      columnFilters,
+      columnVisibility,
+    },
+    meta: {
+      isSeason,
+    },
+  })
+
+  const filterValue = table.getColumn("nickname")?.getFilterValue() as string
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Dynamic Controls Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Search */}
+        <Input
+          placeholder="buscar jugador..."
+          value={filterValue ?? ""}
+          onChange={(event) =>
+            table.getColumn("nickname")?.setFilterValue(event.target.value)
+          }
+          className="w-full md:max-w-sm rounded-full text-sm pl-4 focus-visible:ring-sky-400/50 aero-search text-foreground placeholder:text-muted-foreground"
+        />
+
+        {/* Season Toggle */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex bg-emerald-500/5 dark:bg-emerald-950/10 backdrop-blur border border-white/10 rounded-full p-1 shadow-inner">
+            <button
+              onClick={() => setIsSeason(true)}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all relative overflow-hidden active:scale-95 ${
+                isSeason
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/10"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {isSeason && <div className="absolute inset-0 bg-gradient-to-b from-white/15 to-transparent pointer-events-none" />}
+              temporada actual
+            </button>
+            <button
+              onClick={() => setIsSeason(false)}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all relative overflow-hidden active:scale-95 ${
+                !isSeason
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/10"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {!isSeason && <div className="absolute inset-0 bg-gradient-to-b from-white/15 to-transparent pointer-events-none" />}
+              histórico
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Table */}
+      <div className="rounded-3xl overflow-hidden aero-glass">
+        <Table>
+          <TableHeader
+            className="border-b border-white/20 dark:border-white/5"
+            style={{ background: "linear-gradient(90deg, rgba(100,180,255,0.10), rgba(140,220,200,0.08))" }}
+          >
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-transparent border-white/20 dark:border-white/5">
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id} className="text-foreground/70 dark:text-foreground/80 font-bold text-sm lowercase py-4 px-6 tracking-wider">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="border-white/12 dark:border-white/5 transition-colors duration-200 hover:bg-sky-100/30 dark:hover:bg-sky-900/15"
+                  style={{ borderBottom: "1px solid rgba(100,180,255,0.10)" }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="py-4 px-6 text-sm text-foreground">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow className="hover:bg-transparent">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-32 text-center text-sm font-semibold text-muted-foreground p-6"
+                >
+                  no se encontraron tiempos registrados para esta categoría 😢
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  )
+}
