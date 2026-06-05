@@ -1,0 +1,3079 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCSRRanked — leaderboard hispana :3c</title>
+  <meta name="description"
+    content="leaderboard de elo para corredores de minecraft speedrunning ranked en paises de habla hispana. top jugadores, partidas en vivo, estadisticas de temporada." />
+  <meta name="theme-color" content="#0099BB" />
+  <style>
+    @import url("custom-backgrounds.css");
+
+    /* variables y colores de los temas */
+    :root {
+      font-family: 'Segoe UI', 'Trebuchet MS', 'Tahoma', sans-serif;
+      --shimmer-speed: 2.5s;
+    }
+
+    /* === TEMA VISTA/AERO POR DEFECTO === */
+    body[data-theme="aero"],
+    body:not([data-theme]) {
+      --bg-gradient: var(--aero-bg-custom, none),
+        radial-gradient(ellipse at 50% 105%, rgba(60, 140, 30, 0.30) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% -8%, rgba(255, 255, 255, 0.50) 0%, transparent 48%),
+        linear-gradient(180deg, #1a6eb8 0%, #2a8ad4 20%, #50aaee 42%, #90ccff 65%, #cce8ff 85%, #eaf6ff 100%);
+      --glass-bg: rgba(255, 255, 255, 0.22);
+      --glass-border: rgba(255, 255, 255, 0.65);
+      --glass-shadow: 0 2px 0 rgba(255, 255, 255, 0.80),
+        0 6px 28px rgba(0, 60, 120, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.70);
+      --glass-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%);
+      --accent: #005b8a;
+      --accent-dark: #003d5e;
+      --accent-glow: rgba(0, 90, 140, 0.35);
+      --text-main: #001220;
+      --text-muted: rgba(0, 18, 30, 0.82);
+      --amber: #9a4000;
+      --ticker-bg: linear-gradient(90deg, #001a33, #004466, #001a33);
+      --ticker-text: rgba(255, 255, 255, 0.95);
+      --nav-bg: rgba(220, 240, 255, 0.75);
+      --border-radius-panel: 14px;
+      --progress-fill: #005b8a;
+      --elo-shadow: 0 0 8px rgba(0, 90, 140, 0.35);
+    }
+
+    /* === TEMA LEAF (ORGANICO Y VERDE) === */
+    body[data-theme="leaf"] {
+      --bg-gradient: var(--leaf-bg-custom, none),
+        radial-gradient(ellipse at 80% 12%, rgba(255, 240, 80, 0.32) 0%, transparent 42%),
+        radial-gradient(ellipse at 15% 90%, rgba(160, 220, 40, 0.22) 0%, transparent 38%),
+        linear-gradient(175deg, #263d00 0%, #3a5a00 22%, #527800 42%, #6e9408 60%, #90b818 78%, #b8d830 100%);
+      --glass-bg: rgba(180, 220, 80, 0.15);
+      --glass-border: rgba(200, 230, 140, 0.50);
+      --glass-shadow: 0 2px 0 rgba(255, 255, 255, 0.55),
+        0 4px 24px rgba(10, 40, 0, 0.30),
+        inset 0 1px 0 rgba(240, 255, 180, 0.50);
+      --glass-highlight: linear-gradient(180deg, rgba(230, 255, 160, 0.28) 0%, rgba(255, 255, 255, 0) 52%);
+      --accent: #b2ff1a;
+      --accent-dark: #64b300;
+      --accent-glow: rgba(178, 255, 26, 0.45);
+      --text-main: rgba(255, 255, 255, 0.95);
+      --text-muted: rgba(255, 255, 255, 0.70);
+      --amber: #a84800;
+      --ticker-bg: linear-gradient(90deg, #111f00, #253800, #111f00);
+      --ticker-text: #c0ee40;
+      --nav-bg: rgba(20, 35, 0, 0.55);
+      --border-radius-panel: 14px;
+      --progress-fill: #b2ff1a;
+      --elo-shadow: 0 0 10px rgba(178, 255, 26, 0.6), 0 0 20px rgba(178, 255, 26, 0.3);
+    }
+
+    /* === TEMA METRO (MONOCROMO VERDE RETRO) === */
+    body[data-theme="metro"] {
+      --bg-gradient: none;
+      --glass-bg: #111811;
+      --glass-border: #223322;
+      --glass-shadow: 0 0 0 1px #060906,
+        0 4px 18px rgba(0, 0, 0, 0.90),
+        inset 0 1px 0 rgba(0, 255, 0, 0.04);
+      --glass-highlight: none;
+      --accent: #00CC00;
+      --accent-dark: #007700;
+      --accent-glow: rgba(0, 200, 0, 0.40);
+      --text-main: #C8FFC8;
+      --text-muted: rgba(180, 230, 180, 0.48);
+      --amber: #E08000;
+      --ticker-bg: #030603;
+      --ticker-text: #B0EEB0;
+      --nav-bg: #0a100a;
+      --border-radius-panel: 2px;
+      --progress-fill: #00CC00;
+      --elo-shadow: 0 0 4px rgba(0, 200, 0, 0.25);
+    }
+
+    /* maquetacion base */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #page-wrap {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    body[data-theme="metro"] {
+      background-color: #060906;
+      background-image: var(--metro-bg-custom, none);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body[data-theme="metro"]::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* el brillo del sol en el tema leaf */
+    body[data-theme="leaf"]::before {
+      content: '';
+      position: fixed;
+      top: -60px;
+      right: 80px;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle,
+          rgba(255, 255, 200, 0.55) 0%,
+          rgba(200, 240, 80, 0.25) 30%,
+          transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* blur sutil para el fondo en el tema leaf */
+    body[data-theme="leaf"]::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+
+
+    /* PANELES VIDRIO (AERO / LEAF) Y SOLIDOS (METRO) */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--border-radius-panel);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* brillo arriba en los paneles */
+    body:not([data-theme="metro"]) .glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      max-height: 120px;
+      background: var(--glass-highlight);
+      pointer-events: none;
+      border-radius: inherit;
+      z-index: 0;
+    }
+
+    /* borde plateado raro en leaf */
+    body[data-theme="leaf"] .glass {
+      border: 1px solid rgba(200, 230, 140, 0.50);
+      box-shadow: var(--glass-shadow), 0 0 0 1px rgba(180, 200, 120, 0.25);
+    }
+
+    /* paneles solidos en metro — frutiger con toques grises */
+    body[data-theme="metro"] .glass {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      box-shadow: 0 0 0 1px #111, 0 4px 18px rgba(0, 0, 0, 0.90);
+      border-top: 2px solid #00AA44;
+      border-radius: var(--border-radius-panel);
+    }
+
+    body[data-theme="metro"] .glass::before {
+      display: none;
+    }
+
+    /* EFECTOS DE FONDO (AURORAS, BLOBS, BOKEH, ETC) */
+    .aurora-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    body[data-theme="metro"] .aurora-container {
+      display: none;
+    }
+
+    .aurora-wave {
+      position: absolute;
+      width: 180%;
+      height: 180%;
+      top: -40%;
+      left: -40%;
+      filter: blur(80px);
+      mix-blend-mode: screen;
+      transform-origin: center center;
+    }
+
+    @keyframes auroraShift1 {
+      0% {
+        transform: translate(-5%, -8%) rotate(-3deg) scale(1.0);
+      }
+
+      33% {
+        transform: translate(3%, 5%) rotate(6deg) scale(1.06);
+      }
+
+      66% {
+        transform: translate(-2%, 10%) rotate(-4deg) scale(0.97);
+      }
+
+      100% {
+        transform: translate(6%, -4%) rotate(8deg) scale(1.04);
+      }
+    }
+
+    @keyframes auroraShift2 {
+      0% {
+        transform: translate(5%, 4%) rotate(4deg) scale(1.02);
+      }
+
+      33% {
+        transform: translate(-4%, -6%) rotate(-8deg) scale(0.96);
+      }
+
+      66% {
+        transform: translate(8%, 2%) rotate(5deg) scale(1.08);
+      }
+
+      100% {
+        transform: translate(-3%, 8%) rotate(-6deg) scale(0.98);
+      }
+    }
+
+    @keyframes auroraShift3 {
+      0% {
+        transform: translate(0%, 0%) rotate(0deg) scale(1.0);
+      }
+
+      50% {
+        transform: translate(-6%, 12%) rotate(10deg) scale(1.05);
+      }
+
+      100% {
+        transform: translate(4%, -8%) rotate(-5deg) scale(0.95);
+      }
+    }
+
+    /* auroras de aero ODIO html WOW */
+    body:not([data-theme]) .aurora-wave.aero-aurora-1,
+    body[data-theme="aero"] .aurora-wave.aero-aurora-1 {
+      background: radial-gradient(ellipse at 18% 22%, rgba(0, 210, 255, 0.65) 0%, rgba(0, 160, 220, 0.38) 38%, transparent 68%);
+      animation: auroraShift1 20s ease-in-out infinite alternate;
+      opacity: 0.65;
+    }
+
+    body:not([data-theme]) .aurora-wave.aero-aurora-2,
+    body[data-theme="aero"] .aurora-wave.aero-aurora-2 {
+      background: radial-gradient(ellipse at 82% 78%, rgba(160, 230, 255, 0.45) 0%, rgba(0, 200, 255, 0.25) 42%, transparent 68%);
+      animation: auroraShift2 26s ease-in-out infinite alternate-reverse;
+      opacity: 0.55;
+    }
+
+    body:not([data-theme]) .aurora-wave.aero-aurora-3,
+    body[data-theme="aero"] .aurora-wave.aero-aurora-3 {
+      background: radial-gradient(ellipse at 48% 8%, rgba(255, 255, 255, 0.40) 0%, rgba(120, 210, 255, 0.20) 45%, transparent 72%);
+      animation: auroraShift3 34s ease-in-out infinite alternate;
+      opacity: 0.50;
+    }
+
+    /* auroras de leaf (verdes) */
+    body[data-theme="leaf"] .aurora-wave.leaf-aurora-1 {
+      background: radial-gradient(ellipse at 25% 45%, rgba(150, 230, 0, 0.52) 0%, rgba(100, 190, 0, 0.28) 40%, transparent 65%);
+      animation: auroraShift1 22s ease-in-out infinite alternate;
+      opacity: 0.48;
+    }
+
+    body[data-theme="leaf"] .aurora-wave.leaf-aurora-2 {
+      background: radial-gradient(ellipse at 78% 65%, rgba(210, 255, 60, 0.40) 0%, rgba(170, 240, 30, 0.20) 42%, transparent 65%);
+      animation: auroraShift2 30s ease-in-out infinite alternate-reverse;
+      opacity: 0.35;
+    }
+
+    body[data-theme="leaf"] .aurora-wave.leaf-aurora-3 {
+      background: radial-gradient(ellipse at 50% 12%, rgba(255, 255, 120, 0.25) 0%, rgba(200, 240, 0, 0.12) 42%, transparent 68%);
+      animation: auroraShift3 38s ease-in-out infinite alternate;
+      opacity: 0.28;
+    }
+
+    /* manchas de color de fondo (??????????????????) borrar despues supoongo*/
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(60px);
+    }
+
+    @keyframes blobDrift {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(30px, 20px) scale(1.08);
+      }
+    }
+
+    .bg-blob-1 {
+      width: 420px;
+      height: 320px;
+      top: 10%;
+      left: 5%;
+      animation: blobDrift 18s ease-in-out infinite alternate;
+    }
+
+    .bg-blob-2 {
+      width: 310px;
+      height: 410px;
+      top: 50%;
+      right: 8%;
+      animation: blobDrift 22s ease-in-out infinite alternate-reverse;
+    }
+
+    .bg-blob-3 {
+      width: 360px;
+      height: 260px;
+      bottom: 15%;
+      left: 30%;
+      animation: blobDrift 26s ease-in-out infinite alternate;
+    }
+
+    body:not([data-theme]) .bg-blob-1,
+    body[data-theme="aero"] .bg-blob-1 {
+      background: rgba(0, 200, 255, 0.15);
+    }
+
+    body:not([data-theme]) .bg-blob-2,
+    body[data-theme="aero"] .bg-blob-2 {
+      background: rgba(0, 170, 240, 0.12);
+    }
+
+    body:not([data-theme]) .bg-blob-3,
+    body[data-theme="aero"] .bg-blob-3 {
+      background: rgba(80, 210, 255, 0.10);
+    }
+
+    body[data-theme="leaf"] .bg-blob-1 {
+      background: rgba(190, 240, 50, 0.18);
+    }
+
+    body[data-theme="leaf"] .bg-blob-2 {
+      background: rgba(110, 190, 0, 0.14);
+    }
+
+    body[data-theme="leaf"] .bg-blob-3 {
+      background: rgba(150, 220, 20, 0.12);
+    }
+
+    body[data-theme="metro"] .bg-blob {
+      display: none;
+    }
+
+    /* destello del sol arriba a la derecha */
+    .bg-lens {
+      position: fixed;
+      top: -80px;
+      right: -80px;
+      width: 400px;
+      height: 400px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body:not([data-theme]) .bg-lens,
+    body[data-theme="aero"] .bg-lens {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.58) 0%, rgba(180, 230, 255, 0.22) 30%, transparent 60%);
+    }
+
+    body[data-theme="leaf"] .bg-lens {
+      background: radial-gradient(circle, rgba(240, 255, 140, 0.40) 0%, rgba(180, 230, 40, 0.18) 30%, transparent 62%);
+    }
+
+    body[data-theme="metro"] .bg-lens {
+      display: none;
+    }
+
+    /* circulitos del bokeh */
+    .bokeh-wrap {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bokeh {
+      position: absolute;
+      border-radius: 50%;
+      animation: bokehFloat linear infinite;
+      opacity: 0.18;
+    }
+
+    @keyframes bokehFloat {
+      from {
+        transform: translateY(110vh) scale(0.8);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.18;
+      }
+
+      90% {
+        opacity: 0.12;
+      }
+
+      to {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    body[data-theme="leaf"] .bokeh {
+      mix-blend-mode: overlay;
+      opacity: 0.22;
+    }
+
+    body[data-theme="metro"] .bokeh-wrap {
+      display: none;
+    }
+
+    /* el pastito svg de abajo en leaf */
+    .leaf-bg-elements {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+      display: none;
+    }
+
+    body[data-theme="leaf"] .leaf-bg-elements {
+      display: block;
+    }
+
+    .leaf-grass {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 300px;
+    }
+
+    body[data-theme="leaf"] .leaf-grass path:nth-child(1) {
+      fill: #284000;
+      fill-opacity: 0.35;
+    }
+
+    body[data-theme="leaf"] .leaf-grass path:nth-child(2) {
+      fill: #3f6000;
+      fill-opacity: 0.28;
+    }
+
+    .water-ripple {
+      position: absolute;
+      bottom: 60px;
+      left: 20%;
+      width: 120px;
+      height: 120px;
+      opacity: 0.2;
+    }
+
+    /*  TICKEr barra de noticias */
+    #ticker-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      height: 28px;
+      background: var(--ticker-bg);
+      border-bottom: 1px solid var(--glass-border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    body[data-theme="metro"] #ticker-bar {
+      height: 28px;
+      border-bottom: 1px solid #00AA00;
+    }
+
+    #ticker-label {
+      flex-shrink: 0;
+      padding: 0 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--amber);
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    body[data-theme="metro"] #ticker-label {
+      font-size: 11px;
+      padding: 0 10px;
+      border-right: 1px solid #1A4A1A;
+      background: #030603;
+    }
+
+    #ticker-inner {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+    }
+
+    #ticker-track {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      white-space: nowrap;
+      will-change: transform;
+    }
+
+    /* Metro theme uses the unified JS marquee for perfect stability */
+
+    .ticker-entry {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 18px;
+      font-size: 0.72rem;
+      color: var(--ticker-text);
+      flex-shrink: 0;
+    }
+
+    body[data-theme="metro"] .ticker-entry {
+      font-size: 11px;
+    }
+
+    .ticker-sep {
+      color: var(--accent-dark);
+      opacity: 0.7;
+    }
+
+    body[data-theme="metro"] .ticker-sep {
+      color: #005500;
+      opacity: 1;
+    }
+
+    /* BARRA DE NAVEGACION (MENU) */
+    #navbar {
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2px solid rgba(140, 200, 240, 0.60);
+      border-top: 1px solid rgba(255, 255, 255, 0.90);
+      box-shadow: 0 2px 8px rgba(0, 80, 160, 0.15);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: sticky;
+      top: 28px;
+      z-index: 90;
+    }
+
+    body[data-theme="leaf"] #navbar {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(160, 220, 40, 0.35);
+      border-top: 1px solid rgba(220, 255, 100, 0.20);
+      box-shadow: none;
+    }
+
+    body[data-theme="metro"] #navbar {
+      background: #111111;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: 2px solid #00AA44;
+      border-top: none;
+      box-shadow: none;
+      position: sticky;
+      top: 28px;
+      z-index: 90;
+      height: 52px;
+    }
+
+    body[data-theme="metro"] #navbar::before {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.40) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+
+    .page-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .page-title-accent {
+      color: var(--accent);
+    }
+
+    body[data-theme="metro"] .page-title {
+      color: #00FF44;
+    }
+
+    body[data-theme="metro"] .page-title-accent {
+      color: rgba(180, 230, 180, 0.48);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+      height: 100%;
+    }
+
+    .nav-link {
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 20px;
+      transition: all 0.18s;
+      cursor: pointer;
+    }
+
+    /* pestañas tipo windows vista nadie haciendo esto sin ia*/
+    body:not([data-theme]) .nav-link,
+    body[data-theme="aero"] .nav-link {
+      border-radius: 0;
+      border: 1px solid transparent;
+      margin-top: 10px;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      border-radius: 6px 6px 0 0;
+      margin-bottom: -2px;
+      z-index: 2;
+    }
+
+    body:not([data-theme]) .nav-link:hover,
+    body[data-theme="aero"] .nav-link:hover {
+      background: rgba(255, 255, 255, 0.30);
+      color: #0099cc;
+    }
+
+    body:not([data-theme]) .nav-link.active,
+    body[data-theme="aero"] .nav-link.active {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(140, 200, 240, 0.55);
+      border-bottom: 2px solid #fff;
+      color: #001a2e;
+    }
+
+    /* botonera redonda en leaf */
+    body[data-theme="leaf"] .nav-link {
+      border-radius: 999px;
+      padding: 6px 14px;
+      color: rgba(255, 255, 255, 0.72);
+      border: 1px solid transparent;
+    }
+
+    body[data-theme="leaf"] .nav-link:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    body[data-theme="leaf"] .nav-link.active {
+      background: linear-gradient(180deg, #b0f020 0%, #68a000 100%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: #0e1f00;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body[data-theme="leaf"] .nav-link.active::after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      right: 1px;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 999px 999px 0 0;
+      pointer-events: none;
+    }
+
+    body[data-theme="leaf"] .nav-link.active:hover {
+      box-shadow: 0 0 10px rgba(140, 220, 0, 0.45);
+    }
+
+    /* links cuadrados en metro */
+    body[data-theme="metro"] .nav-link {
+      border-radius: 0;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+    }
+
+    body[data-theme="metro"] .nav-link:hover {
+      color: #00FF44;
+      background: #0e160e;
+    }
+
+    body[data-theme="metro"] .nav-link.active {
+      background: #001a00;
+      border: 1px solid #00CC00;
+      border-top: 2px solid #00CC00;
+      color: #00FF44;
+      border-radius: 2px;
+    }
+
+    /* BOTONES PARA CAMBIAR DE TEMA */
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 12px;
+      flex-shrink: 0;
+    }
+
+    .theme-btn {
+      padding: 5px 11px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+    }
+
+    .theme-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent);
+    }
+
+    body[data-theme="leaf"] .theme-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    body[data-theme="leaf"] .theme-btn:hover {
+      color: #0e1f00;
+      box-shadow: 0 0 10px rgba(140, 220, 0, 0.45);
+    }
+
+    body[data-theme="metro"] .theme-btn {
+      border-radius: 2px;
+      border: 1px solid #1a2e1a;
+      border-top-color: #00AA00;
+      color: #00CC00;
+      background: #0e160e;
+    }
+
+    body[data-theme="metro"] .theme-btn:hover {
+      background: #152215;
+      border-color: #00CC00;
+    }
+
+    /* anulaciones para el boton activo */
+    .theme-btn[data-theme="aero"].active {
+      background: linear-gradient(180deg, #55b8ee 0%, #1177bb 100%) !important;
+      color: #fff !important;
+      border: 1px solid rgba(255, 255, 255, 0.50) !important;
+      border-radius: 999px !important;
+      text-shadow: 0 1px 0 rgba(0, 80, 160, 0.4) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+      position: relative;
+    }
+
+    .theme-btn[data-theme="aero"].active::after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      right: 1px;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 999px 999px 0 0;
+      pointer-events: none;
+    }
+
+    .theme-btn[data-theme="leaf"].active {
+      background: linear-gradient(180deg, #66dd00 0%, #3a9900 100%) !important;
+      color: #fff !important;
+      border: 1px solid rgba(255, 255, 255, 0.50) !important;
+      border-radius: 999px !important;
+      text-shadow: 0 1px 0 rgba(0, 80, 0, 0.40) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+      position: relative;
+    }
+
+    .theme-btn[data-theme="leaf"].active::after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      right: 1px;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 999px 999px 0 0;
+      pointer-events: none;
+    }
+
+    .theme-btn[data-theme="metro"].active {
+      background: #001a00 !important;
+      border: 1px solid #00CC00 !important;
+      border-top: 2px solid #00CC00 !important;
+      color: #00FF44 !important;
+      border-radius: 2px !important;
+      box-shadow: none !important;
+    }
+
+    /* ESTRUCTURA DEL CONTENIDO PRINCIPAL */
+    #main-wrap {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 24px 290px 60px 12px;
+      align-items: start;
+    }
+
+    body[data-theme="metro"] #main-wrap {
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 24px 290px 60px 12px;
+    }
+
+    #sidebar {
+      position: sticky;
+      top: 108px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    body[data-theme="metro"] #sidebar {
+      top: 84px;
+      padding: 14px 10px 14px 14px;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    body[data-theme="metro"] main {
+      padding-left: 0;
+      padding-top: 0;
+    }
+
+    /* TITULOS DE PAGINAS Y SECCIONES */
+    .section-title {
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      padding: 0 4px 8px;
+      text-transform: uppercase;
+    }
+
+    body[data-theme="metro"] .section-title {
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+
+    body[data-theme="metro"] .section-title::before {
+      content: '> ';
+    }
+
+    .section-subtitle {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      padding: 0 2px 6px;
+      text-transform: none;
+      font-family: inherit;
+    }
+
+    .page-header {
+      padding: 20px 0 4px;
+    }
+
+    .page-heading {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    body[data-theme="metro"] .page-heading {
+      color: #00DD00;
+      font-size: 1.7rem;
+    }
+
+    body[data-theme="metro"] .page-heading::before {
+      content: '> ';
+    }
+
+    .page-subheading {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    body[data-theme="leaf"] .page-heading {
+      color: #ffffff;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55), 0 2px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    body[data-theme="leaf"] .page-subheading {
+      color: rgba(255, 255, 255, 0.88);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.50);
+    }
+
+    /* DISENO DEL PODIUM */
+    #podium-section {
+      overflow: visible;
+    }
+
+    #podium {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0 36px;
+      overflow: visible;
+    }
+
+    .podium-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: var(--border-radius-panel);
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      overflow: visible;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: default;
+    }
+
+    .podium-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: var(--glass-highlight);
+      pointer-events: none;
+      border-radius: inherit;
+      z-index: 0;
+    }
+
+    .podium-card:hover {
+      transform: translateY(-4px);
+    }
+
+    /* proporciones del podio */
+    .podium-card.rank-1 {
+      width: 196px;
+      min-height: 415px;
+      z-index: 5;
+      margin-bottom: 36px;
+    }
+
+    .podium-card.rank-2 {
+      width: 174px;
+      min-height: 358px;
+      z-index: 4;
+      margin-bottom: 18px;
+    }
+
+    .podium-card.rank-3 {
+      width: 162px;
+      min-height: 335px;
+      z-index: 4;
+      margin-bottom: 0;
+    }
+
+    /* detalles podio aero */
+    body:not([data-theme]) .podium-card,
+    body[data-theme="aero"] .podium-card {
+      box-shadow: var(--glass-shadow),
+        0 0 0 1px rgba(100, 180, 255, 0.25),
+        0 0 32px rgba(0, 140, 220, 0.18);
+    }
+
+    body:not([data-theme]) .podium-card.rank-1,
+    body[data-theme="aero"] .podium-card.rank-1 {
+      box-shadow: var(--glass-shadow),
+        0 0 0 1px rgba(100, 180, 255, 0.30),
+        0 0 42px rgba(0, 160, 240, 0.28),
+        0 0 0 2px rgba(232, 144, 10, 0.22);
+    }
+
+    /* detalles podio leaf */
+    body[data-theme="leaf"] .podium-card {
+      border: 1px solid rgba(200, 230, 140, 0.50);
+      box-shadow: var(--glass-shadow), 0 0 0 1px rgba(180, 200, 120, 0.25);
+    }
+
+    body[data-theme="leaf"] .podium-card.rank-1 {
+      box-shadow: var(--glass-shadow),
+        0 0 0 1px rgba(200, 230, 140, 0.60),
+        0 0 0 1px rgba(180, 200, 120, 0.25),
+        0 0 40px rgba(120, 200, 0, 0.35);
+    }
+
+    body[data-theme="metro"] .podium-card {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px #111,
+        0 6px 24px rgba(0, 0, 0, 0.90);
+    }
+
+    body[data-theme="metro"] .podium-card::before {
+      display: none;
+    }
+
+    body[data-theme="metro"] .podium-card.rank-1 {
+      background: #1e1e1e;
+      border: 1px solid #3a3a3a;
+      border-top: 3px solid #FFD700;
+      box-shadow: 0 0 0 1px #111,
+        0 6px 24px rgba(0, 0, 0, 0.90),
+        0 0 12px rgba(255, 215, 0, 0.10);
+    }
+
+    body[data-theme="metro"] .podium-card.rank-2 {
+      background: #1a1a1a;
+      border: 1px solid #333333;
+      border-top: 3px solid #888888;
+    }
+
+    body[data-theme="metro"] .podium-card.rank-3 {
+      background: #1c1c1c;
+      border: 1px solid #363636;
+      border-top: 3px solid #9a6020;
+    }
+
+    /* insignias de rango (las de ranked) */
+    .podium-rank-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      z-index: 5;
+      backdrop-filter: blur(8px);
+    }
+
+    .podium-rank-badge.r1 {
+      background: rgba(232, 144, 10, 0.88);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .podium-rank-badge.r2 {
+      background: rgba(180, 190, 200, 0.65);
+    }
+
+    .podium-rank-badge.r3 {
+      background: rgba(180, 140, 80, 0.65);
+    }
+
+    body[data-theme="metro"] .podium-rank-badge {
+      background: transparent;
+      border-radius: 0;
+      font-size: 11px;
+      padding: 2px 6px;
+      backdrop-filter: none;
+    }
+
+    body[data-theme="metro"] .podium-rank-badge.r1 {
+      border: 1px solid #FFD700;
+      color: #FFD700;
+    }
+
+    body[data-theme="metro"] .podium-rank-badge.r2 {
+      border: 1px solid #909090;
+      color: #909090;
+    }
+
+    body[data-theme="metro"] .podium-rank-badge.r3 {
+      border: 1px solid #B87020;
+      color: #B87020;
+    }
+
+    /* bandera del pais */
+    .badge-country {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.3rem;
+      padding: 1px 4px;
+      border-radius: 6px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      z-index: 5;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    /* Aero: subtle transparent bg without blur */
+    body[data-theme="aero"] .badge-country,
+    body:not([data-theme]) .badge-country {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.50);
+    }
+
+    body[data-theme="metro"] .badge-country {
+      font-size: 11px;
+      color: #999999;
+      border: 1px solid #3a3a3a;
+      background: #1e1e1e;
+      border-radius: 0;
+      padding: 2px 4px;
+      backdrop-filter: none;
+    }
+
+    /* el div donde se renderiza la skin 3d */
+    .podium-skin-wrap {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 48px 8px 0;
+      min-height: 190px;
+      width: 100%;
+    }
+
+    .podium-skin-wrap img {
+      object-fit: contain;
+      max-height: 205px;
+      width: auto;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    /* textos dentro del podio */
+    .podium-info {
+      width: 100%;
+      padding: 10px 12px 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .podium-name {
+      font-size: 1.0rem;
+      font-weight: 700;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+
+    body[data-theme="metro"] .podium-name {
+      color: #00FF44;
+    }
+
+    .podium-country-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    body[data-theme="leaf"] .podium-country-label {
+      color: var(--text-main);
+    }
+
+    .podium-elo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="metro"] .podium-elo {
+      color: #00EE00;
+      text-shadow: 0 0 4px rgba(0, 200, 0, 0.25);
+    }
+
+    .podium-elo-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    .podium-rank-text {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* los phase points */
+    .podium-phase {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 10px;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      background: rgba(232, 144, 10, 0.13);
+      white-space: nowrap;
+    }
+
+    body[data-theme="metro"] .podium-phase {
+      background: transparent;
+      border: 1px solid #E08000;
+      color: #E08000;
+      border-radius: 0;
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    /* badge de cambio de elo rate (verde/rojo) */
+    .elo-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      margin-left: 6px;
+    }
+
+    /* Aero: verde vibrante / rojo vibrante, más legibles sobre el fondo oscuro */
+    body:not([data-theme]) .elo-change.pos,
+    body[data-theme="aero"] .elo-change.pos {
+      color: #00e87a;
+      background: rgba(0, 200, 110, 0.18);
+      border: 1px solid rgba(0, 200, 110, 0.50);
+      text-shadow: 0 0 6px rgba(0, 220, 120, 0.45);
+    }
+
+    body:not([data-theme]) .elo-change.neg,
+    body[data-theme="aero"] .elo-change.neg {
+      color: #ff5c3a;
+      background: rgba(220, 60, 20, 0.16);
+      border: 1px solid rgba(220, 60, 20, 0.45);
+      text-shadow: 0 0 6px rgba(220, 70, 30, 0.40);
+    }
+
+    /* Leaf: magenta si subió, azul si bajó */
+    body[data-theme="leaf"] .elo-change.pos {
+      color: #ff40c8;
+      background: rgba(230, 0, 180, 0.14);
+      border: 1px solid rgba(230, 0, 180, 0.42);
+      text-shadow: 0 0 6px rgba(240, 0, 200, 0.35);
+    }
+
+    body[data-theme="leaf"] .elo-change.neg {
+      color: #4db8ff;
+      background: rgba(30, 120, 230, 0.14);
+      border: 1px solid rgba(30, 120, 230, 0.42);
+      text-shadow: 0 0 6px rgba(30, 140, 255, 0.35);
+    }
+
+    body[data-theme="metro"] .elo-change.pos {
+      color: #00FF44;
+      background: #001E00;
+      border: 1px solid #00CC00;
+      border-radius: 0;
+      padding: 2px 6px;
+    }
+
+    body[data-theme="metro"] .elo-change.neg {
+      color: #FF4400;
+      background: #1f0600;
+      border: 1px solid #CC2200;
+      border-radius: 0;
+      padding: 2px 6px;
+    }
+
+    /* TARJETAS CHICAS (DEL 4 AL 10) */
+    .mini-card {
+      flex-shrink: 0;
+      width: 138px;
+      min-height: 152px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 8px;
+      gap: 4px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--glass-shadow), 0 0 16px var(--accent-glow);
+    }
+
+    body[data-theme="metro"] .mini-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-top: 2px solid #00AA44;
+      border-radius: 1px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.90);
+    }
+
+    .mini-badge-rank {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      align-self: flex-start;
+    }
+
+    body[data-theme="metro"] .mini-badge-rank {
+      color: var(--accent);
+    }
+
+    .mini-skin-wrap {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-skin-wrap img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      border-radius: 4px;
+    }
+
+    body[data-theme="metro"] .mini-skin-wrap img {
+      border-radius: 0;
+      border: none;
+    }
+
+    .mini-flag-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -6px;
+      font-size: 1.15rem;
+      padding: 1px 3px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.20);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      z-index: 5;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    body[data-theme="metro"] .mini-flag-badge {
+      color: #aaaaaa;
+      border: 1px solid #3a3a3a;
+      background: #1e1e1e;
+      border-radius: 0;
+      padding: 2px 4px;
+    }
+
+    .mini-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+      word-break: break-all;
+    }
+
+    body[data-theme="metro"] .mini-name {
+      color: #00FF44;
+    }
+
+    .mini-elo {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="metro"] .mini-elo {
+      color: #00EE00;
+      text-shadow: 0 0 6px rgba(0, 255, 0, 0.5);
+    }
+
+    .mini-rank-text {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    /* LA TABLA DE TODOS JUGADORES */
+    .lb-player {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lb-player img {
+      width: 28px;
+      height: 28px;
+      image-rendering: pixelated;
+      border-radius: 3px;
+    }
+
+    body[data-theme="metro"] .lb-player img {
+      border-radius: 0;
+      border: 1px solid var(--accent-dark);
+    }
+
+    .lb-player-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    body[data-theme="metro"] .lb-player-name {
+      color: #00FF44;
+    }
+
+    .lb-country {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    body[data-theme="metro"] .lb-country {
+      color: var(--text-main);
+    }
+
+    body[data-theme="leaf"] .lb-country {
+      color: var(--text-main);
+    }
+
+    .lb-elo {
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="metro"] .lb-elo {
+      color: #00EE00;
+      text-shadow: 0 0 6px rgba(0, 255, 0, 0.5);
+    }
+
+    .lb-rank-badge {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .lb-phase {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 8px;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+    }
+
+    body[data-theme="metro"] .lb-phase {
+      border-radius: 0;
+      background: transparent;
+      border: 1px solid #E08000;
+      color: #E08000;
+    }
+
+    /* WIDGETS DE LA BARRA LATERAL (FEED, STATS, PAISES) */
+    .sidebar-widget {
+      padding: 14px;
+    }
+
+    body[data-theme="metro"] .sidebar-widget {
+      background: #161616;
+      border: 1px solid #2c2c2c;
+      border-top: 2px solid #008833;
+      border-radius: 0;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
+    }
+
+    .sidebar-widget-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      padding: 0 2px 10px;
+      border-bottom: 1px solid var(--glass-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    body[data-theme="metro"] .sidebar-widget-title {
+      color: #888888;
+      border-bottom-color: #2a2a2a;
+    }
+
+    body[data-theme="metro"] .sidebar-widget-title::before {
+      content: '> ';
+    }
+
+    /* items del feed de partidas */
+    .activity-entry {
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      border-left: 3px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.06);
+      font-size: 0.72rem;
+    }
+
+    body[data-theme="leaf"] .activity-entry {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="metro"] .activity-entry {
+      border-radius: 0;
+      background: #0f0f0f;
+      border-left: 3px solid #2e2e2e;
+    }
+
+    .activity-entry.win {
+      border-left-color: var(--accent);
+    }
+
+    .activity-entry.loss {
+      border-left-color: var(--amber);
+    }
+
+    body[data-theme="metro"] .activity-entry.win {
+      border-left-color: #00CC00;
+    }
+
+    body[data-theme="metro"] .activity-entry.loss {
+      border-left-color: var(--amber);
+    }
+
+    .activity-players {
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    body[data-theme="metro"] .activity-players {
+      color: #CCFFCC;
+    }
+
+    .activity-elo-change {
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .activity-elo-change.pos {
+      color: var(--accent);
+    }
+
+    .activity-elo-change.neg {
+      color: var(--amber);
+    }
+
+    .activity-meta {
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-size: 0.68rem;
+    }
+
+    /* chips de stats globales */
+    .stat-chip {
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="metro"] .stat-value {
+      color: #00EE00;
+      text-shadow: 0 0 8px rgba(0, 230, 0, 0.6);
+    }
+
+    .stat-suffix {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    /* filas de paises con barritas */
+    .country-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+    }
+
+    .country-name-label {
+      min-width: 100px;
+      color: var(--text-main);
+    }
+
+    body[data-theme="metro"] .country-name-label {
+      color: #CCFFCC;
+    }
+
+    .country-progress-wrap {
+      flex: 1;
+      height: 3px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    body[data-theme="metro"] .country-progress-wrap {
+      background: #001200;
+      border-radius: 0;
+    }
+
+    .country-progress-fill {
+      height: 100%;
+      background: var(--progress-fill);
+      border-radius: 2px;
+      transition: width 0.8s ease;
+    }
+
+    body[data-theme="metro"] .country-progress-fill {
+      border-radius: 0;
+    }
+
+    .country-count {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      min-width: 20px;
+      text-align: right;
+    }
+
+    /* DISEÑO WIDGET EN VIVO */
+    #live-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 500;
+      width: 256px;
+      font-size: 0.72rem;
+    }
+
+    #live-widget .glass {
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    #live-widget .glass:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glass-shadow), 0 8px 30px var(--accent-glow);
+      border-color: rgba(255, 255, 255, 0.85);
+    }
+
+    body[data-theme="leaf"] #live-widget .glass:hover {
+      border-color: rgba(200, 230, 140, 0.80);
+    }
+
+    body[data-theme="metro"] #live-widget .glass {
+      background: #0e160e;
+      border: 1px solid #00CC00;
+      border-top: 3px solid #00CC00;
+      border-radius: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+      transition: border-color 0.1s steps(2), background-color 0.1s steps(2);
+    }
+
+    body[data-theme="metro"] #live-widget .glass:hover {
+      transform: none;
+      border-color: #00FF00;
+      background-color: #121e12;
+      box-shadow: 0 4px 25px rgba(0, 255, 0, 0.2), 0 4px 20px rgba(0, 0, 0, 0.9);
+    }
+
+    .live-stream-link {
+      text-decoration: underline dotted;
+      color: inherit;
+    }
+
+    .live-stream-link:hover {
+      text-decoration: underline dotted;
+      opacity: 0.85;
+    }
+
+    .live-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #FF3333;
+      animation: livePulse 1.4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    body[data-theme="metro"] .live-dot {
+      background: #FF0000;
+    }
+
+    @keyframes livePulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.75);
+      }
+    }
+
+    .live-header-text {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .live-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 2px 4px;
+      font-family: inherit;
+    }
+
+    .live-close:hover {
+      color: var(--text-main);
+    }
+
+    .live-body {
+      color: var(--text-main);
+    }
+
+    body[data-theme="metro"] .live-body {
+      color: #CCFFCC;
+    }
+
+    .live-matchup {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .live-player {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    body[data-theme="metro"] .live-player {
+      color: #00FF44;
+    }
+
+    .live-vs {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .live-timer {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="metro"] .live-timer {
+      color: #00FF44;
+      text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+    }
+
+    .live-elo-info {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .live-no-match {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    /* partidas en vivo secundarias por si hay mas de una */
+    .live-sub-container {
+      margin-top: 10px;
+      border-top: 1px dashed var(--glass-border);
+      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .live-sub-match {
+      font-size: 0.68rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .live-sub-match:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    body[data-theme="leaf"] .live-sub-match {
+      background: rgba(30, 50, 0, 0.35);
+      border: 1px solid rgba(120, 180, 25, 0.35);
+      border-radius: 8px;
+    }
+
+    body[data-theme="leaf"] .live-sub-match:hover {
+      background: rgba(30, 50, 0, 0.55);
+      border-color: rgba(120, 180, 25, 0.60);
+    }
+
+    body[data-theme="metro"] .live-sub-match {
+      background: #080D08;
+      border: 1px solid #1A4A1A;
+      border-radius: 0;
+      transition: background-color 0.1s steps(2), border-color 0.1s steps(2);
+    }
+
+    body[data-theme="metro"] .live-sub-match:hover {
+      background: #0d160d;
+      border-color: #00FF00;
+    }
+
+    .live-sub-players {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .live-sub-time {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* EL PIE DE PAGINA (FOOTER) */
+    #footer {
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-rule {
+      height: 1px;
+      background: var(--glass-border);
+    }
+
+    body[data-theme="metro"] .footer-rule {
+      background: #00CC00;
+    }
+
+    .footer-glass {
+      border-radius: 0;
+      text-align: center;
+      padding: 20px;
+    }
+
+    body[data-theme="metro"] .footer-glass {
+      background: #080D08;
+      backdrop-filter: none;
+      border: none;
+      box-shadow: none;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-deco {
+      color: var(--accent);
+    }
+
+    /* ESTILOS DE LA TABLA Y CREDITOS */
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @media (min-width: 901px) {
+      .page-section {
+        width: 1038px;
+      }
+    }
+
+    .times-table-wrap {
+      overflow-x: auto;
+    }
+
+    .times-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .times-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 0.67rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--glass-border);
+      font-weight: 600;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+    }
+
+    body[data-theme="metro"] .times-table th {
+      background: #0D1A0D;
+      border-bottom: 1px solid #1A4A1A;
+      backdrop-filter: none;
+    }
+
+    .times-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    body[data-theme="metro"] .times-table td {
+      border-bottom: 1px solid #0A130A;
+      color: #CCFFCC;
+    }
+
+    .times-table tr:hover td {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    body[data-theme="metro"] .times-table tr:hover td {
+      background: rgba(0, 200, 0, 0.05);
+    }
+
+    .time-value {
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    body[data-theme="metro"] .time-value {
+      color: #00FF00;
+      text-shadow: 0 0 6px rgba(0, 255, 0, 0.4);
+    }
+
+    /* FILTROS Y BADGES DE SECCION TIEMPOS */
+    .times-filter-group {
+      display: inline-flex;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .times-filter-btn {
+      padding: 5px 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+    }
+
+    .times-filter-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .times-filter-btn.active {
+      background: linear-gradient(180deg, #55b8ee 0%, #1177bb 100%);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.50);
+      border-radius: 999px;
+      text-shadow: 0 1px 0 rgba(0, 80, 160, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.30);
+    }
+
+    body[data-theme="leaf"] .times-filter-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(180, 220, 80, 0.1);
+    }
+
+    body[data-theme="leaf"] .times-filter-btn:hover {
+      color: #fff;
+      box-shadow: 0 0 10px rgba(140, 220, 0, 0.45);
+      background: rgba(180, 220, 80, 0.2);
+    }
+
+    body[data-theme="leaf"] .times-filter-btn.active {
+      background: linear-gradient(180deg, #66dd00 0%, #3a9900 100%) !important;
+      color: #fff !important;
+      border: 1px solid rgba(255, 255, 255, 0.50) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+    }
+
+    body[data-theme="metro"] .times-filter-btn {
+      border-radius: 2px;
+      border: 1px solid #1a2e1a;
+      border-top-color: #00AA00;
+      color: #00CC00;
+      background: #0e160e;
+    }
+
+    body[data-theme="metro"] .times-filter-btn:hover {
+      background: #152215;
+      border-color: #00CC00;
+    }
+
+    body[data-theme="metro"] .times-filter-btn.active {
+      background: #001a00 !important;
+      border: 1px solid #00CC00 !important;
+      border-top: 2px solid #00CC00 !important;
+      color: #00FF44 !important;
+      border-radius: 2px !important;
+      box-shadow: none !important;
+    }
+
+    .times-season-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    body[data-theme="leaf"] .times-season-badge {
+      background: rgba(180, 220, 80, 0.2);
+      border-color: rgba(200, 230, 140, 0.4);
+    }
+
+    body[data-theme="metro"] .times-season-badge {
+      border-radius: 0;
+      border: 1px solid #1A4A1A;
+      background: #0D1A0D;
+      color: #00FF44;
+    }
+
+    /* cuadritos de creditos */
+    .creditos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .credito-card {
+      padding: 16px;
+    }
+
+    .credito-role {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: lowercase;
+    }
+
+    body[data-theme="metro"] .credito-role::before {
+      content: '> ';
+    }
+
+    .credito-name {
+      font-size: 1.0rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    body[data-theme="metro"] .credito-name {
+      color: #00FF44;
+    }
+
+    .credito-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    body[data-theme="leaf"] .credito-role {
+      color: var(--accent);
+    }
+
+    body[data-theme="leaf"] .credito-name {
+      color: var(--text-main);
+    }
+
+    body[data-theme="leaf"] .credito-desc {
+      color: var(--text-muted);
+    }
+
+    /* barras de desplazamiento */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-glow);
+      border-radius: 3px;
+    }
+
+    /* scrollbar general */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-glow);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* ESTILOS PARA CELULARES Y TABLETS (RESPONSIVE) */
+    @media (max-width: 900px) {
+      #main-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      #sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .podium-card.rank-1 {
+        width: 180px;
+        min-height: 380px;
+      }
+
+      .podium-card.rank-2 {
+        width: 165px;
+        min-height: 330px;
+      }
+
+      .podium-card.rank-3 {
+        width: 158px;
+        min-height: 310px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #sidebar {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .page-heading {
+        font-size: 1.5rem;
+      }
+
+      #podium {
+        gap: 8px;
+      }
+
+      .podium-card.rank-1 {
+        width: 150px;
+        min-height: 320px;
+      }
+
+      .podium-card.rank-2 {
+        width: 138px;
+        min-height: 280px;
+      }
+
+      .podium-card.rank-3 {
+        width: 130px;
+        min-height: 260px;
+      }
+    }
+
+    /* ==========================================
+   SHIMMER SKELETON
+   ========================================== */
+    @keyframes shimmerSlide {
+      0% {
+        background-position: -600px 0;
+      }
+
+      100% {
+        background-position: 600px 0;
+      }
+    }
+
+    .shimmer-load {
+      background: linear-gradient(90deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.20) 40%,
+          rgba(255, 255, 255, 0.05) 80%);
+      background-size: 600px 100%;
+      animation: shimmerSlide var(--shimmer-speed) ease-in-out infinite;
+      border-radius: 8px;
+    }
+
+    body[data-theme="metro"] .shimmer-load {
+      background: linear-gradient(90deg,
+          rgba(0, 60, 0, 0.06) 0%, rgba(0, 180, 50, 0.11) 40%, rgba(0, 60, 0, 0.06) 80%);
+      background-size: 600px 100%;
+    }
+
+    body[data-theme="aero"] .shimmer-load {
+      background: linear-gradient(90deg,
+          rgba(200, 230, 255, 0.08) 0%, rgba(200, 230, 255, 0.24) 40%, rgba(200, 230, 255, 0.08) 80%);
+      background-size: 600px 100%;
+    }
+
+    body[data-theme="leaf"] .shimmer-load {
+      background: linear-gradient(90deg,
+          rgba(180, 230, 60, 0.07) 0%, rgba(180, 230, 60, 0.20) 40%, rgba(180, 230, 60, 0.07) 80%);
+      background-size: 600px 100%;
+    }
+
+    /* ==========================================
+   ROW SCROLL SECTION (#4–#10)
+   ========================================== */
+    #row-section {
+      overflow: visible;
+    }
+
+    #row-scroll-wrap {
+      overflow: visible;
+      padding-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      #row-scroll-wrap {
+        overflow-x: auto;
+      }
+    }
+
+    #row-scroll-inner {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 12px;
+      padding: 4px 2px 8px;
+    }
+
+    /* Table section slightly narrower than the top-10 row and centered */
+    #full-table-section {
+      max-width: calc(7 * 138px + 6 * 12px - 100px);
+      width: 92%;
+      margin: 0 auto;
+    }
+
+    /* ==========================================
+   SEARCH BAR & RESULTS
+   ========================================== */
+    #search-wrap {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-panel);
+      padding: 8px 14px;
+      box-shadow: var(--glass-shadow);
+      max-width: calc(7 * 138px + 6 * 12px - 100px);
+      width: 92%;
+      margin: 0 auto;
+    }
+
+    body[data-theme="metro"] #search-wrap {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-radius: 2px;
+      border-color: #2a2a2a;
+      background: #141414;
+      box-shadow: none;
+    }
+
+    .search-icon {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    #search-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      font-family: inherit;
+      padding: 2px 0;
+    }
+
+    #search-input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    body[data-theme="metro"] #search-input {
+      color: #CCFFCC;
+    }
+
+    .season-select-dropdown {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      cursor: pointer;
+      outline: none;
+      font-family: inherit;
+      transition: all 0.18s;
+      margin-left: auto;
+    }
+
+    .season-select-dropdown:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent);
+    }
+
+    .season-select-dropdown option {
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    body[data-theme="leaf"] .season-select-dropdown {
+      background: rgba(180, 220, 80, 0.15);
+      border-color: rgba(200, 230, 140, 0.4);
+    }
+
+    body[data-theme="leaf"] .season-select-dropdown:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    body[data-theme="leaf"] .season-select-dropdown option {
+      background: #1b2e00;
+      color: #fff;
+    }
+
+    body[data-theme="metro"] .season-select-dropdown {
+      border-radius: 2px;
+      border: 1px solid #1a2e1a;
+      background: #0e160e;
+      color: #00CC00;
+    }
+
+    body[data-theme="metro"] .season-select-dropdown:hover {
+      border-color: #00CC00;
+      color: #00FF44;
+    }
+
+    body[data-theme="metro"] .season-select-dropdown option {
+      background: #0e160e;
+      color: #00CC00;
+    }
+
+    #search-results {
+      display: none;
+      position: relative;
+      background: rgba(0, 0, 0, 0.16);
+      border-top: 1px solid var(--glass-border);
+      border-radius: 0 0 calc(var(--border-radius-panel) - 4px) calc(var(--border-radius-panel) - 4px);
+      z-index: 200;
+      overflow: hidden;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-top: 8px;
+      margin-left: -14px;
+      margin-right: -14px;
+      margin-bottom: -8px;
+    }
+
+    #search-results.open {
+      display: block;
+    }
+
+    body[data-theme="metro"] #search-results {
+      backdrop-filter: none;
+      background: #0d0d0d;
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: background 0.14s;
+      font-size: 0.82rem;
+    }
+
+    .search-result-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    body[data-theme="metro"] .search-result-item:hover {
+      background: rgba(0, 180, 60, 0.08);
+    }
+
+    .search-result-item img {
+      width: 28px;
+      height: 28px;
+      border-radius: 3px;
+      image-rendering: pixelated;
+    }
+
+    body[data-theme="metro"] .search-result-item img {
+      border-radius: 0;
+    }
+
+    .search-result-name {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    body[data-theme="metro"] .search-result-name {
+      color: #00FF44;
+    }
+
+    .search-result-elo {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    body[data-theme="metro"] .search-result-elo {
+      color: #00CC44;
+    }
+
+    /* ==========================================
+   FULL LEADERBOARD TABLE
+   thead <th> is sticky — must use opaque background so rows
+   scrolling behind it don't show through the glass.
+   top values: ticker(28px aero/leaf, 22px metro) + navbar(52px aero/leaf).
+   ========================================== */
+    #full-table-section .glass {
+      overflow: visible !important;
+    }
+
+    .lb-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.84rem;
+    }
+
+    .lb-table th:first-child {
+      border-top-left-radius: var(--border-radius-panel);
+    }
+
+    .lb-table th:last-child {
+      border-top-right-radius: var(--border-radius-panel);
+    }
+
+    #lb-tbody tr:last-child td:first-child {
+      border-bottom-left-radius: var(--border-radius-panel);
+    }
+
+    #lb-tbody tr:last-child td:last-child {
+      border-bottom-right-radius: var(--border-radius-panel);
+    }
+
+    .lb-table th {
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 0.67rem;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      position: sticky;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      /* Aero default — opaque dark so rows don't show through */
+      color: #0099cc;
+      background: rgba(0, 28, 50, 0.97);
+      border-bottom: 1px solid rgba(0, 160, 220, 0.30);
+      top: 80px;
+      /* 28px ticker + 52px navbar */
+    }
+
+    body[data-theme="aero"] .lb-table th,
+    body:not([data-theme]) .lb-table th {
+      color: #0099cc;
+      background: rgba(0, 28, 50, 0.97);
+      border-bottom: 1px solid rgba(0, 160, 220, 0.30);
+      top: 80px;
+    }
+
+    body[data-theme="leaf"] .lb-table th {
+      color: #7acc00;
+      background: rgba(12, 24, 0, 0.97);
+      border-bottom: 1px solid rgba(120, 180, 25, 0.45);
+      top: 80px;
+    }
+
+    body[data-theme="metro"] .lb-table th {
+      color: #888888;
+      background: #141414;
+      border-bottom: 1px solid #2a2a2a;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      letter-spacing: 0.06em;
+      top: 80px;
+      /* metro ticker 28px + sticky navbar 52px */
+    }
+
+    .lb-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    body[data-theme="leaf"] .lb-table td {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+      color: #0e1f00;
+    }
+
+    body[data-theme="metro"] .lb-table td {
+      border-bottom: 1px solid #0A130A;
+      color: #CCFFCC;
+    }
+
+    .lb-table tr:hover td {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    body[data-theme="leaf"] .lb-table tr:hover td {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    body[data-theme="metro"] .lb-table tr:hover td {
+      background: rgba(0, 200, 0, 0.05);
+    }
+
+    .lb-rank {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .lb-rank.top1 {
+      color: #E8900A;
+    }
+
+    .lb-rank.top2 {
+      color: #9AA0A8;
+    }
+
+    .lb-rank.top3 {
+      color: #CD7F32;
+    }
+
+    /* ==========================================
+   METRO COURIER NEW MONOSPACE OVERRIDES
+   ========================================== */
+    body[data-theme="metro"] .ticker-entry,
+    body[data-theme="metro"] .theme-btn,
+    body[data-theme="metro"] .podium-rank-badge,
+    body[data-theme="metro"] .mini-badge-rank,
+    body[data-theme="metro"] .lb-rank-badge,
+    body[data-theme="metro"] #search-input,
+    body[data-theme="metro"] .live-timer,
+    body[data-theme="metro"] .live-header-text,
+    body[data-theme="metro"] .live-sub-time,
+    body[data-theme="metro"] .section-subtitle,
+    body[data-theme="metro"] .footer-text {
+      font-family: 'Courier New', monospace !important;
+    }
+  </style>
+  <div class="aurora-wave aero-aurora-2 leaf-aurora-2 metro-aurora-2" id="aurora-2"></div>
+  <div class="aurora-wave aero-aurora-3 leaf-aurora-3 metro-aurora-3" id="aurora-3"></div>
+  </div>
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+  <div class="bg-lens"></div>
+  <div class="bokeh-wrap" id="bokeh-wrap"></div>
+  <div class="leaf-bg-elements" aria-hidden="true">
+    <svg class="leaf-grass" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0,300 C150,150 200,200 300,120 C400,200 500,80 600,160 C700,240 800,100 900,180 C1000,260 1100,90 1200,150 C1300,210 1350,120 1440,300 Z"
+        fill="#2E4800" />
+      <path
+        d="M0,300 C100,220 150,250 250,180 C350,250 450,150 550,220 C650,290 750,180 850,240 C950,300 1050,150 1150,200 C1250,250 1350,180 1440,300 Z"
+        fill="#4A7500" />
+    </svg>
+    <svg class="water-ripple" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="10" stroke="white" stroke-width="0.5" fill="none">
+        <animate attributeName="r" values="5;45" dur="4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.8;0" dur="4s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="50" cy="50" r="10" stroke="white" stroke-width="0.5" fill="none">
+        <animate attributeName="r" values="5;45" dur="4s" begin="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.8;0" dur="4s" begin="2s" repeatCount="indefinite" />
+      </circle>
+    </svg>
+  </div>
+  <div id="metro-bg-layer"
+    style="display: none; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; width: 100vw; height: 100vh;">
+    <svg width="100%" height="100%" viewBox="0 0 2000 1000" preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Explosión de luz verde asimétrica, top-left -->
+        <radialGradient id="burst-1" cx="20%" cy="35%" r="45%">
+          <stop offset="0%" stop-color="rgba(0,200,50,0.18)" />
+          <stop offset="40%" stop-color="rgba(0,120,30,0.08)" />
+          <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+        </radialGradient>
+        <radialGradient id="burst-2" cx="78%" cy="72%" r="40%">
+          <stop offset="0%" stop-color="rgba(0,160,40,0.14)" />
+          <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+        </radialGradient>
+        <radialGradient id="metro-glow-1" cx="30%" cy="60%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,120,0,0.12)" />
+          <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+        </radialGradient>
+        <radialGradient id="metro-glow-2" cx="75%" cy="30%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,80,0,0.10)" />
+          <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+        </radialGradient>
+      </defs>
+
+      <!-- Explosión de luz verde asimétrica, top-left -->
+      <ellipse cx="400" cy="350" rx="600" ry="400" fill="url(#burst-1)" />
+      <!-- Explosión secundaria, bottom-right -->
+      <ellipse cx="1560" cy="720" rx="500" ry="350" fill="url(#burst-2)" />
+
+      <!-- Two large blurred radial glow spots -->
+      <ellipse cx="600" cy="600" rx="400" ry="250" fill="url(#metro-glow-1)" />
+      <ellipse cx="1500" cy="300" rx="350" ry="200" fill="url(#metro-glow-2)" />
+
+      <!-- 3-4 thick flowing bezier curves (aurora borealis) -->
+      <path d="M -200,600 C 200,200 600,800 1000,300 S 1400,100 1800,400" fill="none" stroke="rgba(0,180,0,0.07)"
+        stroke-width="100" stroke-linecap="round" />
+      <path d="M -100,800 C 300,400 700,900 1100,200 S 1500,500 1900,100" fill="none" stroke="rgba(0,255,80,0.05)"
+        stroke-width="120" stroke-linecap="round" />
+      <path d="M 0,200 C 400,600 800,100 1200,500 S 1600,300 2000,700" fill="none" stroke="rgba(0,140,60,0.08)"
+        stroke-width="80" stroke-linecap="round" />
+      <path d="M -300,400 C 100,800 500,200 900,600 S 1300,400 1700,200" fill="none" stroke="rgba(80,255,120,0.04)"
+        stroke-width="140" stroke-linecap="round" />
+
+      <!-- 15-20 tiny white dot specks (static sparkle stars) -->
+      <circle cx="150" cy="200" r="1.2" fill="rgba(255,255,255,0.25)" />
+      <circle cx="340" cy="150" r="1.0" fill="rgba(255,255,255,0.25)" />
+      <circle cx="520" cy="380" r="1.5" fill="rgba(255,255,255,0.25)" />
+      <circle cx="710" cy="220" r="1.1" fill="rgba(255,255,255,0.25)" />
+      <circle cx="890" cy="450" r="1.3" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1050" cy="180" r="1.0" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1200" cy="350" r="1.4" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1380" cy="120" r="1.2" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1550" cy="420" r="1.5" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1720" cy="250" r="1.1" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1880" cy="180" r="1.3" fill="rgba(255,255,255,0.25)" />
+      <circle cx="280" cy="720" r="1.0" fill="rgba(255,255,255,0.25)" />
+      <circle cx="450" cy="620" r="1.4" fill="rgba(255,255,255,0.25)" />
+      <circle cx="680" cy="800" r="1.2" fill="rgba(255,255,255,0.25)" />
+      <circle cx="950" cy="710" r="1.5" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1120" cy="640" r="1.1" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1350" cy="850" r="1.3" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1620" cy="730" r="1.0" fill="rgba(255,255,255,0.25)" />
+      <circle cx="1780" cy="600" r="1.4" fill="rgba(255,255,255,0.25)" />
+    </svg>
+  </div>
+  <div class="metro-specks" id="metro-specks"></div>
+
+  <div id="page-wrap">
+    <div id="ticker-bar" role="marquee" aria-label="partidas recientes">
+      <span id="ticker-label">[ reciente ]</span>
+      <div id="ticker-inner">
+        <div id="ticker-track"><span class="ticker-entry">cargando partidas...</span></div>
+      </div>
+    </div>
+
+    <nav id="navbar" role="navigation" aria-label="navegacion principal">
+      <a href="#" class="nav-logo" aria-label="MCSRRanked leaderboard hispana">
+        <img src="mcsrrankedhispana.png" alt="mcsrranked hispana" onerror="this.style.display='none'" />
+      </a>
+      <span class="page-title">MCSRRanked<span class="page-title-accent">, leaderboard hispana :3c</span></span>
+      <div class="nav-links" role="list">
+        <a class="nav-link active" data-page="leaderboard" role="listitem">leaderboard</a>
+        <a class="nav-link" data-page="tiempos" role="listitem">mejores tiempos</a>
+        <a class="nav-link" data-page="creditos" role="listitem">creditos</a>
+      </div>
+      <div class="theme-switcher" role="group" aria-label="selector de tema">
+        <button class="theme-btn" data-theme="leaf" aria-label="tema leaf">leaf</button>
+        <button class="theme-btn active" data-theme="aero" aria-label="tema aero">aero</button>
+        <button class="theme-btn" data-theme="metro" aria-label="tema metro">metro</button>
+      </div>
+    </nav>
+
+    <div id="main-wrap">
+      <aside id="sidebar" aria-label="barra lateral">
+        <div class="glass sidebar-widget" id="activity-widget">
+          <div class="sidebar-widget-title">[ matches recientes ]</div>
+          <div id="activity-list">
+            <div class="activity-entry shimmer-load" style="height:58px;"></div>
+            <div class="activity-entry shimmer-load" style="height:58px;margin-top:6px;"></div>
+            <div class="activity-entry shimmer-load" style="height:58px;margin-top:6px;"></div>
+            <div class="activity-entry shimmer-load" style="height:58px;margin-top:6px;"></div>
+          </div>
+        </div>
+        <div class="glass sidebar-widget" id="stats-widget">
+          <div class="sidebar-widget-title">[ stats globales ]</div>
+          <div id="stats-list">
+            <div class="stat-chip">
+              <div class="stat-label">* jugadores hispanos activos</div>
+              <div class="shimmer-load" style="height:26px;border-radius:4px;margin-top:4px;"></div>
+            </div>
+            <div class="stat-chip">
+              <div class="stat-label">* elo promedio top 10</div>
+              <div class="shimmer-load" style="height:26px;border-radius:4px;margin-top:4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass sidebar-widget" id="countries-widget">
+          <div class="sidebar-widget-title">[ ranking por pais ]</div>
+          <div id="countries-list">
+            <div class="shimmer-load" style="height:130px;border-radius:8px;"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main id="main-content" aria-label="contenido principal">
+
+        <!-- PAGE: leaderboard -->
+        <div class="page-section active" id="page-leaderboard">
+          <div class="page-header">
+            <h1 class="page-heading">top 1-10</h1>
+            <p class="page-subheading"></p>
+          </div>
+          <div id="podium-section">
+            <div id="podium" role="list" aria-label="top 3 jugadores">
+              <div class="podium-card rank-2 shimmer-load" style="width:178px;min-height:360px;margin-bottom:20px;">
+              </div>
+              <div class="podium-card rank-1 shimmer-load" style="width:200px;min-height:420px;margin-bottom:40px;">
+              </div>
+              <div class="podium-card rank-3 shimmer-load" style="width:168px;min-height:340px;margin-bottom:0px;">
+              </div>
+            </div>
+          </div>
+          <div id="row-section">
+            <div id="row-scroll-wrap">
+              <div id="row-scroll-inner">
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+                <div class="mini-card glass shimmer-load" style="height:155px;"></div>
+              </div>
+            </div>
+          </div>
+          <div id="search-wrap">
+            <div class="search-input-row" style="display: flex; align-items: center; gap: 8px; width: 100%;">
+              <span class="search-icon">(o)</span>
+              <input type="search" id="search-input" placeholder="buscar jugador..." autocomplete="off"
+                aria-label="buscar jugador en el leaderboard" style="flex-grow: 1;" />
+              <select id="season-select" class="season-select-dropdown" onchange="changeLeaderboardSeason(this.value)"
+                aria-label="seleccionar temporada">
+                <option value="11" selected>S11 (actual)</option>
+                <option value="10">S10</option>
+                <option value="9">S9</option>
+                <option value="8">S8</option>
+                <option value="7">S7</option>
+                <option value="6">S6</option>
+                <option value="5">S5</option>
+                <option value="4">S4</option>
+                <option value="3">S3</option>
+                <option value="2">S2</option>
+                <option value="1">S1</option>
+              </select>
+            </div>
+            <div id="search-results" role="listbox" aria-label="resultados de busqueda"></div>
+          </div>
+          <div id="full-table-section">
+            <div class="section-subtitle">main</div>
+            <div class="glass" style="padding:0;overflow:hidden;">
+              <table class="lb-table" aria-label="leaderboard completo">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>jugador</th>
+                    <th>pais</th>
+                    <th>elo</th>
+                    <th>rango</th>
+                    <th>phase pts</th>
+                  </tr>
+                </thead>
+                <tbody id="lb-tbody">
+                  <tr>
+                    <td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+                      cargando... //</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE: mejores tiempos -->
+        <div class="page-section" id="page-tiempos">
+          <div class="page-header"
+            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h1 class="page-heading">mejores tiempos</h1>
+              <p class="page-subheading">records personales de jugadores hispanicos</p>
+            </div>
+            <div class="times-filter-group" role="group" aria-label="filtro de tiempos">
+              <button class="times-filter-btn active" id="btn-filter-season"
+                onclick="setTimesFilter('season')">temporada actual <span id="times-season-label"></span></button>
+              <button class="times-filter-btn" id="btn-filter-historico"
+                onclick="setTimesFilter('historico')">historico</button>
+            </div>
+          </div>
+          <div class="glass" style="padding:0;overflow:hidden;">
+            <div class="times-table-wrap">
+              <table class="times-table" aria-label="mejores tiempos">
+                <thead>
+                  <tr id="times-thead-tr">
+                    <th>#</th>
+                    <th>jugador</th>
+                    <th>pais</th>
+                    <th>tiempo</th>
+                    <th>temporada</th>
+                    <th>elo</th>
+                  </tr>
+                </thead>
+                <tbody id="times-tbody">
+                  <tr>
+                    <td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+                      cargando tiempos... //</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE: creditos -->
+        <div class="page-section" id="page-creditos">
+          <div class="page-header">
+            <h1 class="page-heading">creditos</h1>
+            <p class="page-subheading">hecho con amor por la comunidad de mcsrh :3c</p>
+          </div>
+          <div class="creditos-grid">
+            <div class="glass credito-card">
+              <div class="credito-role">desarrollo ⸜(｡˃ ᵕ ˂ )⸝♡</div>
+              <div class="credito-name">valen</div>
+              <div class="credito-desc">ola</div>
+            </div>
+            <div class="glass credito-card">
+              <div class="credito-role">base ( ദ്ദി ˙ᗜ˙ )</div>
+              <div class="credito-name">hugoxeneize</div>
+              <div class="credito-desc">gracias especiales a hugo por haber hecho la anterior leaderboard!</div>
+            </div>
+            <div class="glass credito-card">
+              <div class="credito-role">supporters ¯\_(ᐛ )_/¯</div>
+              <div class="credito-name">frenex, bind y mago</div>
+              <div class="credito-desc">gracias por apoyar este proyecto los qiero mucho</div>
+            </div>
+            <div class="glass credito-card">
+              <div class="credito-role">ayudistas ≽^-⩊-^≼</div>
+              <div class="credito-name">bruno</div>
+              <div class="credito-desc">gracias por pasarme esta pagina frutigeraeroarchive.org/</div>
+            </div>
+          </div>
+          <div style="margin-top:24px;padding:16px 0;text-align:center;">
+            <p style="font-size:0.75rem;color:var(--text-muted);line-height:2;">
+              <span class="footer-deco">~~~~~</span> &nbsp;
+              datos generales: <a href="https://mcsrranked.com" target="_blank" rel="noopener"
+                style="color:var(--aqua-mid);text-decoration:none;">mcsrranked.com</a>
+              &nbsp; -- &nbsp; no afiliada con mcsrranked ni mojang AB &nbsp; -- &nbsp;
+              &nbsp; <span class="footer-deco">~~~~~</span>
+            </p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <footer id="footer">
+    <div class="footer-rule"></div>
+    <div class="glass footer-glass">
+      <p class="footer-text">
+        <span class="footer-deco">~~~~~</span>
+        &nbsp;&nbsp;leaderboard hispana de MCSRRanked :3c
+        &nbsp;<span style="color:rgba(0,150,200,0.35);">--</span>&nbsp;
+        hecho con amor por valeno
+        &nbsp;&nbsp;<span class="footer-deco">~~~~~</span>
+      </p>
+    </div>
+  </footer>
+
+  <div id="live-widget" role="complementary" aria-label="partida en vivo">
+    <div class="glass">
+      <div class="live-header">
+        <div class="live-dot" aria-hidden="true"></div>
+        <span class="live-header-text">[ en vivo ]</span>
+        <button class="live-close" id="live-close-btn" aria-label="cerrar widget">x</button>
+      </div>
+      <div class="live-body">
+        <div class="live-matchup">
+          <span class="live-player" id="live-p1">--</span>
+          <span class="live-vs">vs</span>
+          <span class="live-player" id="live-p2">--</span>
+        </div>
+        <div class="live-timer" id="live-timer">--:--</div>
+        <div class="live-elo-info" id="live-elo-info"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="leaderboard.js"></script>
+  </body>
+
+</html>
