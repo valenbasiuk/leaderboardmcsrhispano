@@ -205,9 +205,13 @@ function applyTranslations() {
     if (tickerLabel) tickerLabel.textContent = t('ticker.label');
 
     // Update lang dropdown active state
-    const flags = { es: '\uD83C\uDDEA\uD83C\uDDF8', en: '\uD83C\uDDEC\uD83C\uDDE7', no: '\uD83C\uDDF3\uD83C\uDDF4' };
+    const flags = { 
+        es: '<img class="flag-icon" src="https://flagcdn.com/w20/es.png" alt="es" style="margin-right: 0;">', 
+        en: '<img class="flag-icon" src="https://flagcdn.com/w20/gb.png" alt="en" style="margin-right: 0;">', 
+        no: '<img class="flag-icon" src="https://flagcdn.com/w20/no.png" alt="no" style="margin-right: 0;">' 
+    };
     const currentFlag = document.getElementById('lang-current-flag');
-    if (currentFlag) currentFlag.textContent = flags[currentLang] || flags.es;
+    if (currentFlag) currentFlag.innerHTML = flags[currentLang] || flags.es;
     document.querySelectorAll('.lang-option').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === currentLang);
     });
@@ -271,9 +275,13 @@ function initLanguage() {
     const tickerLabel = document.getElementById('ticker-label');
     if (tickerLabel) tickerLabel.textContent = t('ticker.label');
     // Update dropdown flag
-    const flags = { es: '\uD83C\uDDEA\uD83C\uDDF8', en: '\uD83C\uDDEC\uD83C\uDDE7', no: '\uD83C\uDDF3\uD83C\uDDF4' };
+    const flags = { 
+        es: '<img class="flag-icon" src="https://flagcdn.com/w20/es.png" alt="es" style="margin-right: 0;">', 
+        en: '<img class="flag-icon" src="https://flagcdn.com/w20/gb.png" alt="en" style="margin-right: 0;">', 
+        no: '<img class="flag-icon" src="https://flagcdn.com/w20/no.png" alt="no" style="margin-right: 0;">' 
+    };
     const currentFlag = document.getElementById('lang-current-flag');
-    if (currentFlag) currentFlag.textContent = flags[currentLang] || flags.es;
+    if (currentFlag) currentFlag.innerHTML = flags[currentLang] || flags.es;
     document.querySelectorAll('.lang-option').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === currentLang);
     });
@@ -306,7 +314,7 @@ const SKIN_HEAD = n => `https://mc-heads.net/avatar/${n}/48`;
 const SKIN_BODY = n => `https://nmsr.nickac.dev/fullbody/${n}?width=300`;
 const BLOCKED = ['tommy21_'];
 
-// la lista de paises con sus banderas... meti a Guinea Ecuatorial q ni idea si juegan mcsr pero weno
+//  lista de paises con banderas
 const COUNTRIES = {
     ar: { name: 'argentina', flag: '🇦🇷', en: 'argentina', no: 'argentina' },
     bo: { name: 'bolivia', flag: '🇧🇴', en: 'bolivia', no: 'bolivia' },
@@ -332,7 +340,7 @@ const COUNTRIES = {
 };
 const HISPANIC_CODES = Object.keys(COUNTRIES);
 
-// CODIGO MAGICO PARA EMOJIS DE BANDERAS. lo robe de stackoverflow, ni idea de como funciona pero anda joya
+// CODIGO MAGICO PARA EMOJIS DE BANDERAS. 
 function getFlagEmoji(countryCode) {
     if (!countryCode || countryCode.length !== 2) return '';
     const codePoints = countryCode
@@ -349,18 +357,25 @@ function getFlagEmoji(countryCode) {
 function countryInfo(code) {
     if (!code) return { name: '?', flag: '🏳️' };
     const lower = code.toLowerCase();
+    
+    // Mapeo especial para banderas que no tengan codigo ISO exacto
+    let flagCode = lower;
+    if (lower === 'gb' || lower === 'uk') flagCode = 'gb';
+    else if (lower === 'en') flagCode = 'gb'; // England flag uses GB in flagcdn
+    
+    const flagHtml = `<img class="flag-icon" src="https://flagcdn.com/w20/${flagCode}.png" alt="${code}">`;
+    
     if (COUNTRIES[lower]) {
         const c = COUNTRIES[lower];
         let name = c.name;
         if (currentLang === 'en') name = c.en;
         else if (currentLang === 'no') name = c.no;
-        return { name, flag: c.flag };
+        return { name, flag: flagHtml };
     }
-    const flag = getFlagEmoji(lower);
-    return { name: code.toUpperCase(), flag: flag || '🏳️' };
+    return { name: code.toUpperCase(), flag: flagHtml };
 }
 
-// devuelve el nombre del rango segun el elo (bastante basico pero bue)
+// devuelve el nombre del rango segun el elo 
 function getRankName(elo) {
     if (!elo) return 'Unranked';
     if (elo >= 2000) return 'Netherite';
@@ -711,8 +726,8 @@ async function chunkedPromiseAll(items, fn, chunkSize = 15) {
 }
 
 async function loadEloMovement24h() {
-    // Solo top 50 para no pegar demasiado a la API y evitar rate-limit
-    const toFetch = allPlayers.slice(0, 50);
+    // Solo top 75 para no pegarle a la API xd
+    const toFetch = allPlayers.slice(0, 75);
     const matchesMap = new Map();
 
     await chunkedPromiseAll(
@@ -775,7 +790,7 @@ async function loadEloMovement24h() {
     renderPodium(allPlayers.slice(0, 3));
 }
 
-// ------------- EL PODIO (TOP 3) -------------
+// ------------- EL PODIo -------------
 function renderPodium(players) {
     const podium = document.getElementById('podium');
     podium.innerHTML = '';
@@ -822,7 +837,7 @@ function renderPodium(players) {
         ${phase > 0 ? `<span class="podium-phase">${phase} phase points</span>` : ''}
       </div>
     `;
-        // ojo: las alturas del podio las maneja el CSS, asi que no hay q meter margin-bottom aca
+        // as alturas del podio las maneja el CSS, asi que no hay qe meter eee me olvide
         podium.appendChild(card);
     });
 }
@@ -1465,7 +1480,7 @@ function initBokeh() {
     }
 }
 
-// los cuadraditos verdes flotantes del tema metro
+// e
 function initMetroSpecks() {
     const wrap = document.getElementById('metro-specks');
     if (!wrap) return;

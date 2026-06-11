@@ -1042,6 +1042,17 @@
       display: inline-block;
     }
 
+    .flag-icon {
+      width: 16px;
+      height: 11px;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      vertical-align: middle;
+      display: inline-block;
+      margin-right: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
     .lang-current-btn.open .lang-chevron {
       transform: rotate(180deg);
     }
@@ -3324,7 +3335,7 @@
         <img id="nav-logo-img" src="mcsrrankedhispana.png" alt="mcsrranked hispana" />
       </a>
       <span class="page-title">MCSRRanked<span class="page-title-accent">, leaderboard hispana :3c</span></span>
-      <span class="nav-version">ver. 0.313e</span>
+      <span class="nav-version">ver. 0.314e</span>
       <div class="nav-links" role="list">
         <a class="nav-link active" data-page="leaderboard" role="listitem" data-i18n="nav.leaderboard">leaderboard</a>
         <a class="nav-link" data-page="tiempos" role="listitem" data-i18n="nav.times">mejores tiempos</a>
@@ -3337,13 +3348,13 @@
       </div>
       <div class="lang-dropdown" id="lang-dropdown">
         <button class="lang-current-btn" id="lang-current-btn" onclick="toggleLangDropdown()" aria-haspopup="listbox">
-          <span id="lang-current-flag">🇪🇸</span>
+          <span id="lang-current-flag"><img class="flag-icon" src="https://flagcdn.com/w20/es.png" alt="es" style="margin-right: 0;"></span>
           <span class="lang-chevron">▾</span>
         </button>
         <div class="lang-options" id="lang-options" role="listbox">
-          <button class="lang-option active" data-lang="es" onclick="pickLang('es')">🇪🇸 español</button>
-          <button class="lang-option" data-lang="en" onclick="pickLang('en')">🇬🇧 english</button>
-          <button class="lang-option" data-lang="no" onclick="pickLang('no')">🇳🇴 norsk</button>
+          <button class="lang-option active" data-lang="es" onclick="pickLang('es')"><img class="flag-icon" src="https://flagcdn.com/w20/es.png" alt="es"> español</button>
+          <button class="lang-option" data-lang="en" onclick="pickLang('en')"><img class="flag-icon" src="https://flagcdn.com/w20/gb.png" alt="en"> english</button>
+          <button class="lang-option" data-lang="no" onclick="pickLang('no')"><img class="flag-icon" src="https://flagcdn.com/w20/no.png" alt="no"> norsk</button>
         </div>
       </div>
     </nav>
