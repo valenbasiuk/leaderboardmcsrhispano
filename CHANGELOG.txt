@@ -2,7 +2,7 @@
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
 ====================================
-versión 0.312b — 11 de junio de 2026
+versión 0.312c — 11 de junio de 2026
 
 RENDIMIENTO
   - se agregó un proxy propio para que todas las llamadas a la API pasen por el
@@ -15,6 +15,7 @@ RENDIMIENTO
 
 
 BUGS ARREGLADOS
+  - se arregló el error donde salía "+null elo" en el ticker de novedades y en la actividad de partidas recientes.
   - arreglo de las banderas de países en el tema aero estaban un poco borrosas.
   - traducciones en inglés y noruego bokmal. 
 

@@ -467,11 +467,14 @@ function renderTickerMarquee(changes, theme, preserveScroll = false) {
     const track = document.getElementById('ticker-track');
     if (!track) return;
     const sep = theme === 'metro' ? ' >>> ' : ' ~*~ ';
-    const items = changes.map(c => {
-        const sign = c.change >= 0 ? '+' : '';
-        const cls = c.change >= 0 ? 'pos' : 'neg';
-        return `<span class="ticker-entry">${c.player} <strong class="elo-change ${cls}">${sign}${c.change} elo</strong><span class="ticker-sep">${sep}</span></span>`;
-    }).join('');
+    const items = changes
+        .filter(c => c.change != null && !isNaN(Number(c.change)))
+        .map(c => {
+            const val = Math.round(Number(c.change));
+            const sign = val >= 0 ? '+' : '';
+            const cls = val >= 0 ? 'pos' : 'neg';
+            return `<span class="ticker-entry">${c.player} <strong class="elo-change ${cls}">${sign}${val} elo</strong><span class="ticker-sep">${sep}</span></span>`;
+        }).join('');
 
     if (items) {
         // Repeat items enough times to ensure one block is wider than typical viewports (preventing jumpy resets)
@@ -1056,7 +1059,8 @@ function renderActivityList(newGlobalMatches = null) {
 
         const changes = m.changes || [];
         const p1ChangeObj = changes.find(c => c.uuid === p1.uuid);
-        const p1c = p1ChangeObj ? p1ChangeObj.change : 0;
+        const p1cRaw = p1ChangeObj ? p1ChangeObj.change : 0;
+        const p1c = (p1cRaw != null && !isNaN(Number(p1cRaw))) ? Math.round(Number(p1cRaw)) : 0;
 
         const cls = p1c > 0 ? 'win' : 'loss';
         const time = fmtTime(m.result?.timelines?.slice(-1)[0]?.time ?? m.result?.time ?? m.completionTime ?? 0);
