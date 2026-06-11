@@ -2,7 +2,7 @@
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
 ====================================
-versión 0.315f — 11 de junio de 2026
+versión 0.315g — 11 de junio de 2026
 
 RENDIMIENTO
   - se agregó un proxy propio para que todas las llamadas a la API pasen por el
@@ -14,6 +14,7 @@ RENDIMIENTO
   - mejoras de compatibilidad con celulares, antes se veía bastante mal.
 
 BUGS ARREGLADOS
+  - se cambió el favicon de la pestaña del navegador para que muestre la tortuguita clásica (mcsrrankedhispana.png) en vez del antiguo logo de Ranked.
   - se ajustó el título en la pestaña del navegador a "leaderboard hispana :3".
   - se formateó el nombre del header a "MCSRRanked - leaderboard hispana :3c".
   - se arregló la alineación y tamaños de las imágenes de banderas en el podio (top 1-3) y en las mini tarjetas (top 4-10) que se habían descolocado.
