@@ -2,7 +2,7 @@
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
 ====================================
-versión 0.315g — 11 de junio de 2026
+versión 0.320g — 11 de junio de 2026
 
 RENDIMIENTO
   - se agregó un proxy propio para que todas las llamadas a la API pasen por el
@@ -14,7 +14,8 @@ RENDIMIENTO
   - mejoras de compatibilidad con celulares, antes se veía bastante mal.
 
 BUGS ARREGLADOS
-  - se cambió el favicon de la pestaña del navegador para que muestre la tortuguita clásica (mcsrrankedhispana.png) en vez del antiguo logo de Ranked.
+  - rediseñados los badges de phase points en el tema Metro (tanto en el podio como en la tabla) para que tengan mejor contraste con un estilo retro blanco brillante en lugar de marrón apagado.
+  - corregida la ruta del favicon a absoluta (`/mcsrrankedhispana.png`) para asegurar que cargue correctamente la tortuguita en todas las subrutas de la página.
   - se ajustó el título en la pestaña del navegador a "leaderboard hispana :3".
   - se formateó el nombre del header a "MCSRRanked - leaderboard hispana :3c".
   - se arregló la alineación y tamaños de las imágenes de banderas en el podio (top 1-3) y en las mini tarjetas (top 4-10) que se habían descolocado.
