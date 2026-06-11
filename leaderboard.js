@@ -669,17 +669,14 @@ async function loadLeaderboard() {
 // === ELO MOVEMENT 24H REAL (carga en background) ===
 async function getEloMovement24h(uuid) {
     const cutoff = Date.now() - 86400000; // 24h en ms
-    let page = 0;
     let matches = [];
     let eloAtCutoff = null;
 
-    while (true) {
-        try {
-            const res = await fetch(`${API}/users/${uuid}/matches?page=${page}&count=20`);
-            if (!res.ok) break;
+    try {
+        const res = await fetch(`${API}/users/${uuid}/matches?page=0&count=10`);
+        if (res.ok) {
             const data = await res.json();
             const batch = data.data || [];
-            if (!batch.length) break;
 
             for (const m of batch) {
                 if (m.type !== 2) continue; // Only ranked matches
@@ -693,16 +690,12 @@ async function getEloMovement24h(uuid) {
                     if (change && change.eloRate != null) {
                         eloAtCutoff = change.eloRate + change.change;
                     }
-                    return { matches, eloAtCutoff };
+                    break;
                 }
             }
-            // Si el ultimo del batch es más nuevo que el cutoff, hay más páginas
-            const lastTs = (batch[batch.length - 1].date || 0) * 1000;
-            if (lastTs < cutoff) break;
-            page++;
-        } catch (e) {
-            break;
         }
+    } catch (e) {
+        // ignore
     }
     return { matches, eloAtCutoff };
 }
@@ -718,8 +711,8 @@ async function chunkedPromiseAll(items, fn, chunkSize = 15) {
 }
 
 async function loadEloMovement24h() {
-    // Solo top 75 para no pegar demasiado a la API
-    const toFetch = allPlayers.slice(0, 75);
+    // Solo top 50 para no pegar demasiado a la API y evitar rate-limit
+    const toFetch = allPlayers.slice(0, 50);
     const matchesMap = new Map();
 
     await chunkedPromiseAll(
