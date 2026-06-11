@@ -1,13 +1,8 @@
 
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
-=====================================
-
+====================================
 versión 0.312b — 11 de junio de 2026
---------------------------------------
-
-hola! esta actualización es bastante grande, se trabajó un montón en rendimiento
-y en que todo se vea bien. acá va lo que cambió:
 
 RENDIMIENTO
   - se agregó un proxy propio para que todas las llamadas a la API pasen por el
@@ -16,33 +11,11 @@ RENDIMIENTO
   - el paginado ahora carga de a 100 jugadores por vez en vez de cargar todo el
     ranking de golpe. la página inicial carga mucho más rápido.
 
-DISEÑO Y UI
-  - la versión que aparece en el header ahora tiene una opacidad más baja para
-    que no moleste tanto visualmente.
-  - se arregló el logo de la tortuga que no se veía.
-  - actividad reciente limitada a 5 partidas para que no se desincronice.
-  - mejoras de compatibilidad con celulares, antes se veía bastante mal en móvil.
-  - el selector de idioma ahora muestra la bandera del idioma seleccionado y al
-    clickearla se despliegan las opciones. más bonito y más claro.
-  - en pantallas grandes el contenido ahora escala mejor.
-  - los nombres de los países cambian según el idioma seleccionado.
-  - los nombres de los idiomas en el selector van en minúsculas.
-  - el orden del header quedó: logo → "MCSRRanked, leaderboard hispana" → versión.
+  - mejoras de compatibilidad con celulares, antes se veía bastante mal.
 
-TEMA LEAF
-  - los números de ELO ahora son de un verde más clarito y uniforme en todos lados
-    (podio, tabla, mini-cards).
-  - el botón de "siguiente página" cambió a texto blanco en vez del verdecito.
 
 BUGS ARREGLADOS
-  - se arregló que el top 4-10 mostraba rangos mal (salía "4-xx").
-  - el badge de cambio de ELO ya no muestra "+null" cuando no hay dato,
-    ahora simplemente no muestra nada.
-  - las banderas de países en el tema aero estaban un poco borrosas, arreglado.
-  - se completaron traducciones que faltaban en inglés y noruego (incluyendo
-    la sección de créditos).
-
-CRÉDITOS
-  - actualizados los textos de créditos en los tres idiomas.
+  - arreglo de las banderas de países en el tema aero estaban un poco borrosas.
+  - traducciones en inglés y noruego bokmal. 
 
 =====================================
