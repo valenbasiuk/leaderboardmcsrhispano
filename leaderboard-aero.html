@@ -111,6 +111,23 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      font-size: 16px;
+    }
+
+    @media (min-width: 1700px) {
+      body {
+        font-size: 17px;
+      }
+    }
+    @media (min-width: 2000px) {
+      body {
+        font-size: 18px;
+      }
+    }
+    @media (min-width: 2560px) {
+      body {
+        font-size: 20px;
+      }
     }
 
     #page-wrap {
@@ -214,8 +231,11 @@
 
     /* EFECTOS DE FONDO (AURORAS, BLOBS, BOKEH, ETC) */
     .aurora-container {
-      position: fixed;
-      inset: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
@@ -234,6 +254,7 @@
       filter: blur(80px);
       mix-blend-mode: screen;
       transform-origin: center center;
+      pointer-events: none;
     }
 
     @keyframes auroraShift1 {
@@ -533,20 +554,33 @@
 
     #ticker-label {
       flex-shrink: 0;
-      padding: 0 12px;
+      padding: 2px 10px 2px 14px;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.05em;
-      color: var(--amber);
       white-space: nowrap;
       z-index: 2;
+      /* default / aero: bright amber readable on dark navy ticker */
+      color: rgba(255, 170, 60, 0.95);
+      background: rgba(180, 80, 0, 0.18);
+      border-right: 1px solid rgba(255, 150, 40, 0.30);
+    }
+
+    body[data-theme="leaf"] #ticker-label {
+      color: rgba(220, 255, 60, 0.90);
+      background: rgba(80, 130, 0, 0.22);
+      border-right: 1px solid rgba(160, 220, 40, 0.30);
     }
 
     body[data-theme="metro"] #ticker-label {
       font-size: 11px;
       padding: 0 10px;
       border-right: 1px solid #1A4A1A;
+      border-top: none;
+      border-left: none;
+      border-bottom: none;
       background: #030603;
+      color: #E08000;
     }
 
     #ticker-inner {
@@ -886,12 +920,215 @@
       box-shadow: none !important;
     }
 
+    /* LANG SWITCHER */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 8px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--glass-border);
+      padding-left: 12px;
+    }
+
+    body[data-theme="metro"] .lang-switcher {
+      border-left: 1px solid #1a2e1a;
+    }
+
+    .lang-btn {
+      padding: 3px 7px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+      line-height: 1;
+    }
+
+    .lang-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .lang-btn.active {
+      color: var(--text-main);
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.12);
+    }
+
+    body[data-theme="metro"] .lang-btn {
+      border-radius: 2px;
+      color: #00AA00;
+    }
+
+    body[data-theme="metro"] .lang-btn.active {
+      background: #001a00;
+      border: 1px solid #00CC00;
+      color: #00FF44;
+    }
+
+    body[data-theme="metro"] .lang-btn:hover {
+      background: #0e160e;
+      color: #00FF44;
+      border-color: #00CC00;
+    }
+
+    /* VERSION TEXT */
+    .nav-version {
+      font-size: 0.62rem;
+      color: rgba(0, 0, 0, 0.65);
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: -8px;
+      letter-spacing: 0.03em;
+      align-self: flex-end;
+      margin-bottom: 10px;
+    }
+
+    body[data-theme="leaf"] .nav-version {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    body[data-theme="metro"] .nav-version {
+      color: rgba(0, 200, 0, 0.65);
+      margin-bottom: 12px;
+    }
+
+    /* LANG DROPDOWN */
+    .lang-dropdown {
+      position: relative;
+      flex-shrink: 0;
+      margin-left: 8px;
+      border-left: 1px solid var(--glass-border);
+      padding-left: 12px;
+    }
+
+    body[data-theme="metro"] .lang-dropdown {
+      border-left: 1px solid #1a2e1a;
+    }
+
+    .lang-current-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      font-size: 1rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+      line-height: 1;
+      color: var(--text-muted);
+    }
+
+    .lang-current-btn:hover,
+    .lang-current-btn.open {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .lang-chevron {
+      font-size: 0.6rem;
+      opacity: 0.6;
+      transition: transform 0.18s;
+      display: inline-block;
+    }
+
+    .lang-current-btn.open .lang-chevron {
+      transform: rotate(180deg);
+    }
+
+    body[data-theme="metro"] .lang-current-btn {
+      border-radius: 2px;
+      border-color: #1a2e1a;
+      color: #00CC00;
+    }
+
+    body[data-theme="metro"] .lang-current-btn:hover,
+    body[data-theme="metro"] .lang-current-btn.open {
+      background: #0e160e;
+      border-color: #00CC00;
+    }
+
+    .lang-options {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 200;
+      overflow: hidden;
+      min-width: 120px;
+    }
+
+    .lang-options.open {
+      display: block;
+    }
+
+    body[data-theme="metro"] .lang-options {
+      background: #111;
+      border: 1px solid #00CC00;
+      border-radius: 2px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+    }
+
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-main);
+      font-family: inherit;
+      text-align: left;
+      transition: background 0.14s;
+    }
+
+    .lang-option:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .lang-option.active {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    body[data-theme="metro"] .lang-option {
+      color: #00CC00;
+    }
+
+    body[data-theme="metro"] .lang-option:hover {
+      background: #0e160e;
+      color: #00FF44;
+    }
+
+    body[data-theme="metro"] .lang-option.active {
+      color: #00FF44;
+    }
+
     /* ESTRUCTURA DEL CONTENIDO PRINCIPAL */
     #main-wrap {
       display: grid;
       grid-template-columns: 250px 1fr;
       gap: 20px;
-      max-width: 1450px;
+      max-width: 90.625rem;
       margin: 0 auto;
       padding: 24px 290px 60px 12px;
       align-items: start;
@@ -900,7 +1137,7 @@
     body[data-theme="metro"] #main-wrap {
       grid-template-columns: 250px 1fr;
       gap: 20px;
-      max-width: 1450px;
+      max-width: 90.625rem;
       margin: 0 auto;
       padding: 24px 290px 60px 12px;
     }
@@ -1253,12 +1490,8 @@
 
     .podium-country-label {
       font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    body[data-theme="leaf"] .podium-country-label {
       color: var(--text-main);
+      margin-bottom: 6px;
     }
 
     .podium-elo {
@@ -1266,6 +1499,11 @@
       font-weight: 700;
       color: var(--accent);
       text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="leaf"] .podium-elo {
+      color: #ebffb0;
+      text-shadow: 0 0 8px rgba(220, 255, 150, 0.45);
     }
 
     body[data-theme="metro"] .podium-elo {
@@ -1286,6 +1524,7 @@
     }
 
     /* los phase points */
+    /* podium phase badge - por tema */
     .podium-phase {
       display: inline-block;
       margin-top: 8px;
@@ -1299,13 +1538,32 @@
       white-space: nowrap;
     }
 
+    /* aero: amarillo glassmorphism */
+    body:not([data-theme]) .podium-phase,
+    body[data-theme="aero"] .podium-phase {
+      background: rgba(255, 200, 80, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 220, 120, 0.6);
+      color: #1a1200;
+    }
+
+    /* leaf: verde bosque */
+    body[data-theme="leaf"] .podium-phase {
+      background: #5a8a3c;
+      border: 1px solid rgba(120, 180, 80, 0.5);
+      color: #f0ffe0;
+    }
+
+    /* metro: flat brown style badge */
     body[data-theme="metro"] .podium-phase {
-      background: transparent;
-      border: 1px solid #E08000;
-      color: #E08000;
+      background: rgba(232, 144, 10, 0.13);
+      border: 1px solid #a84800;
+      color: #a84800;
       border-radius: 0;
       padding: 2px 8px;
       font-size: 11px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
     }
 
     /* badge de cambio de elo rate (verde/rojo) */
@@ -1322,36 +1580,36 @@
       margin-left: 6px;
     }
 
-    /* Aero: verde vibrante / rojo vibrante, más legibles sobre el fondo oscuro */
+    /* Aero: verde vibrante / rojo vibrante */
     body:not([data-theme]) .elo-change.pos,
     body[data-theme="aero"] .elo-change.pos {
-      color: #00e87a;
-      background: rgba(0, 200, 110, 0.18);
-      border: 1px solid rgba(0, 200, 110, 0.50);
-      text-shadow: 0 0 6px rgba(0, 220, 120, 0.45);
+      color: #ffffff;
+      background: rgba(0, 200, 100, 0.38);
+      border: 1px solid rgba(0, 200, 110, 0.60);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     body:not([data-theme]) .elo-change.neg,
     body[data-theme="aero"] .elo-change.neg {
-      color: #ff5c3a;
-      background: rgba(220, 60, 20, 0.16);
-      border: 1px solid rgba(220, 60, 20, 0.45);
-      text-shadow: 0 0 6px rgba(220, 70, 30, 0.40);
+      color: #ffffff;
+      background: rgba(230, 60, 20, 0.38);
+      border: 1px solid rgba(220, 60, 20, 0.60);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     /* Leaf: magenta si subió, azul si bajó */
     body[data-theme="leaf"] .elo-change.pos {
-      color: #ff40c8;
-      background: rgba(230, 0, 180, 0.14);
-      border: 1px solid rgba(230, 0, 180, 0.42);
-      text-shadow: 0 0 6px rgba(240, 0, 200, 0.35);
+      color: #ffffff;
+      background: rgba(230, 0, 180, 0.35);
+      border: 1px solid rgba(230, 0, 180, 0.60);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     body[data-theme="leaf"] .elo-change.neg {
-      color: #4db8ff;
-      background: rgba(30, 120, 230, 0.14);
-      border: 1px solid rgba(30, 120, 230, 0.42);
-      text-shadow: 0 0 6px rgba(30, 140, 255, 0.35);
+      color: #ffffff;
+      background: rgba(30, 140, 255, 0.35);
+      border: 1px solid rgba(30, 120, 230, 0.60);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     body[data-theme="metro"] .elo-change.pos {
@@ -1360,6 +1618,7 @@
       border: 1px solid #00CC00;
       border-radius: 0;
       padding: 2px 6px;
+      text-shadow: none;
     }
 
     body[data-theme="metro"] .elo-change.neg {
@@ -1368,6 +1627,7 @@
       border: 1px solid #CC2200;
       border-radius: 0;
       padding: 2px 6px;
+      text-shadow: none;
     }
 
     /* TARJETAS CHICAS (DEL 4 AL 10) */
@@ -1464,6 +1724,16 @@
       word-break: break-all;
     }
 
+    body:not([data-theme]) .mini-name,
+    body[data-theme="aero"] .mini-name {
+      color: #001a33;
+    }
+
+    body[data-theme="leaf"] .mini-name {
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
     body[data-theme="metro"] .mini-name {
       color: #00FF44;
     }
@@ -1473,6 +1743,17 @@
       font-weight: 700;
       color: var(--accent);
       text-shadow: var(--elo-shadow);
+    }
+
+    body:not([data-theme]) .mini-elo,
+    body[data-theme="aero"] .mini-elo {
+      color: #005580;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    body[data-theme="leaf"] .mini-elo {
+      color: #ebffb0;
+      text-shadow: 0 0 6px rgba(220, 255, 150, 0.4);
     }
 
     body[data-theme="metro"] .mini-elo {
@@ -1515,14 +1796,6 @@
 
     .lb-country {
       font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    body[data-theme="metro"] .lb-country {
-      color: var(--text-main);
-    }
-
-    body[data-theme="leaf"] .lb-country {
       color: var(--text-main);
     }
 
@@ -1530,6 +1803,11 @@
       font-weight: 700;
       color: var(--accent);
       text-shadow: var(--elo-shadow);
+    }
+
+    body[data-theme="leaf"] .lb-elo {
+      color: #ebffb0;
+      text-shadow: 0 0 6px rgba(220, 255, 150, 0.4);
     }
 
     body[data-theme="metro"] .lb-elo {
@@ -1542,6 +1820,7 @@
       color: var(--text-muted);
     }
 
+    /* lb-phase badge (en tabla y mini cards) - por tema */
     .lb-phase {
       display: inline-block;
       font-size: 0.65rem;
@@ -1550,13 +1829,121 @@
       border-radius: 8px;
       border: 1px solid var(--amber);
       color: var(--amber);
+      background: rgba(232, 144, 10, 0.13);
     }
 
+    /* aero */
+    body:not([data-theme]) .lb-phase,
+    body[data-theme="aero"] .lb-phase {
+      background: rgba(255, 200, 80, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 220, 120, 0.5);
+      color: #1a1200;
+    }
+
+    /* leaf */
+    body[data-theme="leaf"] .lb-phase {
+      background: #5a8a3c;
+      border: 1px solid rgba(120, 180, 80, 0.4);
+      color: #f0ffe0;
+    }
+
+    /* metro */
     body[data-theme="metro"] .lb-phase {
+      background: rgba(232, 144, 10, 0.13);
+      border: 1px solid #a84800;
       border-radius: 0;
-      background: transparent;
-      border: 1px solid #E08000;
-      color: #E08000;
+      color: #a84800;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    /* ==================== PAGINACION ==================== */
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 0;
+      min-height: 42px;
+    }
+
+    .pagination-controls:empty {
+      display: none;
+    }
+
+    .page-btn {
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1;
+      transition: all 0.15s;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    .page-info {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* aero: glassmorphism */
+    body:not([data-theme]) .page-btn,
+    body[data-theme="aero"] .page-btn {
+      padding: 6px 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 20px;
+      color: var(--text-main);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+    }
+
+    body:not([data-theme]) .page-btn:not(:disabled):hover,
+    body[data-theme="aero"] .page-btn:not(:disabled):hover {
+      background: rgba(255,255,255,0.42);
+      color: var(--accent);
+      box-shadow: 0 0 10px rgba(0,150,220,0.25), 0 1px 0 rgba(255,255,255,0.7) inset;
+    }
+
+    /* leaf: verde redondeado */
+    body[data-theme="leaf"] .page-btn {
+      padding: 6px 16px;
+      background: rgba(90, 138, 60, 0.3);
+      border: 1px solid rgba(120, 180, 60, 0.4);
+      border-radius: 999px;
+      color: #ffffff;
+    }
+
+    body[data-theme="leaf"] .page-btn:not(:disabled):hover {
+      background: #5a8a3c;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(140,220,0,0.3);
+    }
+
+    /* metro: flat rectangulo windows */
+    body[data-theme="metro"] .page-btn {
+      padding: 5px 14px;
+      background: #0a0f0a;
+      border: 1px solid #00AA44;
+      border-radius: 0;
+      color: #00CC44;
+      font-family: 'Courier New', monospace;
+    }
+
+    body[data-theme="metro"] .page-btn:not(:disabled):hover {
+      background: #00AA44;
+      color: #000;
+    }
+
+    body[data-theme="metro"] .page-info {
+      font-family: 'Courier New', monospace;
+      color: #00AA44;
     }
 
     /* WIDGETS DE LA BARRA LATERAL (FEED, STATS, PAISES) */
@@ -2263,9 +2650,17 @@
     }
 
     /* ESTILOS PARA CELULARES Y TABLETS (RESPONSIVE) */
+    /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 1100px) {
+      #main-wrap {
+        padding-right: 24px;
+      }
+    }
+
     @media (max-width: 900px) {
       #main-wrap {
         grid-template-columns: 1fr;
+        padding: 16px 12px 60px 12px;
       }
 
       #sidebar {
@@ -2273,55 +2668,144 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
+        order: 2;
+      }
+
+      main {
+        order: 1;
       }
 
       .podium-card.rank-1 {
-        width: 180px;
-        min-height: 380px;
+        width: 165px;
+        min-height: 350px;
+        margin-bottom: 20px !important;
       }
 
       .podium-card.rank-2 {
-        width: 165px;
-        min-height: 330px;
+        width: 150px;
+        min-height: 300px;
+        margin-bottom: 10px !important;
       }
 
       .podium-card.rank-3 {
-        width: 158px;
-        min-height: 310px;
+        width: 142px;
+        min-height: 280px;
+        margin-bottom: 0 !important;
       }
+
+      .theme-switcher { display: none; }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
+      #navbar {
+        padding: 0 12px;
+        gap: 8px;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 52px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
+
+      .page-title { display: none; }
+      .nav-version { display: none; }
+
+      .nav-links {
+        order: 10;
+        width: 100%;
+        margin-left: 0;
+        border-top: 1px solid var(--glass-border);
+        padding-top: 4px;
+        padding-bottom: 4px;
+        justify-content: center;
+        height: auto;
+        flex-wrap: wrap;
+      }
+
+      body[data-theme="aero"] .nav-link,
+      body:not([data-theme]) .nav-link {
+        margin-top: 0;
+        margin-bottom: 0;
+        border-radius: 8px;
+        border: 1px solid transparent;
+      }
+
       #sidebar {
         grid-template-columns: 1fr;
       }
 
-      .nav-links {
-        display: none;
+      #main-wrap {
+        padding: 12px 8px 80px 8px;
+        gap: 14px;
       }
+    }
 
-      .page-heading {
-        font-size: 1.5rem;
-      }
+    @media (max-width: 600px) {
+      .page-heading { font-size: 1.4rem; }
 
-      #podium {
-        gap: 8px;
-      }
+      #podium { gap: 6px; }
 
       .podium-card.rank-1 {
-        width: 150px;
-        min-height: 320px;
+        width: 130px;
+        min-height: 290px;
+        margin-bottom: 14px !important;
       }
 
       .podium-card.rank-2 {
-        width: 138px;
-        min-height: 280px;
+        width: 118px;
+        min-height: 258px;
+        margin-bottom: 8px !important;
       }
 
       .podium-card.rank-3 {
-        width: 130px;
-        min-height: 260px;
+        width: 110px;
+        min-height: 240px;
       }
+
+      .podium-skin-wrap img { max-height: 140px !important; }
+
+      .podium-name { font-size: 0.8rem; }
+      .podium-elo { font-size: 1.1rem; }
+
+      #full-table-section, #search-wrap {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .lb-table { font-size: 0.75rem; }
+      .lb-table th { padding: 8px 8px; font-size: 0.6rem; }
+      .lb-table td { padding: 8px 8px; }
+
+      /* Hide country and rank columns on very small screens */
+      .lb-table th:nth-child(3),
+      .lb-table td:nth-child(3),
+      .lb-table th:nth-child(5),
+      .lb-table td:nth-child(5),
+      .lb-table th:nth-child(6),
+      .lb-table td:nth-child(6) {
+        display: none;
+      }
+
+      .mini-card { width: 118px; }
+      .mini-skin-wrap img { width: 40px; height: 40px; }
+
+      #live-widget {
+        left: 8px;
+        right: 8px;
+        width: auto;
+        bottom: 8px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .podium-card.rank-1 {
+        width: 110px;
+        min-height: 250px;
+      }
+      .podium-card.rank-2 { width: 100px; min-height: 220px; }
+      .podium-card.rank-3 { width: 92px; min-height: 200px; }
+      .podium-rank-badge { font-size: 1rem; }
+      .podium-name { font-size: 0.72rem; }
     }
 
     /* ==========================================
@@ -2728,9 +3212,12 @@
       font-family: 'Courier New', monospace !important;
     }
   </style>
-  <div class="aurora-wave aero-aurora-2 leaf-aurora-2 metro-aurora-2" id="aurora-2"></div>
-  <div class="aurora-wave aero-aurora-3 leaf-aurora-3 metro-aurora-3" id="aurora-3"></div>
+  <!--
+  <div class="aurora-container">
+    <div class="aurora-wave aero-aurora-2 leaf-aurora-2" id="aurora-2"></div>
+    <div class="aurora-wave aero-aurora-3 leaf-aurora-3" id="aurora-3"></div>
   </div>
+  -->
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
   <div class="bg-blob bg-blob-3"></div>
@@ -2834,25 +3321,37 @@
 
     <nav id="navbar" role="navigation" aria-label="navegacion principal">
       <a href="#" class="nav-logo" aria-label="MCSRRanked leaderboard hispana">
-        <img src="public/mcsrrankedhispana.png" alt="mcsrranked hispana" onerror="this.style.display='none'" />
+        <img id="nav-logo-img" src="mcsrrankedhispana.png" alt="mcsrranked hispana" />
       </a>
       <span class="page-title">MCSRRanked<span class="page-title-accent">, leaderboard hispana :3c</span></span>
+      <span class="nav-version">ver. 0.312b</span>
       <div class="nav-links" role="list">
-        <a class="nav-link active" data-page="leaderboard" role="listitem">leaderboard</a>
-        <a class="nav-link" data-page="tiempos" role="listitem">mejores tiempos</a>
-        <a class="nav-link" data-page="creditos" role="listitem">creditos</a>
+        <a class="nav-link active" data-page="leaderboard" role="listitem" data-i18n="nav.leaderboard">leaderboard</a>
+        <a class="nav-link" data-page="tiempos" role="listitem" data-i18n="nav.times">mejores tiempos</a>
+        <a class="nav-link" data-page="creditos" role="listitem" data-i18n="nav.credits">creditos</a>
       </div>
       <div class="theme-switcher" role="group" aria-label="selector de tema">
         <button class="theme-btn" data-theme="leaf" aria-label="tema leaf">leaf</button>
         <button class="theme-btn active" data-theme="aero" aria-label="tema aero">aero</button>
         <button class="theme-btn" data-theme="metro" aria-label="tema metro">metro</button>
       </div>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button class="lang-current-btn" id="lang-current-btn" onclick="toggleLangDropdown()" aria-haspopup="listbox">
+          <span id="lang-current-flag">🇪🇸</span>
+          <span class="lang-chevron">▾</span>
+        </button>
+        <div class="lang-options" id="lang-options" role="listbox">
+          <button class="lang-option active" data-lang="es" onclick="pickLang('es')">🇪🇸 español</button>
+          <button class="lang-option" data-lang="en" onclick="pickLang('en')">🇬🇧 english</button>
+          <button class="lang-option" data-lang="no" onclick="pickLang('no')">🇳🇴 norsk</button>
+        </div>
+      </div>
     </nav>
 
     <div id="main-wrap">
       <aside id="sidebar" aria-label="barra lateral">
         <div class="glass sidebar-widget" id="activity-widget">
-          <div class="sidebar-widget-title">[ matches recientes ]</div>
+          <div class="sidebar-widget-title" data-i18n="widget.recentMatches">[ matches recientes ]</div>
           <div id="activity-list">
             <div class="activity-entry shimmer-load" style="height:58px;"></div>
             <div class="activity-entry shimmer-load" style="height:58px;margin-top:6px;"></div>
@@ -2861,20 +3360,20 @@
           </div>
         </div>
         <div class="glass sidebar-widget" id="stats-widget">
-          <div class="sidebar-widget-title">[ stats globales ]</div>
+          <div class="sidebar-widget-title" data-i18n="widget.globalStats">[ stats globales ]</div>
           <div id="stats-list">
             <div class="stat-chip">
-              <div class="stat-label">* jugadores hispanos activos</div>
+              <div class="stat-label" data-i18n="stats.activePlayers">* jugadores hispanos activos</div>
               <div class="shimmer-load" style="height:26px;border-radius:4px;margin-top:4px;"></div>
             </div>
             <div class="stat-chip">
-              <div class="stat-label">* elo promedio top 10</div>
+              <div class="stat-label" data-i18n="stats.avgEloTop10">* elo promedio top 10</div>
               <div class="shimmer-load" style="height:26px;border-radius:4px;margin-top:4px;"></div>
             </div>
           </div>
         </div>
         <div class="glass sidebar-widget" id="countries-widget">
-          <div class="sidebar-widget-title">[ ranking por pais ]</div>
+          <div class="sidebar-widget-title" data-i18n="widget.countryRank">[ ranking por pais ]</div>
           <div id="countries-list">
             <div class="shimmer-load" style="height:130px;border-radius:8px;"></div>
           </div>
@@ -2886,7 +3385,7 @@
         <!-- PAGE: leaderboard -->
         <div class="page-section active" id="page-leaderboard">
           <div class="page-header">
-            <h1 class="page-heading">top 1-10</h1>
+            <h1 class="page-heading" data-i18n="page.top110">top 1-10</h1>
             <p class="page-subheading"></p>
           </div>
           <div id="podium-section">
@@ -2916,7 +3415,7 @@
             <div class="search-input-row" style="display: flex; align-items: center; gap: 8px; width: 100%;">
               <span class="search-icon">(o)</span>
               <input type="search" id="search-input" placeholder="buscar jugador..." autocomplete="off"
-                aria-label="buscar jugador en el leaderboard" style="flex-grow: 1;" />
+                aria-label="buscar jugador en el leaderboard" style="flex-grow: 1;" data-i18n-placeholder="search.placeholder" />
               <select id="season-select" class="season-select-dropdown" onchange="changeLeaderboardSeason(this.value)"
                 aria-label="seleccionar temporada">
                 <option value="11" selected>S11 (actual)</option>
@@ -2936,26 +3435,28 @@
           </div>
           <div id="full-table-section">
             <div class="section-subtitle">main</div>
+            <div id="lb-pagination-top" class="pagination-controls"></div>
             <div class="glass" style="padding:0;overflow:hidden;">
               <table class="lb-table" aria-label="leaderboard completo">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>jugador</th>
-                    <th>pais</th>
-                    <th>elo</th>
-                    <th>rango</th>
-                    <th>phase pts</th>
+                    <th data-i18n="table.player">jugador</th>
+                    <th data-i18n="table.country">pais</th>
+                    <th data-i18n="table.elo">elo</th>
+                    <th data-i18n="table.rank">rango</th>
+                    <th data-i18n="table.phasePoints">phase pts</th>
                   </tr>
                 </thead>
                 <tbody id="lb-tbody">
                   <tr>
-                    <td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+                    <td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;" data-i18n="table.loading">
                       cargando... //</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <div id="lb-pagination-bottom" class="pagination-controls"></div>
           </div>
         </div>
 
@@ -2964,74 +3465,76 @@
           <div class="page-header"
             style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
-              <h1 class="page-heading">mejores tiempos</h1>
-              <p class="page-subheading">records personales de jugadores hispanicos</p>
+              <h1 class="page-heading" data-i18n="page.bestTimes">mejores tiempos</h1>
+              <p class="page-subheading" data-i18n="page.bestTimesDesc">records personales de jugadores hispanicos</p>
             </div>
             <div class="times-filter-group" role="group" aria-label="filtro de tiempos">
               <button class="times-filter-btn active" id="btn-filter-season"
-                onclick="setTimesFilter('season')">temporada actual <span id="times-season-label"></span></button>
+                onclick="setTimesFilter('season')" data-i18n="times.currentSeason">temporada actual <span id="times-season-label"></span></button>
               <button class="times-filter-btn" id="btn-filter-historico"
-                onclick="setTimesFilter('historico')">historico</button>
+                onclick="setTimesFilter('historico')" data-i18n="times.historic">historico</button>
             </div>
           </div>
+          <div id="times-pagination-top" class="pagination-controls"></div>
           <div class="glass" style="padding:0;overflow:hidden;">
             <div class="times-table-wrap">
               <table class="times-table" aria-label="mejores tiempos">
                 <thead>
                   <tr id="times-thead-tr">
                     <th>#</th>
-                    <th>jugador</th>
-                    <th>pais</th>
-                    <th>tiempo</th>
-                    <th>temporada</th>
-                    <th>elo</th>
+                    <th data-i18n="table.player">jugador</th>
+                    <th data-i18n="table.country">pais</th>
+                    <th data-i18n="table.time">tiempo</th>
+                    <th data-i18n="table.season">temporada</th>
+                    <th data-i18n="table.elo">elo</th>
                   </tr>
                 </thead>
                 <tbody id="times-tbody">
                   <tr>
-                    <td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+                    <td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;" data-i18n="times.loading">
                       cargando tiempos... //</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+          <div id="times-pagination-bottom" class="pagination-controls"></div>
         </div>
 
         <!-- PAGE: creditos -->
         <div class="page-section" id="page-creditos">
           <div class="page-header">
-            <h1 class="page-heading">creditos</h1>
-            <p class="page-subheading">hecho con amor por la comunidad de mcsrh :3c</p>
+            <h1 class="page-heading" data-i18n="page.credits">creditos</h1>
+            <p class="page-subheading" data-i18n="page.creditsDesc">hecho con amor por la comunidad de mcsrh :3c</p>
           </div>
           <div class="creditos-grid">
             <div class="glass credito-card">
-              <div class="credito-role">desarrollo ⸜(｡˃ ᵕ ˂ )⸝♡</div>
+              <div class="credito-role" data-i18n="credits.role.dev">desarrollo ⸜(｡˃ ᵕ ˂ )⸝♡</div>
               <div class="credito-name">valen</div>
-              <div class="credito-desc">ola</div>
+              <div class="credito-desc" data-i18n="credits.desc.dev">ola</div>
             </div>
             <div class="glass credito-card">
-              <div class="credito-role">base ( ദ്ദി ˙ᗜ˙ )</div>
+              <div class="credito-role" data-i18n="credits.role.base">base ( ദ്ദി ˙ᗜ˙ )</div>
               <div class="credito-name">hugoxeneize</div>
-              <div class="credito-desc">gracias especiales a hugo por haber hecho la anterior leaderboard!</div>
+              <div class="credito-desc" data-i18n="credits.desc.base">gracias especiales a hugo por haber hecho la anterior leaderboard!</div>
             </div>
             <div class="glass credito-card">
-              <div class="credito-role">supporters ¯\_(ᐛ )_/¯</div>
-              <div class="credito-name">frenex, bind y mago</div>
-              <div class="credito-desc">gracias por apoyar este proyecto los qiero mucho</div>
+              <div class="credito-role" data-i18n="credits.role.supporters">supporters ¯\_(ᐛ )_/¯</div>
+              <div class="credito-name" data-i18n="credits.name.supporters">frenex, bind y mago</div>
+              <div class="credito-desc" data-i18n="credits.desc.supporters">gracias por apoyar este proyecto los qiero mucho</div>
             </div>
             <div class="glass credito-card">
-              <div class="credito-role">ayudistas ≽^-⩊-^≼</div>
+              <div class="credito-role" data-i18n="credits.role.helpers">ayudistas ≽^-⩊-^≼</div>
               <div class="credito-name">bruno</div>
-              <div class="credito-desc">gracias por pasarme esta pagina frutigeraeroarchive.org/</div>
+              <div class="credito-desc" data-i18n="credits.desc.helpers">gracias por pasarme esta pagina frutigeraeroarchive.org/</div>
             </div>
           </div>
           <div style="margin-top:24px;padding:16px 0;text-align:center;">
             <p style="font-size:0.75rem;color:var(--text-muted);line-height:2;">
               <span class="footer-deco">~~~~~</span> &nbsp;
-              datos generales: <a href="https://mcsrranked.com" target="_blank" rel="noopener"
+              <span data-i18n="footer.generalData">datos generales:</span> <a href="https://mcsrranked.com" target="_blank" rel="noopener"
                 style="color:var(--aqua-mid);text-decoration:none;">mcsrranked.com</a>
-              &nbsp; -- &nbsp; no afiliada con mcsrranked ni mojang AB &nbsp; -- &nbsp;
+              &nbsp; -- &nbsp; <span data-i18n="footer.noAffil">no afiliada con mcsrranked ni mojang AB</span> &nbsp; -- &nbsp;
               &nbsp; <span class="footer-deco">~~~~~</span>
             </p>
           </div>
@@ -3046,9 +3549,9 @@
     <div class="glass footer-glass">
       <p class="footer-text">
         <span class="footer-deco">~~~~~</span>
-        &nbsp;&nbsp;leaderboard hispana de MCSRRanked :3c
+        &nbsp;&nbsp;<span data-i18n="footer.title">leaderboard hispana de MCSRRanked :3c</span>
         &nbsp;<span style="color:rgba(0,150,200,0.35);">--</span>&nbsp;
-        hecho con amor por valeno
+        <span data-i18n="footer.madeBy">hecho con amor por valeno</span>
         &nbsp;&nbsp;<span class="footer-deco">~~~~~</span>
       </p>
     </div>
@@ -3058,7 +3561,7 @@
     <div class="glass">
       <div class="live-header">
         <div class="live-dot" aria-hidden="true"></div>
-        <span class="live-header-text">[ en vivo ]</span>
+        <span class="live-header-text" data-i18n="live.title">[ en vivo ]</span>
         <button class="live-close" id="live-close-btn" aria-label="cerrar widget">x</button>
       </div>
       <div class="live-body">
