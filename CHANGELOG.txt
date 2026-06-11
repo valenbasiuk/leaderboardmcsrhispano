@@ -2,7 +2,7 @@
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
 ====================================
-versión 0.314f — 11 de junio de 2026
+versión 0.315f — 11 de junio de 2026
 
 RENDIMIENTO
   - se agregó un proxy propio para que todas las llamadas a la API pasen por el
@@ -14,6 +14,7 @@ RENDIMIENTO
   - mejoras de compatibilidad con celulares, antes se veía bastante mal.
 
 BUGS ARREGLADOS
+  - restaurado el título e isotipo principal de la página a "leaderboard hispana" con el icono clásico de la tortuguita verde de pasto.
   - se arregló la alineación y tamaños de las imágenes de banderas en el podio (top 1-3) y en las mini tarjetas (top 4-10) que se habían descolocado.
   - se reemplazaron los emoticonos nativos de banderas por imágenes ultra livianas SVG (Flagcdn) para solucionar el problema de Windows, donde por defecto las banderas no se renderizan (salían como letras "AR", "ES", etc.).
   - se arregló el error donde salía "+null elo" en el ticker de novedades y en la actividad de partidas recientes.
