@@ -2,7 +2,7 @@
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
 ====================================
-versión 0.312c — 11 de junio de 2026
+versión 0.313e — 11 de junio de 2026
 
 RENDIMIENTO
   - se agregó un proxy propio para que todas las llamadas a la API pasen por el
@@ -10,9 +10,8 @@ RENDIMIENTO
     de sobrecarga y errores de CORS.
   - el paginado ahora carga de a 100 jugadores por vez en vez de cargar todo el
     ranking de golpe. la página inicial carga mucho más rápido.
-
+  - se optimizó la carga en background de partidas recientes (ahora consulta las últimas 10 partidas de los top 75 jugadores para evitar la sobrecarga y rate limits de la API).
   - mejoras de compatibilidad con celulares, antes se veía bastante mal.
-
 
 BUGS ARREGLADOS
   - se arregló el error donde salía "+null elo" en el ticker de novedades y en la actividad de partidas recientes.

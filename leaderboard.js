@@ -711,8 +711,8 @@ async function chunkedPromiseAll(items, fn, chunkSize = 15) {
 }
 
 async function loadEloMovement24h() {
-    // Solo top 50 para no pegar demasiado a la API y evitar rate-limit
-    const toFetch = allPlayers.slice(0, 50);
+    // Solo top 75 para no pegar demasiado a la API
+    const toFetch = allPlayers.slice(0, 75);
     const matchesMap = new Map();
 
     await chunkedPromiseAll(
