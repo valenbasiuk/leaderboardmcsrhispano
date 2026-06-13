@@ -2,6 +2,29 @@
 =====================================
   LEADERBOARD HISPANA — CHANGELOG
 ====================================
+versión 0.401a — 13 de junio de 2026
+
+MEJORAS VISUALES
+  - eliminado el encabezado "top 1-10" de la sección de leaderboard, el podio
+    arranca directo y se ve más limpio.
+  - las skins del podio y de las mini-tarjetas (top 4-10) son un poco más
+    grandes para evitar píxeles irregulares por el zoom automático de monitores.
+  - quitados los prefijos ">" en el tema Metro (section titles, page headings y
+    sidebar widget titles). queda más limpio y coherente.
+  - el widget "[en vivo]" ahora usa el mismo estilo de tipografía que los otros
+    widgets de la barra lateral ([ matches recientes ], [ stats globales ] y
+    [ ranking por pais ]): misma fuente, negritas y letra en mayúsculas.
+  - negritas aplicadas a todos los títulos de widgets del sidebar.
+
+MEJORAS FUNCIONALES
+  - al cambiar de página en el paginado (leaderboard y mejores tiempos) ya no
+    scrollea hacia arriba automáticamente, la vista se mantiene donde estaba.
+  - la lista de matches recientes tiene un scroll propio (máx. ~310px) para que
+    en monitores más pequeños no empuje el ranking por país muy abajo.
+  - nuevo breakpoint a 1350px que reduce el padding derecho excesivo y mejora
+    la compatibilidad con monitores de 1200–1400px.
+
+=====================================
 versión 0.320g — 11 de junio de 2026
 
 RENDIMIENTO

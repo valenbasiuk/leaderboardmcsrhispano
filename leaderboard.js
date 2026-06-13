@@ -932,7 +932,7 @@ function renderFullTable(players) {
         'lb-pagination-bottom',
         currentLbPage,
         totalPages,
-        (page) => { currentLbPage = page; renderFullTable(allPlayers); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        (page) => { currentLbPage = page; renderFullTable(allPlayers); }
     );
 }
 
@@ -1397,7 +1397,7 @@ function renderTimesTable(players) {
         'times-pagination-bottom',
         currentTimesPage,
         totalPages,
-        (page) => { currentTimesPage = page; renderTimesTable(cachedTimesData); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        (page) => { currentTimesPage = page; renderTimesTable(cachedTimesData); }
     );
 }
 

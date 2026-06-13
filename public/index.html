@@ -1213,10 +1213,6 @@
       letter-spacing: 0.08em;
     }
 
-    body[data-theme="metro"] .section-title::before {
-      content: '> ';
-    }
-
     .section-subtitle {
       font-size: 0.72rem;
       letter-spacing: 0.05em;
@@ -1240,10 +1236,6 @@
     body[data-theme="metro"] .page-heading {
       color: #00DD00;
       font-size: 1.7rem;
-    }
-
-    body[data-theme="metro"] .page-heading::before {
-      content: '> ';
     }
 
     .page-subheading {
@@ -1312,21 +1304,21 @@
     /* proporciones del podio */
     .podium-card.rank-1 {
       width: 196px;
-      min-height: 415px;
+      min-height: 430px;
       z-index: 5;
       margin-bottom: 36px;
     }
 
     .podium-card.rank-2 {
       width: 174px;
-      min-height: 358px;
+      min-height: 372px;
       z-index: 4;
       margin-bottom: 18px;
     }
 
     .podium-card.rank-3 {
       width: 162px;
-      min-height: 335px;
+      min-height: 348px;
       z-index: 4;
       margin-bottom: 0;
     }
@@ -1495,7 +1487,7 @@
 
     .podium-skin-wrap img {
       object-fit: contain;
-      max-height: 205px;
+      max-height: 220px;
       width: auto;
       display: block;
       image-rendering: pixelated;
@@ -1704,16 +1696,16 @@
 
     .mini-skin-wrap {
       position: relative;
-      width: 54px;
-      height: 54px;
+      width: 62px;
+      height: 62px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .mini-skin-wrap img {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       object-fit: contain;
       image-rendering: pixelated;
       border-radius: 4px;
@@ -1996,6 +1988,7 @@
     .sidebar-widget-title {
       font-size: 0.65rem;
       letter-spacing: 0.12em;
+      font-weight: 700;
       color: var(--text-muted);
       padding: 0 2px 10px;
       border-bottom: 1px solid var(--glass-border);
@@ -2008,8 +2001,17 @@
       border-bottom-color: #2a2a2a;
     }
 
-    body[data-theme="metro"] .sidebar-widget-title::before {
-      content: '> ';
+    /* scroll en matches recientes para monitores más pequeños */
+    #activity-list {
+      max-height: 310px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    @media (max-width: 900px) {
+      #activity-list {
+        max-height: none;
+      }
     }
 
     /* items del feed de partidas */
@@ -2242,9 +2244,10 @@
     }
 
     .live-header-text {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--accent);
     }
 
@@ -2685,6 +2688,12 @@
 
     /* ESTILOS PARA CELULARES Y TABLETS (RESPONSIVE) */
     /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 1350px) {
+      #main-wrap {
+        padding-right: 160px;
+      }
+    }
+
     @media (max-width: 1100px) {
       #main-wrap {
         padding-right: 24px;
@@ -3406,7 +3415,7 @@
         <img id="nav-logo-img" src="mcsrrankedhispana.png" alt="mcsrranked hispana" />
       </a>
       <span class="page-title">MCSRRanked<span class="page-title-accent"> - leaderboard hispana :3c</span></span>
-      <span class="nav-version">ver. 0.320g</span>
+      <span class="nav-version">ver. 0.401a</span>
       <div class="nav-links" role="list">
         <a class="nav-link active" data-page="leaderboard" role="listitem" data-i18n="nav.leaderboard">leaderboard</a>
         <a class="nav-link" data-page="tiempos" role="listitem" data-i18n="nav.times">mejores tiempos</a>
@@ -3470,10 +3479,6 @@
 
         <!-- PAGE: leaderboard -->
         <div class="page-section active" id="page-leaderboard">
-          <div class="page-header">
-            <h1 class="page-heading" data-i18n="page.top110">top 1-10</h1>
-            <p class="page-subheading"></p>
-          </div>
           <div id="podium-section">
             <div id="podium" role="list" aria-label="top 3 jugadores">
               <div class="podium-card rank-2 shimmer-load" style="width:178px;min-height:360px;margin-bottom:20px;">
