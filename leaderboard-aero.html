@@ -7,7 +7,8 @@
   <title>leaderboard hispana :3</title>
   <meta name="description" content="leaderboard de elo y tiempos de speedrunners hispanos en mcsrranked :p" />
   <meta name="theme-color" content="#0099BB" />
-  <link rel="icon" type="image/png" href="/mcsrrankedhispana.png" />
+  <link rel="icon" type="image/png" href="/icon_x256.png" sizes="256x256" />
+  <link rel="shortcut icon" type="image/png" href="/icon_x256.png" />
   <style>
     @import url("custom-backgrounds.css");
 
@@ -1045,8 +1046,8 @@
     }
 
     .flag-icon {
-      width: 16px;
-      height: 11px;
+      width: 22px;
+      height: 15px;
       border-radius: 2px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
       vertical-align: middle;
@@ -1056,21 +1057,23 @@
     }
 
     .badge-country .flag-icon {
-      width: 18px;
-      height: 12px;
+      width: 24px;
+      height: 16px;
       margin-right: 0;
       display: block;
     }
 
     .mini-flag-badge .flag-icon {
-      width: 15px;
-      height: 10px;
+      width: 20px;
+      height: 14px;
       margin-right: 0;
       display: block;
     }
 
     .lang-option .flag-icon,
     .lang-current-btn .flag-icon {
+      width: 18px;
+      height: 12px;
       margin-right: 4px;
     }
 
@@ -3415,7 +3418,7 @@
         <img id="nav-logo-img" src="mcsrrankedhispana.png" alt="mcsrranked hispana" />
       </a>
       <span class="page-title">MCSRRanked<span class="page-title-accent"> - leaderboard hispana :3c</span></span>
-      <span class="nav-version">ver. 0.401a</span>
+      <span class="nav-version">ver. 0.510c</span>
       <div class="nav-links" role="list">
         <a class="nav-link active" data-page="leaderboard" role="listitem" data-i18n="nav.leaderboard">leaderboard</a>
         <a class="nav-link" data-page="tiempos" role="listitem" data-i18n="nav.times">mejores tiempos</a>
@@ -3503,11 +3506,36 @@
             </div>
           </div>
           <div id="search-wrap">
-            <div class="search-input-row" style="display: flex; align-items: center; gap: 8px; width: 100%;">
+            <div class="search-input-row" style="display: flex; align-items: center; gap: 8px; width: 100%; flex-wrap: wrap;">
               <span class="search-icon">(o)</span>
               <input type="search" id="search-input" placeholder="buscar jugador..." autocomplete="off"
-                aria-label="buscar jugador en el leaderboard" style="flex-grow: 1;"
+                aria-label="buscar jugador en el leaderboard" style="flex-grow: 1; min-width: 140px;"
                 data-i18n-placeholder="search.placeholder" />
+              <select id="country-filter" class="season-select-dropdown" onchange="filterByCountry(this.value)"
+                aria-label="filtrar por pais" title="filtrar por pais">
+                <option value="">🌎 todos los paises</option>
+                <option value="ar">🇦🇷 argentina</option>
+                <option value="bo">🇧🇴 bolivia</option>
+                <option value="cl">🇨🇱 chile</option>
+                <option value="co">🇨🇴 colombia</option>
+                <option value="cr">🇨🇷 costa rica</option>
+                <option value="cu">🇨🇺 cuba</option>
+                <option value="do">🇩🇴 rep. dominicana</option>
+                <option value="ec">🇪🇨 ecuador</option>
+                <option value="es">🇪🇸 españa</option>
+                <option value="gq">🇬🇶 guinea ecuatorial</option>
+                <option value="gt">🇬🇹 guatemala</option>
+                <option value="hn">🇭🇳 honduras</option>
+                <option value="mx">🇲🇽 mexico</option>
+                <option value="ni">🇳🇮 nicaragua</option>
+                <option value="pa">🇵🇦 panama</option>
+                <option value="py">🇵🇾 paraguay</option>
+                <option value="pe">🇵🇪 peru</option>
+                <option value="pr">🇵🇷 puerto rico</option>
+                <option value="sv">🇸🇻 el salvador</option>
+                <option value="uy">🇺🇾 uruguay</option>
+                <option value="ve">🇻🇪 venezuela</option>
+              </select>
               <select id="season-select" class="season-select-dropdown" onchange="changeLeaderboardSeason(this.value)"
                 aria-label="seleccionar temporada">
                 <option value="11" selected>S11 (actual)</option>

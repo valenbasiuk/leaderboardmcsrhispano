@@ -513,11 +513,33 @@ let backgroundHispanicMatches = [];
 
 let currentLeaderboardSeason = '11'; // default/current season
 let latestSeasonNum = 11; // the actual current season number
+let activeCountryFilter = ''; // filtro de pais activo ('' = todos)
 
 // ==================== PAGINACION ====================
 const PAGE_SIZE = 100;
 let currentLbPage = 1;
 let currentTimesPage = 1;
+
+// filtra la tabla completa por pais
+function filterByCountry(countryCode) {
+    activeCountryFilter = countryCode.toLowerCase();
+    currentLbPage = 1;
+    const filtered = activeCountryFilter
+        ? allPlayers.filter(p => (p.country || '').toLowerCase() === activeCountryFilter)
+        : allPlayers;
+    renderFullTable(filtered);
+    // Mostrar contador si hay filtro activo
+    const fullSection = document.getElementById('full-table-section');
+    const subtitle = fullSection ? fullSection.querySelector('.section-subtitle') : null;
+    if (subtitle) {
+        if (activeCountryFilter) {
+            const info = countryInfo(activeCountryFilter);
+            subtitle.innerHTML = `${info.flag} ${info.name} <span style="opacity:0.55;font-size:0.7rem;">(${filtered.length} jugadores)</span>`;
+        } else {
+            subtitle.textContent = 'main';
+        }
+    }
+}
 
 function renderPaginationControls(topId, bottomId, currentPage, totalPages, onPageChange) {
     const html = totalPages <= 1 ? '' : `
@@ -666,7 +688,11 @@ async function loadLeaderboard() {
         renderPodium(allPlayers.slice(0, 3));
         renderRow4to10(allPlayers.slice(3, 10));
         currentLbPage = 1;
-        renderFullTable(allPlayers);
+        // Aplicar filtro de pais si hay uno activo
+        const filteredForTable = activeCountryFilter
+            ? allPlayers.filter(p => (p.country || '').toLowerCase() === activeCountryFilter)
+            : allPlayers;
+        renderFullTable(filteredForTable);
         renderSidebarStats(allPlayers);
         renderSidebarCountries(allPlayers);
 
@@ -784,8 +810,11 @@ async function loadEloMovement24h() {
         const theme = document.body.dataset.theme || 'aero';
         renderTickerMarquee(changes, theme, true);
     }
-    // Actualizar tabla sin resetear la página actual
-    renderFullTable(allPlayers);
+    // Actualizar tabla sin resetear la página actual (respetando el filtro de pais activo)
+    const filteredForBg = activeCountryFilter
+        ? allPlayers.filter(p => (p.country || '').toLowerCase() === activeCountryFilter)
+        : allPlayers;
+    renderFullTable(filteredForBg);
     renderRow4to10(allPlayers.slice(3, 10));
     renderPodium(allPlayers.slice(0, 3));
 }
@@ -932,7 +961,7 @@ function renderFullTable(players) {
         'lb-pagination-bottom',
         currentLbPage,
         totalPages,
-        (page) => { currentLbPage = page; renderFullTable(allPlayers); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        (page) => { currentLbPage = page; renderFullTable(allPlayers); }
     );
 }
 
@@ -1397,7 +1426,7 @@ function renderTimesTable(players) {
         'times-pagination-bottom',
         currentTimesPage,
         totalPages,
-        (page) => { currentTimesPage = page; renderTimesTable(cachedTimesData); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        (page) => { currentTimesPage = page; renderTimesTable(cachedTimesData); }
     );
 }
 
