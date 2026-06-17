@@ -24,6 +24,28 @@ export const metadata: Metadata = {
     shortcut: "/mcsrrankedhispana.png",
     apple: "/mcsrrankedhispana.png",
   },
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: "https://hispana.mcsrranked.com",
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: "/mcsrrankedhispana.png",
+        width: 512,
+        height: 512,
+        alt: "MCSR Ranked Hispana",
+      },
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: ["/mcsrrankedhispana.png"],
+  },
 }
 
 interface RootLayoutProps {

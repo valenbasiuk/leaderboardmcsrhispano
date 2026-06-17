@@ -15,7 +15,9 @@ export default async function getHispanicLeaderboard(): Promise<Runner[]> {
     // Response structure: { status: "success", data: { season: {...}, users: [...] } }
     const countryPromises = HISPANIC_COUNTRY_CODES.map(async (countryCode) => {
       try {
-        const response = await apiFetch(`/leaderboard?country=${countryCode}`)
+        const response = await apiFetch(`/leaderboard?country=${countryCode}`, {
+          next: { revalidate: 300 }, // cache 5 minutes
+        })
         // Response structure: { status: "success", data: { users: [...] } }
         return response.data?.users || []
       } catch (error) {

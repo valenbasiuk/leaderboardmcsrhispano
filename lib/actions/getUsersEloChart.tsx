@@ -1,7 +1,7 @@
 import { apiFetch } from "@/lib/api-client"
 
 export default async function getUsersEloChart(uuid: string, nickname: string) {
-  const data = await apiFetch(`/users/${nickname}/matches?filter=2`)
+  const data = await apiFetch(`/users/${encodeURIComponent(nickname)}/matches?filter=2`)
 
   let matchesData = data.data
   let matches = []

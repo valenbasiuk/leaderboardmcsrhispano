@@ -530,3 +530,27 @@ body::before {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 160, 210, 0.6);
 }
+
+/* ═══════════════════════════════════════════════════
+   ACCESIBILIDAD: reduce animaciones cuando el usuario lo pide
+   ═══════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .aurora-wave {
+    animation: none !important;
+  }
+
+  .aero-shine::after {
+    animation: none !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

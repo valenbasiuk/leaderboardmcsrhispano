@@ -9,7 +9,7 @@ export const metadata = {
 }
 
 export default async function MejoresTiemposPage() {
-  const timeData = await getHispanicTimeLeaderboard()
+  const { initialData, allRunners } = await getHispanicTimeLeaderboard()
 
   return (
     <section className="container pb-12 pt-6 md:py-10 flex flex-col gap-6">
@@ -24,7 +24,7 @@ export default async function MejoresTiemposPage() {
 
       {/* Main Time Leaderboard Table */}
       <div className="mt-4">
-        <TimeDataTable columns={timeColumns} data={timeData} />
+        <TimeDataTable columns={timeColumns} initialData={initialData} allRunners={allRunners} />
       </div>
     </section>
   )

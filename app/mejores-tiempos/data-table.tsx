@@ -22,13 +22,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { parseProfileToRunner } from "@/lib/actions/getHispanicTimeLeaderboard"
 
 interface TimeDataTableProps {
   columns: ColumnDef<Runner, any>[]
-  data: Runner[]
+  initialData: Runner[]
+  allRunners: Runner[]
 }
 
-export function TimeDataTable({ columns, data }: TimeDataTableProps) {
+export function TimeDataTable({ columns, initialData, allRunners }: TimeDataTableProps) {
+  const [resolvedRunners, setResolvedRunners] = React.useState<Runner[]>(initialData)
+  const [isProgressiveLoading, setIsProgressiveLoading] = React.useState<boolean>(true)
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   
   // Toggle: season (seasonTime vs totalTime)
@@ -47,10 +51,83 @@ export function TimeDataTable({ columns, data }: TimeDataTableProps) {
     }))
   }, [isSeason])
 
+  // Progressive loading loop for remaining runners
+  React.useEffect(() => {
+    let isMounted = true;
+    
+    // Find runners that haven't been resolved yet
+    const initialUuids = new Set(initialData.map(r => r.uuid));
+    const pending = allRunners.filter(r => !initialUuids.has(r.uuid));
+    
+    if (pending.length === 0) {
+      setIsProgressiveLoading(false);
+      return;
+    }
+
+    const batchSize = 10;
+    let currentIndex = 0;
+
+    async function loadNextBatch() {
+      if (!isMounted || currentIndex >= pending.length) {
+        if (isMounted) setIsProgressiveLoading(false);
+        return;
+      }
+
+      const batch = pending.slice(currentIndex, currentIndex + batchSize);
+      currentIndex += batchSize;
+
+      try {
+        const promises = batch.map(async (runner) => {
+          try {
+            const res = await fetch(`/api/mcsr/users/${runner.uuid}`);
+            if (!res.ok) return null;
+            const json = await res.json();
+            return parseProfileToRunner(runner, json.data);
+          } catch (err) {
+            console.warn(`Error client-side fetching profile for ${runner.nickname}:`, err);
+            return null;
+          }
+        });
+
+        const results = await Promise.all(promises);
+        const newResolved = results.filter((r): r is Runner => r !== null);
+
+        if (!isMounted) return;
+
+        setResolvedRunners((prev) => {
+          const merged = [...prev];
+          for (const runner of newResolved) {
+            if (!merged.some(m => m.uuid === runner.uuid)) {
+              merged.push(runner);
+            }
+          }
+          return merged;
+        });
+
+        // Small pause of 600ms between batches to be nice to proxy/rate-limiting
+        setTimeout(loadNextBatch, 600);
+      } catch (err) {
+        console.error("Failed loading batch of times:", err);
+        if (isMounted) {
+          // Retry after 2 seconds on general failure
+          setTimeout(loadNextBatch, 2000);
+        }
+      }
+    }
+
+    // Delay start of progressive loading slightly to let page paint first
+    const timer = setTimeout(loadNextBatch, 1000);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [allRunners, initialData]);
+
   // Compute processed data based on toggle
   const processedData = React.useMemo(() => {
     // 1. Map selected time source
-    let mapped = data.map((runner) => {
+    let mapped = resolvedRunners.map((runner) => {
       const selectedTime = isSeason ? runner.seasonTime : runner.totalTime
       return {
         ...runner,
@@ -71,7 +148,7 @@ export function TimeDataTable({ columns, data }: TimeDataTableProps) {
       ...runner,
       rank: index + 1,
     }))
-  }, [data, isSeason])
+  }, [resolvedRunners, isSeason])
 
   const table = useReactTable({
     data: processedData,
@@ -93,6 +170,27 @@ export function TimeDataTable({ columns, data }: TimeDataTableProps) {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Progressive loading progress bar */}
+      {isProgressiveLoading && (
+        <div className="w-full flex flex-col gap-1.5 p-4 rounded-3xl aero-glass border border-white/5 animate-in fade-in duration-300">
+          <div className="flex justify-between items-center text-xs font-bold text-emerald-400">
+            <span className="flex items-center gap-1.5 lowercase">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              cargando tiempos de jugadores en segundo plano...
+            </span>
+            <span>
+              {resolvedRunners.length} / {allRunners.length} jugadores ({Math.round((resolvedRunners.length / allRunners.length) * 100)}%)
+            </span>
+          </div>
+          <div className="w-full h-1 bg-emerald-500/10 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500 ease-out" 
+              style={{ width: `${Math.min(100, Math.round((resolvedRunners.length / allRunners.length) * 100))}%` }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Dynamic Controls Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Search */}
@@ -183,7 +281,9 @@ export function TimeDataTable({ columns, data }: TimeDataTableProps) {
                   colSpan={columns.length}
                   className="h-32 text-center text-sm font-semibold text-muted-foreground p-6"
                 >
-                  no se encontraron tiempos registrados para esta categoría 😢
+                  {isProgressiveLoading
+                    ? "cargando y buscando mejores tiempos registrados... ⏳"
+                    : "no se encontraron tiempos registrados para esta categoría 😢"}
                 </TableCell>
               </TableRow>
             )}

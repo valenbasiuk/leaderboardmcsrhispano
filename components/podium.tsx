@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Runner } from "@/app/leaderboard/columns"
 import { PhaseBadge } from "@/components/phase-badge"
 import { SkinViewer } from "@/components/skin-viewer"
+import { ErrorBoundary } from "@/components/error-boundary"
 import { getRankName, getRankIcon, eloColor } from "@/lib/utils"
 
 interface PodiumProps {
@@ -294,14 +295,16 @@ function PodiumSlot({ player, position }: PodiumSlotProps) {
             overflow: "hidden",      // legs cropped at bottom
           }}
         >
-          <SkinViewer
-            uuid={player.uuid}
-            mode={cfg.mode}
-            pose={cfg.pose}
-            width={cfg.skinW}
-            height={cfg.skinH}
-            className="drop-shadow-[0_6px_18px_rgba(0,0,0,0.25)]"
-          />
+          <ErrorBoundary>
+            <SkinViewer
+              uuid={player.uuid}
+              mode={cfg.mode}
+              pose={cfg.pose}
+              width={cfg.skinW}
+              height={cfg.skinH}
+              className="drop-shadow-[0_6px_18px_rgba(0,0,0,0.25)]"
+            />
+          </ErrorBoundary>
         </div>
 
         {/* Glass pedestal base */}

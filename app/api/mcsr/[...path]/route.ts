@@ -17,6 +17,10 @@ interface CacheEntry {
 const leaderboardCache: Record<string, CacheEntry> = {}
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
+// In-memory cache for user profiles
+const profileCache: Record<string, CacheEntry> = {}
+const PROFILE_CACHE_TTL = 30 * 60 * 1000 // 30 minutes
+
 /**
  * Proxy transparente para la API de MCSR Ranked.
  * Cualquier request a /api/mcsr/xxx?params se redirige a
@@ -111,6 +115,14 @@ export async function GET(
     }
   }
 
+  const isProfilePath = params.path && params.path[0] === "users" && params.path.length === 2
+  const cacheKey = path
+  const now = Date.now()
+
+  if (isProfilePath && profileCache[cacheKey] && (now - profileCache[cacheKey].timestamp < PROFILE_CACHE_TTL)) {
+    return NextResponse.json(profileCache[cacheKey].data)
+  }
+
   const url = `${MCSR_BASE}${path}${searchParams ? "?" + searchParams : ""}`
 
   const headers: Record<string, string> = {
@@ -136,6 +148,14 @@ export async function GET(
     }
 
     const data = await res.json()
+
+    if (isProfilePath) {
+      profileCache[cacheKey] = {
+        timestamp: now,
+        data
+      }
+    }
+
     return NextResponse.json(data)
   } catch (err) {
     console.error("[mcsr-proxy] fetch error:", err)

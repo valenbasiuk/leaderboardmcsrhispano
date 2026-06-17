@@ -2,7 +2,7 @@ import { apiFetch } from "@/lib/api-client"
 
 export default async function getUsersMatches(uuid: string, nickname: string) {
   const data = await apiFetch(
-    `/users/${nickname}/matches?type=2&excludedecay=false`
+    `/users/${encodeURIComponent(nickname)}/matches?type=2&excludedecay=false`
   )
 
   let matchesData = data.data
