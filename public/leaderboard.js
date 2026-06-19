@@ -15,9 +15,10 @@ const I18N = {
         'stats.avgEloTop10': '* elo promedio top 10',
         'page.top110': 'top 1-10',
         'page.bestTimes': 'mejores tiempos',
-        'page.bestTimesDesc': 'records personales de jugadores hispanicos',
+        'page.bestTimesDesc': '',
         'page.credits': 'creditos',
         'page.creditsDesc': 'hecho con amor por la comunidad de mcsrh :3c',
+        'filter.allCountries': 'todos los paises',
         'table.player': 'jugador',
         'table.country': 'pais',
         'table.rank': 'rango',
@@ -59,6 +60,44 @@ const I18N = {
         'footer.generalData': 'datos generales:',
         'footer.title': 'leaderboard hispana de MCSRRanked :3c',
         'footer.madeBy': 'hecho con amor por valeno',
+        // Profile modal
+        'profile.loading': 'cargando...',
+        'profile.error': 'error cargando datos //',
+        'profile.tab.general': '◉ general',
+        'profile.tab.stats': '◈ stats',
+        'profile.tab.matches': '⚔ matches',
+        'profile.eloHistory': 'historial de elo',
+        'profile.basedOn': 'basado en:',
+        'profile.chartMode.matches': 'partidas',
+        'profile.chartMode.time': 'tiempo',
+        'profile.chip.peakElo': 'peak elo',
+        'profile.chip.average': 'average',
+        'profile.chip.matches': 'matches',
+        'profile.chip.firstOnline': 'primera vez',
+        'profile.lastRanked': 'última vez en ranked',
+        'profile.global': 'global',
+        'profile.noMatches': 'sin partidas recientes //',
+        'profile.matchFilter.label': 'tipo:',
+        'profile.matchFilter.ranked': 'ranked',
+        'profile.matchFilter.all': 'todas',
+        'profile.kpi.wins': 'victorias',
+        'profile.kpi.losses': 'derrotas',
+        'profile.kpi.winrate': 'winrate',
+        'profile.kpi.bestTime': 'mejor tiempo',
+        'profile.kpi.bestStreak': 'mejor racha',
+        'profile.kpi.currentStreak': 'racha actual',
+        'profile.kpi.peakElo': 'peak elo',
+        'profile.kpi.completions': 'completions',
+        'profile.kpi.sub.currentSeason': 'temporada actual',
+        'profile.kpi.sub.inMatches': 'en {n} partidas',
+        'profile.kpi.sub.allTime': 'all time',
+        'profile.kpi.sub.consecutiveWins': 'victorias consecutivas',
+        'profile.kpi.sub.forfeits': '{n} forfeits',
+        'profile.winrateLabel': 'win rate temporada',
+        'profile.match.type.ranked': 'Ranked',
+        'profile.match.type.casual': 'Casual',
+        'profile.match.type.private': 'Privada',
+        'profile.match.forfeit': 'Forfeit',
     },
     en: {
         'nav.leaderboard': 'leaderboard',
@@ -71,9 +110,10 @@ const I18N = {
         'stats.avgEloTop10': '* avg elo top 10',
         'page.top110': 'top 1-10',
         'page.bestTimes': 'best times',
-        'page.bestTimesDesc': 'personal records of hispanic players',
+        'page.bestTimesDesc': '',
         'page.credits': 'credits',
         'page.creditsDesc': 'made with love by the mcsrh community :3c',
+        'filter.allCountries': 'all countries',
         'table.player': 'player',
         'table.country': 'country',
         'table.rank': 'rank',
@@ -115,6 +155,44 @@ const I18N = {
         'footer.generalData': 'general data:',
         'footer.title': 'hispanic MCSRRanked leaderboard :3c',
         'footer.madeBy': 'made with love by valeno',
+        // Profile modal
+        'profile.loading': 'loading...',
+        'profile.error': 'error loading data //',
+        'profile.tab.general': '◉ general',
+        'profile.tab.stats': '◈ stats',
+        'profile.tab.matches': '⚔ matches',
+        'profile.eloHistory': 'elo history',
+        'profile.basedOn': 'based on:',
+        'profile.chartMode.matches': 'matches',
+        'profile.chartMode.time': 'time',
+        'profile.chip.peakElo': 'peak elo',
+        'profile.chip.average': 'average',
+        'profile.chip.matches': 'matches',
+        'profile.chip.firstOnline': 'first seen',
+        'profile.lastRanked': 'last ranked',
+        'profile.global': 'global',
+        'profile.noMatches': 'no recent matches //',
+        'profile.matchFilter.label': 'type:',
+        'profile.matchFilter.ranked': 'ranked',
+        'profile.matchFilter.all': 'all',
+        'profile.kpi.wins': 'wins',
+        'profile.kpi.losses': 'losses',
+        'profile.kpi.winrate': 'winrate',
+        'profile.kpi.bestTime': 'best time',
+        'profile.kpi.bestStreak': 'best streak',
+        'profile.kpi.currentStreak': 'current streak',
+        'profile.kpi.peakElo': 'peak elo',
+        'profile.kpi.completions': 'completions',
+        'profile.kpi.sub.currentSeason': 'current season',
+        'profile.kpi.sub.inMatches': 'in {n} matches',
+        'profile.kpi.sub.allTime': 'all time',
+        'profile.kpi.sub.consecutiveWins': 'consecutive wins',
+        'profile.kpi.sub.forfeits': '{n} forfeits',
+        'profile.winrateLabel': 'season win rate',
+        'profile.match.type.ranked': 'Ranked',
+        'profile.match.type.casual': 'Casual',
+        'profile.match.type.private': 'Private',
+        'profile.match.forfeit': 'Forfeit',
     },
     no: {
         'nav.leaderboard': 'ledertavle',
@@ -127,9 +205,10 @@ const I18N = {
         'stats.avgEloTop10': '* gjennomsn. elo topp 10',
         'page.top110': 'topp 1-10',
         'page.bestTimes': 'beste tider',
-        'page.bestTimesDesc': 'personlige rekorder for hispanske spillere',
+        'page.bestTimesDesc': '',
         'page.credits': 'credits',
         'page.creditsDesc': 'laget med kjærlighet av mcsrh-fellesskapet :3c',
+        'filter.allCountries': 'alle land',
         'table.player': 'spiller',
         'table.country': 'land',
         'table.rank': 'rang',
@@ -171,6 +250,44 @@ const I18N = {
         'footer.generalData': 'generelle data:',
         'footer.title': 'hispansk MCSRRanked-ledertavle :3c',
         'footer.madeBy': 'laget med kjærlighet av valeno',
+        // Profile modal
+        'profile.loading': 'laster inn...',
+        'profile.error': 'feil ved lasting av data //',
+        'profile.tab.general': '◉ generelt',
+        'profile.tab.stats': '◈ statistikk',
+        'profile.tab.matches': '⚔ kamper',
+        'profile.eloHistory': 'elo-historikk',
+        'profile.basedOn': 'basert på:',
+        'profile.chartMode.matches': 'kamper',
+        'profile.chartMode.time': 'tid',
+        'profile.chip.peakElo': 'peak elo',
+        'profile.chip.average': 'gjennomsnitt',
+        'profile.chip.matches': 'kamper',
+        'profile.chip.firstOnline': 'første gang',
+        'profile.lastRanked': 'sist i ranked',
+        'profile.global': 'globalt',
+        'profile.noMatches': 'ingen siste kamper //',
+        'profile.matchFilter.label': 'type:',
+        'profile.matchFilter.ranked': 'ranked',
+        'profile.matchFilter.all': 'alle',
+        'profile.kpi.wins': 'seire',
+        'profile.kpi.losses': 'tap',
+        'profile.kpi.winrate': 'vinnrate',
+        'profile.kpi.bestTime': 'beste tid',
+        'profile.kpi.bestStreak': 'beste rekke',
+        'profile.kpi.currentStreak': 'nåværende rekke',
+        'profile.kpi.peakElo': 'peak elo',
+        'profile.kpi.completions': 'fullføringer',
+        'profile.kpi.sub.currentSeason': 'gjeldende sesong',
+        'profile.kpi.sub.inMatches': 'i {n} kamper',
+        'profile.kpi.sub.allTime': 'all tid',
+        'profile.kpi.sub.consecutiveWins': 'påfølgende seire',
+        'profile.kpi.sub.forfeits': '{n} oppgivelser',
+        'profile.winrateLabel': 'vinnrate denne sesongen',
+        'profile.match.type.ranked': 'Ranked',
+        'profile.match.type.casual': 'Uformell',
+        'profile.match.type.private': 'Privat',
+        'profile.match.forfeit': 'Oppgitt',
     },
 };
 
@@ -194,6 +311,12 @@ function applyTranslations() {
         }
         el.textContent = t(key);
     });
+
+    // Update country-filter all-countries option
+    const countryFilterOpt = document.querySelector('#country-filter option[value=""]');
+    if (countryFilterOpt) {
+        countryFilterOpt.textContent = t('filter.allCountries');
+    }
 
     // Update placeholder inputs
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
@@ -269,6 +392,10 @@ function initLanguage() {
         if (key === 'times.currentSeason') return; // handled separately
         el.textContent = t(key);
     });
+    const countryFilterOpt = document.querySelector('#country-filter option[value=""]');
+    if (countryFilterOpt) {
+        countryFilterOpt.textContent = t('filter.allCountries');
+    }
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         el.placeholder = t(el.dataset.i18nPlaceholder);
     });
@@ -848,7 +975,7 @@ function renderPodium(players) {
       <div class="podium-rank-badge ${rankClass}" aria-hidden="true">#${rankNum}</div>
       <div class="badge-country" aria-label="${info.name}">${info.flag}</div>
       <div class="podium-skin-wrap">
-        <img src="${SKIN_BODY(p.nickname)}" alt="skin de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.25'" style="max-height:200px;" />
+        <img src="${SKIN_BODY(p.nickname)}" alt="skin de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.25'" style="max-height:200px; max-width:100%; width:auto; height:auto; object-fit:contain;" />
       </div>
       <div class="podium-info">
         <div class="podium-name">${p.nickname}</div>
@@ -1259,9 +1386,7 @@ function setLiveNoMatch() {
     body.innerHTML = `<div class="live-no-match">${t('live.noMatch')}</div>`;
 }
 
-document.getElementById('live-close-btn').addEventListener('click', () => {
-    document.getElementById('live-widget').style.display = 'none';
-});
+// (live widget X removed — widget is always visible)
 
 // --- SECCION DE MEJORES TIEMPOS ---
 let cachedTimesData = null;
@@ -1284,43 +1409,64 @@ async function loadTimes() {
             await loadLeaderboard();
         }
 
-        tbody.innerHTML = `<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">cargando tiempos de ${allPlayers.length} jugadores... //</td></tr>`;
+        const total = allPlayers.length;
+        let done = 0;
 
-        const detailedResults = await Promise.allSettled(
-            allPlayers.map(p =>
-                fetch(`${API}/users/${p.uuid}`)
-                    .then(r => r.ok ? r.json() : null)
-                    .then(j => {
-                        if (!j || !j.data) return null;
-                        const userData = j.data;
-                        const seasonBestTime = userData.statistics?.season?.bestTime?.ranked || null;
-                        const totalBestTime = userData.statistics?.total?.bestTime?.ranked || null;
+        const showProgress = () => {
+            const pct = Math.round((done / total) * 100);
+            tbody.innerHTML = `
+                <tr><td colspan="6" style="padding:24px 32px;text-align:center;">
+                    <div style="color:var(--text-muted);font-size:0.82rem;margin-bottom:10px;letter-spacing:0.05em;">
+                        cargando tiempos — ${done}/${total} jugadores
+                    </div>
+                    <div style="width:100%;max-width:340px;margin:0 auto;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
+                        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent,#7c3aed),#a78bfa);border-radius:4px;transition:width 0.3s ease;"></div>
+                    </div>
+                    <div style="color:var(--text-muted);font-size:0.72rem;margin-top:8px;opacity:0.6;">${pct}%</div>
+                </td></tr>`;
+        };
 
-                        let totalBestTimeSeason = null;
-                        if (totalBestTime) {
-                            if (seasonBestTime && fmtTime(seasonBestTime) === fmtTime(totalBestTime)) {
-                                totalBestTimeSeason = latestSeasonNum;
-                            } else {
-                                const bestTimeAch =
-                                    userData.achievements?.display?.find(a => a.id === 'bestTime') ||
-                                    userData.achievements?.total?.find(a => a.id === 'bestTime');
+        showProgress();
 
-                                if (bestTimeAch && bestTimeAch.date) {
-                                    totalBestTimeSeason = getSeasonFromTimestamp(bestTimeAch.date);
-                                } else if (seasonBestTime === totalBestTime) {
-                                    totalBestTimeSeason = latestSeasonNum;
-                                }
-                            }
+        const fetchPlayerTime = async (p) => {
+            try {
+                const r = await fetch(`${API}/users/${p.uuid}`);
+                const j = r.ok ? await r.json() : null;
+                if (!j || !j.data) return null;
+                const userData = j.data;
+                const seasonBestTime = userData.statistics?.season?.bestTime?.ranked || null;
+                const totalBestTime = userData.statistics?.total?.bestTime?.ranked || null;
+
+                let totalBestTimeSeason = null;
+                if (totalBestTime) {
+                    if (seasonBestTime && fmtTime(seasonBestTime) === fmtTime(totalBestTime)) {
+                        totalBestTimeSeason = latestSeasonNum;
+                    } else {
+                        const bestTimeAch =
+                            userData.achievements?.display?.find(a => a.id === 'bestTime') ||
+                            userData.achievements?.total?.find(a => a.id === 'bestTime');
+
+                        if (bestTimeAch && bestTimeAch.date) {
+                            totalBestTimeSeason = getSeasonFromTimestamp(bestTimeAch.date);
+                        } else if (seasonBestTime === totalBestTime) {
+                            totalBestTimeSeason = latestSeasonNum;
                         }
+                    }
+                }
 
-                        if (!seasonBestTime && !totalBestTime) return null;
-                        return { ...p, seasonBestTime, totalBestTime, totalBestTimeSeason };
-                    })
-                    .catch(() => null)
-            )
-        );
+                if (!seasonBestTime && !totalBestTime) return null;
+                return { ...p, seasonBestTime, totalBestTime, totalBestTimeSeason };
+            } catch {
+                return null;
+            } finally {
+                done++;
+                showProgress();
+            }
+        };
 
-        cachedTimesData = detailedResults
+        const rawResults = await chunkedPromiseAll(allPlayers, fetchPlayerTime, 12);
+
+        cachedTimesData = rawResults
             .filter(r => r.status === 'fulfilled' && r.value)
             .map(r => r.value);
 
@@ -1463,8 +1609,8 @@ function applyTheme(theme) {
 
 // inicia el tema al cargar la pag
 function initTheme() {
-    let saved = 'aero';
-    try { saved = localStorage.getItem('lb-theme') || 'aero'; } catch (e) { }
+    let saved = 'leaf';
+    try { saved = localStorage.getItem('lb-theme') || 'leaf'; } catch (e) { }
     applyTheme(saved);
 
     document.querySelectorAll('.theme-btn').forEach(btn => {
@@ -1484,6 +1630,7 @@ function initNav() {
             const section = document.getElementById(`page-${page}`);
             if (section) section.classList.add('active');
             if (page === 'tiempos') loadTimes();
+            if (page === 'h2h') initH2H();
         });
     });
 }
@@ -1582,8 +1729,1311 @@ function changeLeaderboardSeason(season) {
     loadLeaderboard();
 }
 
+
+
+// =====================================================
+// PLAYER PROFILES — modal de perfil de jugador
+// =====================================================
+
+const H2H_COLORS = [
+    '#38bdf8', // sky
+    '#facc15', // gold
+    '#fb7185', // coral
+    '#4ade80', // lime
+    '#c084fc', // violet
+    '#f97316', // orange
+    '#ec4899', // pink
+    '#2dd4bf', // teal
+    '#f87171', // red
+    '#818cf8', // indigo
+];
+
+// Achievement display names & icons
+const ACH_META = {
+    seasonResult:     { icon: '🏆', name: 'Season Result' },
+    ironHoe:          { icon: '⚔️', name: 'Iron Hoe' },
+    playtime:         { icon: '⏱️', name: 'Playtime' },
+    playedMatches:    { icon: '🎮', name: 'Matches Played' },
+    bestTime:         { icon: '⚡', name: 'Best Time' },
+    armorless:        { icon: '🛡️', name: 'Armorless' },
+    highestWinStreak: { icon: '🔥', name: 'Win Streak' },
+    wins:             { icon: '✅', name: 'Wins' },
+    foodless:         { icon: '🍎', name: 'Foodless' },
+    ironPickless:     { icon: '⛏️', name: 'Pickless' },
+};
+
+let profileCache = {};
+
+window.openProfile = async function(uuid, nickname, country) {
+    const modal = document.getElementById('profile-modal');
+    if (!modal) return;
+
+    currentProfileChartMode = 'matches';
+    const selector = document.getElementById('profile-chart-selector');
+    if (selector) {
+        selector.querySelectorAll('.pill-btn').forEach(btn => {
+            const isMatches = (btn.getAttribute('onclick') || '').includes('matches');
+            btn.classList.toggle('active', isMatches);
+        });
+    }
+
+    // Show modal with loading state
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    document.getElementById('profile-name').textContent = nickname;
+    document.getElementById('profile-avatar').src = SKIN_HEAD(nickname);
+    document.getElementById('profile-meta').innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem;">${t('profile.loading')}</span>`;
+    document.getElementById('profile-rank-row').innerHTML = '';
+    const _soc = document.getElementById('profile-socials'); if (_soc) _soc.innerHTML = '';
+    document.getElementById('profile-general-chips').innerHTML = '';
+    document.getElementById('profile-achievements').innerHTML = '';
+    document.getElementById('profile-kpi-grid').innerHTML = '';
+    document.getElementById('profile-winrate-wrap').innerHTML = '';
+    document.getElementById('profile-phases-table').innerHTML = '';
+    document.getElementById('profile-matches-list').innerHTML = '';
+
+    // Switch to general tab
+    switchProfileTab('general');
+
+    const data = await loadProfileData(uuid, nickname, country);
+    if (!data) {
+        document.getElementById('profile-meta').innerHTML = `<span style="color:#f87171;">${t('profile.error')}</span>`;
+        return;
+    }
+
+    renderProfileHeader(data);
+    renderProfileGeneral(data);
+    renderProfileStats(data);
+    renderProfileMatches(data);
+};
+
+window.switchProfileTab = function(tab) {
+    ['general', 'stats', 'matches'].forEach(t => {
+        const el = document.getElementById(`profile-tab-${t}`);
+        const btn = document.getElementById(`ptab-${t}`);
+        if (el) el.style.display = t === tab ? '' : 'none';
+        if (btn) btn.classList.toggle('active', t === tab);
+    });
+    // Re-draw canvas after display: block (needed for size)
+    if (tab === 'general') {
+        setTimeout(() => {
+            const canvas = document.getElementById('profile-elo-canvas');
+            if (canvas && canvas._drawFn) canvas._drawFn();
+        }, 30);
+    }
+};
+
+async function loadProfileData(uuid, nickname, country) {
+    if (profileCache[uuid]) return profileCache[uuid];
+    try {
+        const [userRes, matchRes, rankedRes] = await Promise.all([
+            fetch(`${API}/users/${uuid}`),
+            fetch(`${API}/users/${uuid}/matches?count=50`),
+            fetch(`${API}/users/${uuid}/matches?count=100&type=2`),
+        ]);
+        if (!userRes.ok) return null;
+        const userJson = await userRes.json();
+        if (!userJson?.data) return null;
+        const d = userJson.data;
+
+        let matches = [];
+        if (matchRes.ok) {
+            const matchJson = await matchRes.json();
+            matches = matchJson?.data || [];
+        }
+
+        let rankedMatches = [];
+        if (rankedRes.ok) {
+            const rankedJson = await rankedRes.json();
+            rankedMatches = rankedJson?.data || [];
+        }
+
+        const result = { uuid, nickname: d.nickname || nickname, country: d.country || country, raw: d, matches, rankedMatches };
+        profileCache[uuid] = result;
+        return result;
+    } catch {
+        return null;
+    }
+}
+
+function renderProfileHeader(data) {
+    const d = data.raw;
+    const info = countryInfo(data.country);
+    const elo = d.eloRate || 0;
+    const rank = d.eloRank || null;
+    const rankName = getRankName(elo);
+    const rankIcon = getRankIcon(elo);
+
+    document.getElementById('profile-name').textContent = data.nickname;
+    document.getElementById('profile-avatar').src = SKIN_HEAD(data.nickname);
+
+    const ts = d.timestamp || {};
+    const lastRanked = ts.lastRanked ? timeAgo(ts.lastRanked) : null;
+
+    const chips = [
+        `${info.flag} ${info.name}`,
+        rank ? `#${rank} global` : null,
+        lastRanked ? `${t('profile.lastRanked')}: ${lastRanked}` : null,
+    ].filter(Boolean);
+
+    document.getElementById('profile-meta').innerHTML = chips.map(c =>
+        `<span class="profile-modal-meta-chip">${c}</span>`
+    ).join('');
+
+    document.getElementById('profile-rank-row').innerHTML = `
+        <img src="${rankIcon}" alt="${rankName}" style="width:28px;height:28px;image-rendering:pixelated;" />
+        <span class="profile-rank-elo">${fmtNum(elo)}</span>
+        <span style="color:var(--text-muted);">elo — ${rankName}</span>
+    `;
+
+    // Socials section
+    const conn = d.connections || {};
+    const socials = [];
+    if (conn.twitch?.id) socials.push({
+        href: `https://twitch.tv/${conn.twitch.id}`, label: conn.twitch.id, color: '#9146ff',
+        icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>',
+    });
+    if (conn.discord?.id) socials.push({
+        href: null, label: conn.discord.name || conn.discord.id, color: '#5865f2',
+        icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.1.133 18.11a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>',
+    });
+    if (conn.youtube?.id) socials.push({
+        href: `https://youtube.com/channel/${conn.youtube.id}`, label: 'YouTube', color: '#ff0000',
+        icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+    });
+    if (conn.twitter?.id || conn['twitter-legacy']?.id) {
+        const twitterId = conn.twitter?.id || conn['twitter-legacy']?.id;
+        socials.push({
+            href: `https://twitter.com/${twitterId}`, label: `@${twitterId}`, color: '#1da1f2',
+            icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+        });
+    }
+
+    const socialsEl = document.getElementById('profile-socials');
+    if (socialsEl) {
+        socialsEl.innerHTML = socials.length ? socials.map(s => s.href
+            ? `<a class="profile-social-link" href="${s.href}" target="_blank" rel="noopener" style="color:${s.color};">${s.icon}<span>${s.label}</span></a>`
+            : `<span class="profile-social-link" style="color:${s.color};">${s.icon}<span>${s.label}</span></span>`
+        ).join('') : '';
+    }
+}
+
+// Builds ELO history from matches
+function buildEloHistory(matches, myUuid, currentElo) {
+    if (!matches || !matches.length) return [];
+    const chronological = [...matches].sort((a, b) => (a.date || 0) - (b.date || 0));
+
+    const history = [];
+    chronological.forEach(m => {
+        const cEntry = m.changes?.find(c => c.uuid === myUuid);
+        if (cEntry && cEntry.eloRate !== null && cEntry.eloRate !== undefined) {
+            history.push({
+                elo: cEntry.eloRate,
+                date: m.date
+            });
+        }
+    });
+    return history;
+}
+
+// Builds a timeline for chart drawing over a specified period of days
+function buildEloTimeline(matches, myUuid, currentElo, days) {
+    const nowSec = Date.now() / 1000;
+    const cutoff = nowSec - days * 86400;
+
+    const history = buildEloHistory(matches, myUuid, currentElo);
+    const activePoints = history.filter(p => p.date >= cutoff);
+
+    let startingElo = currentElo;
+    if (activePoints.length > 0) {
+        const beforePoints = history.filter(p => p.date < cutoff);
+        if (beforePoints.length > 0) {
+            startingElo = beforePoints[beforePoints.length - 1].elo;
+        } else {
+            // Estimate ELO before first match by subtracting its change
+            const firstMatch = matches.find(m => m.date === activePoints[0].date);
+            const cEntry = firstMatch?.changes?.find(c => c.uuid === myUuid);
+            if (cEntry && cEntry.change !== undefined) {
+                startingElo = activePoints[0].elo - cEntry.change;
+            } else {
+                startingElo = activePoints[0].elo;
+            }
+        }
+    } else {
+        if (history.length > 0) {
+            startingElo = history[history.length - 1].elo;
+        }
+    }
+
+    const pts = [];
+    pts.push({
+        elo: startingElo,
+        date: cutoff,
+        label: new Date(cutoff * 1000).toLocaleDateString('es-AR', { month: 'short', day: 'numeric' })
+    });
+
+    activePoints.forEach(p => {
+        pts.push({
+            elo: p.elo,
+            date: p.date,
+            label: new Date(p.date * 1000).toLocaleDateString('es-AR', { month: 'short', day: 'numeric' })
+        });
+    });
+
+    pts.push({
+        elo: currentElo,
+        date: nowSec,
+        label: 'ahora'
+    });
+
+    return pts;
+}
+
+let lastProfileData = null;
+let currentProfileChartMode = 'matches';
+
+window.setProfileChartMode = function(mode) {
+    if (currentProfileChartMode === mode) return;
+    currentProfileChartMode = mode;
+    
+    // Toggle active classes on selector buttons
+    const selector = document.getElementById('profile-chart-selector');
+    if (selector) {
+        const buttons = selector.querySelectorAll('.pill-btn');
+        buttons.forEach(btn => {
+            const isActive = (btn.getAttribute('onclick') || '').includes(mode);
+            btn.classList.toggle('active', isActive);
+        });
+    }
+
+    // Re-render chart if lastProfileData exists
+    if (lastProfileData) {
+        const d = lastProfileData.raw;
+        const peak = (d.seasonResult || {}).highest || 0;
+        const current = d.eloRate || 0;
+        
+        // Detect mobile (viewport width <= 640px)
+        const isMobile = window.innerWidth <= 640;
+        const matchCount = isMobile ? 30 : 50;
+
+        const eloPoints = currentProfileChartMode === 'matches'
+            ? buildEloMatchesSeries(lastProfileData.rankedMatches, lastProfileData.uuid, current, matchCount)
+            : buildEloTimeline(lastProfileData.rankedMatches, lastProfileData.uuid, current, 30);
+
+        const canvas = document.getElementById('profile-elo-canvas');
+        const tooltip = document.getElementById('profile-chart-tooltip');
+        
+        const drawFn = () => drawEloChart(canvas, tooltip, eloPoints, peak, '#38bdf8', { stepLine: currentProfileChartMode === 'time' });
+        canvas._drawFn = drawFn;
+        drawFn();
+    }
+};
+
+// Builds ELO series based on match count (oldest first)
+function buildEloMatchesSeries(matches, myUuid, currentElo, maxCount) {
+    const history = buildEloHistory(matches, myUuid, currentElo);
+    const sliced = history.slice(-maxCount);
+
+    if (sliced.length === 0) {
+        return [{ label: 'ahora', elo: currentElo, date: Date.now() / 1000 }];
+    }
+
+    const pts = sliced.map((p, idx) => ({
+        elo: p.elo,
+        date: p.date,
+        label: new Date(p.date * 1000).toLocaleDateString('es-AR', { month: 'short', day: 'numeric' })
+    }));
+
+    if (pts[pts.length - 1].elo !== currentElo) {
+        pts.push({
+            elo: currentElo,
+            date: Date.now() / 1000,
+            label: 'ahora'
+        });
+    }
+
+    return pts;
+}
+
+function renderProfileGeneral(data) {
+    const d = data.raw;
+    const seasonRes = d.seasonResult || {};
+    const peak = seasonRes.highest || 0;
+    const current = d.eloRate || 0;
+
+    lastProfileData = data;
+    
+    // Default to matches mode
+    const isMobile = window.innerWidth <= 640;
+    const matchCount = isMobile ? 30 : 50;
+
+    // Toggle active classes on selector buttons when rendering general tab
+    const selector = document.getElementById('profile-chart-selector');
+    if (selector) {
+        const buttons = selector.querySelectorAll('.pill-btn');
+        buttons.forEach(btn => {
+            const isActive = (btn.getAttribute('onclick') || '').includes(currentProfileChartMode);
+            btn.classList.toggle('active', isActive);
+        });
+    }
+
+    const eloPoints = currentProfileChartMode === 'matches'
+        ? buildEloMatchesSeries(data.rankedMatches, data.uuid, current, matchCount)
+        : buildEloTimeline(data.rankedMatches, data.uuid, current, 30);
+
+    const canvas = document.getElementById('profile-elo-canvas');
+    const tooltip = document.getElementById('profile-chart-tooltip');
+
+    const drawFn = () => drawEloChart(canvas, tooltip, eloPoints, peak, '#38bdf8', { stepLine: currentProfileChartMode === 'time' });
+    canvas._drawFn = drawFn;
+    setTimeout(drawFn, 50);
+
+    // General chips — include average completion time
+    const ts = d.timestamp || {};
+    const totalStats = d.statistics?.total || {};
+    const seasonStats = d.statistics?.season || {};
+    const compTime = seasonStats.completionTime?.ranked || totalStats.completionTime?.ranked || 0;
+    const compCount = seasonStats.completions?.ranked || totalStats.completions?.ranked || 0;
+    const avgTime = (compTime && compCount) ? fmtTime(compTime / compCount) : '\u2014';
+
+    document.getElementById('profile-general-chips').innerHTML = [
+        { label: t('profile.chip.peakElo'), val: fmtNum(peak) || '\u2014' },
+        { label: t('profile.chip.average'), val: avgTime },
+        { label: t('profile.chip.matches'), val: fmtNum(totalStats.playedMatches?.ranked || 0) },
+        { label: t('profile.chip.firstOnline'), val: ts.firstOnline ? new Date(ts.firstOnline * 1000).toLocaleDateString('es-AR', {year:'numeric', month:'short'}) : '\u2014' },
+    ].map(c => `
+        <div class="profile-chip">
+            <div class="profile-chip-label">${c.label}</div>
+            <div class="profile-chip-val">${c.val}</div>
+        </div>
+    `).join('');
+}
+
+function drawEloChart(canvas, tooltip, points, peak, color = '#38bdf8', opts = {}) {
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const W = rect.width || canvas.offsetWidth || 600;
+    const H = rect.height || canvas.offsetHeight || 220;
+
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    const theme = document.body.getAttribute('data-theme') || 'aero';
+    const isLight = (theme === 'aero');
+
+    if (!points || points.length < 2) {
+        ctx.fillStyle = isLight ? 'rgba(0, 90, 140, 0.03)' : 'rgba(255,255,255,0.04)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.4)' : 'rgba(255,255,255,0.2)';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('sin datos de temporada', W / 2, H / 2);
+        return;
+    }
+
+    const PAD = { top: 20, right: 20, bottom: 32, left: 52 };
+    const gW = W - PAD.left - PAD.right;
+    const gH = H - PAD.top - PAD.bottom;
+
+    const eloVals = points.map(p => p.elo);
+    const minElo = Math.min(...eloVals) - 20;
+    const maxElo = Math.max(...eloVals) + 20;
+    const eloRange = maxElo - minElo || 1;
+
+    const timeBased = !!opts.stepLine;
+    const minTime = points[0].date;
+    const maxTime = points[points.length - 1].date;
+    const timeRange = maxTime - minTime || 1;
+
+    const toX = (pt, i) => {
+        if (timeBased) {
+            return PAD.left + ((pt.date - minTime) / timeRange) * gW;
+        } else {
+            return PAD.left + (i / (points.length - 1)) * gW;
+        }
+    };
+    const toY = (elo) => PAD.top + gH - ((elo - minElo) / eloRange) * gH;
+
+    // Background
+    ctx.fillStyle = isLight ? 'rgba(0, 90, 140, 0.03)' : 'rgba(0,0,0,0.18)';
+    ctx.roundRect ? ctx.roundRect(0, 0, W, H, 8) : ctx.fillRect(0, 0, W, H);
+    ctx.fill();
+
+    // Grid lines
+    ctx.strokeStyle = isLight ? 'rgba(0, 90, 140, 0.08)' : 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    const gridSteps = 4;
+    for (let i = 0; i <= gridSteps; i++) {
+        const y = PAD.top + (gH / gridSteps) * i;
+        ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+        const label = Math.round(maxElo - (eloRange / gridSteps) * i);
+        ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.6)' : 'rgba(255,255,255,0.28)';
+        ctx.font = `${10 * dpr / dpr}px sans-serif`;
+        ctx.textAlign = 'right';
+        ctx.fillText(label, PAD.left - 6, y + 4);
+    }
+
+    // Peak ELO dashed line
+    if (peak && peak > minElo && peak < maxElo + 50) {
+        const peakY = toY(peak);
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = isLight ? 'rgba(180, 130, 10, 0.45)' : 'rgba(250,204,21,0.35)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(PAD.left, peakY); ctx.lineTo(W - PAD.right, peakY); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = isLight ? 'rgba(180, 130, 10, 0.7)' : 'rgba(250,204,21,0.5)';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(`peak ${peak}`, PAD.left + 4, peakY - 4);
+    }
+
+    // Animate draw with rAF
+    let progress = opts.progress !== undefined ? opts.progress : 0;
+    const DURATION = 600;
+    const startTime = performance.now();
+
+    function frame(now) {
+        progress = Math.min((now - startTime) / DURATION, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const visiblePts = Math.max(2, Math.round(eased * (points.length)));
+
+        ctx.clearRect(0, 0, W, H);
+
+        // bg again
+        ctx.fillStyle = isLight ? 'rgba(0, 90, 140, 0.03)' : 'rgba(0,0,0,0.18)';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(0, 0, W, H, 8); else ctx.rect(0, 0, W, H);
+        ctx.fill();
+
+        // grid
+        ctx.strokeStyle = isLight ? 'rgba(0, 90, 140, 0.08)' : 'rgba(255,255,255,0.06)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= gridSteps; i++) {
+            const y = PAD.top + (gH / gridSteps) * i;
+            ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+            const label = Math.round(maxElo - (eloRange / gridSteps) * i);
+            ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.6)' : 'rgba(255,255,255,0.28)';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(label, PAD.left - 6, y + 4);
+        }
+
+        if (peak && peak > minElo) {
+            const peakY = toY(peak);
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = isLight ? 'rgba(180, 130, 10, 0.45)' : 'rgba(250,204,21,0.35)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(PAD.left, peakY); ctx.lineTo(W - PAD.right, peakY); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = isLight ? 'rgba(180, 130, 10, 0.7)' : 'rgba(250,204,21,0.5)';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`peak ${peak}`, PAD.left + 4, peakY - 4);
+        }
+
+        // Filled area + curve for visible points
+        const vpts = points.slice(0, visiblePts);
+
+        if (vpts.length >= 2) {
+            // Fill area
+            ctx.beginPath();
+            ctx.moveTo(toX(vpts[0], 0), H - PAD.bottom);
+            ctx.lineTo(toX(vpts[0], 0), toY(vpts[0].elo));
+            for (let i = 1; i < vpts.length; i++) {
+                if (timeBased) {
+                    ctx.lineTo(toX(vpts[i], i), toY(vpts[i - 1].elo));
+                }
+                ctx.lineTo(toX(vpts[i], i), toY(vpts[i].elo));
+            }
+            const grad = ctx.createLinearGradient(0, PAD.top, 0, H - PAD.bottom);
+            grad.addColorStop(0, hexToRgba(color, 0.18));
+            grad.addColorStop(1, hexToRgba(color, 0.01));
+            ctx.lineTo(toX(vpts[vpts.length - 1], vpts.length - 1), H - PAD.bottom);
+            ctx.closePath();
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Line — sharp
+            ctx.beginPath();
+            ctx.moveTo(toX(vpts[0], 0), toY(vpts[0].elo));
+            for (let i = 1; i < vpts.length; i++) {
+                if (timeBased) {
+                    ctx.lineTo(toX(vpts[i], i), toY(vpts[i - 1].elo));
+                }
+                ctx.lineTo(toX(vpts[i], i), toY(vpts[i].elo));
+            }
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Dots — small
+            vpts.forEach((pt, i) => {
+                ctx.beginPath();
+                ctx.arc(toX(pt, i), toY(pt.elo), 3, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+            });
+        }
+
+        // X labels — only at endpoints
+        ctx.font = '9px sans-serif';
+        ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.55)' : 'rgba(255,255,255,0.32)';
+        if (vpts[0]?.label) {
+            ctx.textAlign = 'left';
+            ctx.fillText(vpts[0].label, PAD.left, H - PAD.bottom + 14);
+        }
+        if (vpts.length > 1 && vpts[vpts.length - 1]?.label) {
+            ctx.textAlign = 'right';
+            ctx.fillText(vpts[vpts.length - 1].label, W - PAD.right, H - PAD.bottom + 14);
+        }
+
+        if (progress < 1) {
+            requestAnimationFrame(frame);
+        } else {
+            // Setup hover tooltip
+            setupChartHover(canvas, tooltip, points, toX, toY, color);
+        }
+    }
+
+    requestAnimationFrame(frame);
+}
+
+function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function setupChartHover(canvas, tooltip, points, toX, toY, color) {
+    canvas.onmousemove = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        let closest = null, minDist = Infinity;
+        points.forEach((pt, i) => {
+            const d = Math.abs(mx - toX(pt, i));
+            if (d < minDist) { minDist = d; closest = { pt, i }; }
+        });
+
+        if (closest && minDist < 40) {
+            if (!tooltip) return;
+            tooltip.style.display = 'block';
+            tooltip.style.color = color;
+            tooltip.innerHTML = `<strong>${closest.pt.label}</strong>: ${fmtNum(closest.pt.elo)} ELO`;
+            const px = toX(closest.pt, closest.i);
+            const py = toY(closest.pt.elo);
+            tooltip.style.left = `${Math.min(px + 10, canvas.offsetWidth - 140)}px`;
+            tooltip.style.top = `${Math.max(py - 30, 4)}px`;
+        } else {
+            if (tooltip) tooltip.style.display = 'none';
+        }
+    };
+    canvas.onmouseleave = () => { if (tooltip) tooltip.style.display = 'none'; };
+}
+
+function renderProfileStats(data) {
+    const d = data.raw;
+    const seasonStats = d.statistics?.season || {};
+    const totalStats  = d.statistics?.total  || {};
+    const seasonRes   = d.seasonResult || {};
+
+    const played  = seasonStats.playedMatches?.ranked || 0;
+    const wins    = seasonStats.wins?.ranked || 0;
+    const losses  = seasonStats.loses?.ranked || 0;
+    const winrate = played > 0 ? (wins / played) * 100 : 0;
+    const streak  = seasonStats.highestWinStreak?.ranked || 0;
+    const curStrk = seasonStats.currentWinStreak?.ranked || 0;
+    const bestElo = seasonRes.highest || d.eloRate || 0;
+    const bestTime = totalStats.bestTime?.ranked || null;
+    const totalMatches = totalStats.playedMatches?.ranked || 0;
+    const totalWins = totalStats.wins?.ranked || 0;
+    const completions = seasonStats.completions?.ranked || 0;
+    const forfeits = seasonStats.forfeits?.ranked || 0;
+
+    const kpis = [
+        { label: t('profile.kpi.wins'), val: fmtNum(wins), sub: t('profile.kpi.sub.currentSeason') },
+        { label: t('profile.kpi.losses'), val: fmtNum(losses), sub: t('profile.kpi.sub.currentSeason') },
+        { label: t('profile.kpi.winrate'), val: `${winrate.toFixed(1)}%`, sub: t('profile.kpi.sub.inMatches').replace('{n}', played) },
+        { label: t('profile.kpi.bestTime'), val: bestTime ? fmtTime(bestTime) : '—', sub: t('profile.kpi.sub.allTime') },
+        { label: t('profile.kpi.bestStreak'), val: fmtNum(streak), sub: t('profile.kpi.sub.consecutiveWins') },
+        { label: t('profile.kpi.currentStreak'), val: fmtNum(curStrk), sub: '' },
+        { label: t('profile.kpi.peakElo'), val: fmtNum(bestElo), sub: getRankName(bestElo) },
+        { label: t('profile.kpi.completions'), val: fmtNum(completions), sub: t('profile.kpi.sub.forfeits').replace('{n}', forfeits) },
+    ];
+
+    document.getElementById('profile-kpi-grid').innerHTML = kpis.map(k => `
+        <div class="profile-kpi-card">
+            <div class="profile-kpi-label">${k.label}</div>
+            <div class="profile-kpi-val">${k.val}</div>
+            ${k.sub ? `<div class="profile-kpi-sub">${k.sub}</div>` : ''}
+        </div>
+    `).join('');
+
+    // Winrate bar
+    const wrColor = winrate >= 55 ? '#4ade80' : winrate >= 45 ? '#facc15' : '#f87171';
+    document.getElementById('profile-winrate-wrap').innerHTML = `
+        <div class="profile-winrate-label">
+            <span>${t('profile.winrateLabel')}</span>
+            <span style="color:${wrColor};font-weight:700;">${winrate.toFixed(1)}%</span>
+        </div>
+        <div class="profile-winrate-bar-bg">
+            <div class="profile-winrate-bar-fill" id="profile-wr-fill" style="background:${wrColor};"></div>
+        </div>
+    `;
+    setTimeout(() => {
+        const fill = document.getElementById('profile-wr-fill');
+        if (fill) fill.style.width = `${Math.min(winrate, 100)}%`;
+    }, 80);
+
+    // Phases table
+    const phases = seasonRes.phases || [];
+    if (phases.length > 0) {
+        document.getElementById('profile-phases-table').innerHTML = `
+            <table>
+                <thead><tr>
+                    <th>Fase</th><th>ELO</th><th>Rank</th><th>Phase Pts</th>
+                </tr></thead>
+                <tbody>${phases.map(ph => `<tr>
+                    <td>Fase ${ph.phase}</td>
+                    <td>${fmtNum(ph.eloRate || 0)}</td>
+                    <td>${ph.eloRank ? `#${ph.eloRank}` : '—'}</td>
+                    <td>${ph.point || '—'}</td>
+                </tr>`).join('')}</tbody>
+            </table>
+        `;
+    }
+}
+
+let currentMatchFilter = 'ranked';
+
+function renderProfileMatchesList(data, filter) {
+    const allMatches = data.matches || [];
+    const myUuid = data.uuid;
+    const matches = filter === 'ranked' ? allMatches.filter(m => m.type === 2) : allMatches;
+    const listEl = document.getElementById('profile-matches-list');
+    if (!listEl) return;
+
+    if (!matches.length) {
+        listEl.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:0.82rem;">${t('profile.noMatches')}</div>`;
+        return;
+    }
+
+    listEl.innerHTML = matches.map(m => {
+        const opponent = m.players?.find(p => p.uuid !== myUuid);
+        const iWon = m.result?.uuid === myUuid;
+        const forfeited = m.forfeited;
+        const myTime = !forfeited && m.result ? fmtTime(m.result.time) : (forfeited ? t('profile.match.forfeit') : '—');
+        const rowCls = forfeited ? 'forfeit' : (iWon ? 'win' : 'loss');
+        const resultLabel = iWon ? 'W' : 'L';
+        const oppName = opponent?.nickname || '?';
+        const date = m.date ? timeAgo(m.date) : '';
+        const seed = m.seedType || '';
+        const matchUrl = `https://mcsrranked.com/match/${m.id}`;
+
+        let typeLabel = t('profile.match.type.casual');
+        let typeCls = 'match-type-casual';
+        if (m.type === 2) {
+            typeLabel = t('profile.match.type.ranked');
+            typeCls = 'match-type-ranked';
+        } else if (m.type === 3) {
+            typeLabel = t('profile.match.type.private');
+            typeCls = 'match-type-private';
+        }
+
+        return `<a class="profile-match-row ${rowCls}" href="${matchUrl}" target="_blank" rel="noopener" title="${seed}">
+            <img class="profile-match-avatar" src="${SKIN_HEAD(oppName)}" alt="${oppName}" onerror="this.style.opacity='0.2'" />
+            <span class="profile-match-opponent">${oppName}</span>
+            <span class="profile-match-type ${typeCls}">${typeLabel}</span>
+            <span class="profile-match-result ${rowCls}">${resultLabel}</span>
+            <span class="profile-match-time">${myTime}</span>
+            <span class="profile-match-date">${date}</span>
+        </a>`;
+    }).join('');
+}
+
+function renderProfileMatches(data) {
+    currentMatchFilter = 'ranked';
+    const filterWrap = document.getElementById('profile-matches-filter');
+    if (filterWrap) {
+        filterWrap.querySelectorAll('.pill-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === 'ranked');
+        });
+    }
+    renderProfileMatchesList(data, 'ranked');
+}
+
+window.setMatchFilter = function(filter) {
+    if (!lastProfileData) return;
+    currentMatchFilter = filter;
+    const filterWrap = document.getElementById('profile-matches-filter');
+    if (filterWrap) {
+        filterWrap.querySelectorAll('.pill-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+    }
+    renderProfileMatchesList(lastProfileData, filter);
+};
+
+
+// Close modal on overlay click / ESC (no DOMContentLoaded needed — bound in main init)
+function closeProfile() {
+    const modal = document.getElementById('profile-modal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+
+// =====================================================
+// MAKE PLAYER NAMES CLICKABLE (lb table + mini-cards + podium)
+// =====================================================
+
+// Patch renderFullTable to make names clickable
+const _origRenderFullTable = renderFullTable;
+window.renderFullTable = function(players) {
+    _origRenderFullTable(players);
+    document.querySelectorAll('#lb-tbody .lb-player-name').forEach(el => {
+        el.classList.add('clickable');
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const p = players.find(pl => pl.nickname === el.textContent.trim());
+            if (p) openProfile(p.uuid, p.nickname, p.country);
+        });
+    });
+};
+
+// Patch renderRow4to10 to make names clickable
+const _origRenderRow4to10 = renderRow4to10;
+window.renderRow4to10 = function(players) {
+    _origRenderRow4to10(players);
+    document.querySelectorAll('#row-scroll-inner .mini-name').forEach((el, i) => {
+        el.classList.add('clickable');
+        const p = players[i];
+        if (p) {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openProfile(p.uuid, p.nickname, p.country);
+            });
+        }
+    });
+};
+
+// Patch renderPodium to make names clickable
+const _origRenderPodium = renderPodium;
+window.renderPodium = function(players) {
+    _origRenderPodium(players);
+    document.querySelectorAll('#podium .podium-name').forEach(el => {
+        el.classList.add('clickable');
+        const nick = el.textContent.trim();
+        const p = players.find(pl => pl.nickname === nick);
+        if (p) {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openProfile(p.uuid, p.nickname, p.country);
+            });
+        }
+    });
+};
+
+// =====================================================
+// HEAD TO HEAD — multi-player comparator (1-10)
+// =====================================================
+
+let h2hCount = 2;
+let h2hInitialized = false;
+let h2hSelected = {}; // { slot: { uuid, nickname, country } }
+
+function initH2H() {
+    if (h2hInitialized) return;
+    h2hInitialized = true;
+
+    renderH2HSlots();
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.h2h-input-wrap')) {
+            document.querySelectorAll('.h2h-suggestions').forEach(s => s.classList.remove('open'));
+        }
+    });
+}
+
+window.h2hChangeCount = function(delta) {
+    const newCount = Math.max(1, Math.min(10, h2hCount + delta));
+    if (newCount === h2hCount) return;
+    h2hCount = newCount;
+
+    const display = document.getElementById('h2h-count-display');
+    if (display) display.textContent = h2hCount;
+
+    const btnMinus = document.getElementById('h2h-btn-minus');
+    const btnPlus  = document.getElementById('h2h-btn-plus');
+    if (btnMinus) btnMinus.disabled = h2hCount <= 1;
+    if (btnPlus)  btnPlus.disabled  = h2hCount >= 10;
+
+    // Remove slots that are now out of range
+    Object.keys(h2hSelected).forEach(k => {
+        if (parseInt(k) > h2hCount) delete h2hSelected[k];
+    });
+
+    renderH2HSlots();
+};
+
+function renderH2HSlots() {
+    const grid = document.getElementById('h2h-slots-grid');
+    if (!grid) return;
+
+    grid.innerHTML = Array.from({ length: h2hCount }, (_, i) => {
+        const slot = i + 1;
+        const sel = h2hSelected[slot];
+        return `
+        <div class="h2h-slot" id="h2h-slot-${slot}">
+            <div class="h2h-label" style="margin-bottom:8px;">jugador ${slot}</div>
+            <div class="h2h-input-wrap" ${sel ? 'style="display:none;"' : ''}>
+                <input type="search" id="h2h-input-${slot}" class="h2h-input" placeholder="buscar..." autocomplete="off"
+                    oninput="h2hSearch(${slot}, this.value)" />
+                <div class="h2h-suggestions" id="h2h-sug-${slot}"></div>
+            </div>
+            ${sel ? `
+            <div class="h2h-slot-selected" id="h2h-sel-${slot}">
+                <img class="h2h-slot-selected-avatar" src="${SKIN_HEAD(sel.nickname)}" alt="${sel.nickname}" onerror="this.style.opacity='0.2'" />
+                <div class="h2h-slot-selected-info">
+                    <span class="h2h-slot-selected-name">${sel.nickname}</span>
+                    <span class="h2h-slot-selected-elo">${countryInfo(sel.country).flag} ${fmtNum(sel.elo || 0)} ELO</span>
+                </div>
+                <button class="h2h-slot-clear-btn" onclick="h2hClearSlot(${slot})" title="quitar">✕</button>
+            </div>
+            <button class="h2h-profile-btn" onclick="openProfile('${sel.uuid}','${sel.nickname}','${sel.country}')">ver perfil →</button>
+            ` : ''}
+        </div>`;
+    }).join('');
+}
+
+window.h2hSearch = function(slot, query) {
+    const sug = document.getElementById(`h2h-sug-${slot}`);
+    if (!sug) return;
+
+    const q = query.trim().toLowerCase();
+    if (!q || !allPlayers?.length) { sug.classList.remove('open'); return; }
+
+    const matches = allPlayers.filter(p => p.nickname.toLowerCase().includes(q)).slice(0, 8);
+    if (!matches.length) { sug.classList.remove('open'); return; }
+
+    sug.innerHTML = matches.map(p => {
+        const info = countryInfo(p.country);
+        return `<div class="h2h-sug-item" onclick="h2hSelectPlayer(${slot},'${p.uuid}','${p.nickname.replace(/'/g,"\\'")}','${p.country}')">
+            <img src="${SKIN_HEAD(p.nickname)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
+            <span>${p.nickname}</span>
+            <span class="h2h-sug-elo">${info.flag} ${fmtNum(p.eloRate||0)} elo</span>
+        </div>`;
+    }).join('');
+
+    sug.classList.add('open');
+};
+
+window.h2hSelectPlayer = async function(slot, uuid, nickname, country) {
+    const pObj = allPlayers.find(p => p.uuid === uuid) || {};
+    const elo = pObj.eloRate || 0;
+    h2hSelected[slot] = { uuid, nickname, country, elo };
+    renderH2HSlots();
+
+    const allFilled = Array.from({ length: h2hCount }, (_, i) => i + 1)
+        .every(s => h2hSelected[s]);
+
+    if (allFilled) await renderH2H();
+    else document.getElementById('h2h-result').innerHTML = '';
+};
+
+window.h2hClearSlot = function(slot) {
+    delete h2hSelected[slot];
+    renderH2HSlots();
+    document.getElementById('h2h-result').innerHTML = '';
+};
+
+async function renderH2H() {
+    const result = document.getElementById('h2h-result');
+    if (!result) return;
+
+    const slots = Array.from({ length: h2hCount }, (_, i) => i + 1);
+    const selected = slots.map(s => h2hSelected[s]).filter(Boolean);
+    if (selected.length < 1) return;
+
+    // Loading indicator
+    result.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:0.82rem;">
+        <div style="margin-bottom:12px;">cargando datos de ${selected.length} jugadores...</div>
+        <div style="width:200px;height:3px;background:rgba(255,255,255,0.08);border-radius:4px;margin:0 auto;overflow:hidden;">
+            <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--aqua-mid),rgba(100,200,255,0.3));border-radius:4px;animation:shimmer 1.2s ease-in-out infinite;"></div>
+        </div>
+    </div>`;
+
+    const dataArr = await Promise.all(selected.map(s => loadProfileData(s.uuid, s.nickname, s.country)));
+    const validData = dataArr.filter(Boolean);
+
+    if (!validData.length) {
+        result.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);">error cargando datos //</div>`;
+        return;
+    }
+
+    // Build ELO history based on currentH2HChartMode
+    lastH2HValidData = validData;
+    const playersElo = validData.map((pd, idx) => {
+        const d = pd.raw;
+        const current = d.eloRate || 0;
+        const pts = currentH2HChartMode === 'matches'
+            ? buildEloMatchesSeries(pd.rankedMatches, pd.uuid, current, 50)
+            : buildEloTimeline(pd.rankedMatches, pd.uuid, current, 14);
+        return { nickname: pd.nickname, color: H2H_COLORS[idx % H2H_COLORS.length], pts, elo: current, rank: d.eloRank, country: pd.country };
+    });
+
+    // Create canvas for H2H chart
+    const canvasId = 'h2h-chart-canvas';
+    result.innerHTML = `
+        <div class="glass h2h-stats-panel" style="padding:20px;">
+            <div class="h2h-chart-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                <div class="h2h-chart-title" style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">comparación de elo</div>
+                <div style="display:flex;align-items:center;">
+                    <span style="font-size:0.7rem;color:var(--text-muted);margin-right:8px;text-transform:lowercase;">basado en:</span>
+                    <div class="h2h-chart-selector flex-pill-selector" id="h2h-chart-selector">
+                        <button class="pill-btn ${currentH2HChartMode === 'time' ? 'active' : ''}" onclick="setH2HChartMode('time')">ult. 2 semanas</button>
+                        <button class="pill-btn ${currentH2HChartMode === 'matches' ? 'active' : ''}" onclick="setH2HChartMode('matches')">ultimas 50 matches</button>
+                    </div>
+                </div>
+            </div>
+            <div class="h2h-chart-wrap">
+                <canvas id="${canvasId}" class="h2h-chart-canvas"></canvas>
+                <div id="h2h-chart-tooltip" class="profile-chart-tooltip" style="position:absolute;"></div>
+            </div>
+            <div class="h2h-chart-legend" id="h2h-legend"></div>
+            <div style="margin-top:20px;" id="h2h-table-wrap"></div>
+        </div>
+    `;
+
+    // Render legend
+    document.getElementById('h2h-legend').innerHTML = playersElo.map((p, i) => {
+        const info = countryInfo(p.country);
+        return `<div class="h2h-legend-item">
+            <div class="h2h-legend-dot" style="background:${p.color};"></div>
+            <span>${info.flag} ${p.nickname}</span>
+            <span style="color:var(--text-muted);font-size:0.7rem;margin-left:4px;">${fmtNum(p.elo)} elo</span>
+        </div>`;
+    }).join('');
+
+    // Draw multi-line chart
+    setTimeout(() => {
+        const canvas = document.getElementById(canvasId);
+        const tooltip = document.getElementById('h2h-chart-tooltip');
+        if (canvas) drawH2HChart(canvas, tooltip, playersElo, { stepLine: currentH2HChartMode === 'time' });
+    }, 50);
+
+    // Comparison table
+    renderH2HCompareTable(validData, playersElo);
+}
+
+let currentH2HChartMode = 'matches';
+let lastH2HValidData = null;
+
+window.setH2HChartMode = function(mode) {
+    if (currentH2HChartMode === mode) return;
+    currentH2HChartMode = mode;
+
+    // Toggle active classes on selector buttons
+    const selector = document.getElementById('h2h-chart-selector');
+    if (selector) {
+        const buttons = selector.querySelectorAll('.pill-btn');
+        buttons.forEach(btn => {
+            const isActive = (btn.getAttribute('onclick') || '').includes(mode);
+            btn.classList.toggle('active', isActive);
+        });
+    }
+
+    if (lastH2HValidData) {
+        // Re-build playersElo ELO history based on new mode
+        const playersElo = lastH2HValidData.map((pd, idx) => {
+            const d = pd.raw;
+            const current = d.eloRate || 0;
+            const pts = currentH2HChartMode === 'matches'
+                ? buildEloMatchesSeries(pd.rankedMatches, pd.uuid, current, 50)
+                : buildEloTimeline(pd.rankedMatches, pd.uuid, current, 14);
+            return { nickname: pd.nickname, color: H2H_COLORS[idx % H2H_COLORS.length], pts, elo: current, rank: d.eloRank, country: pd.country };
+        });
+
+        const canvas = document.getElementById('h2h-chart-canvas');
+        const tooltip = document.getElementById('h2h-chart-tooltip');
+        if (canvas) {
+            drawH2HChart(canvas, tooltip, playersElo, { stepLine: currentH2HChartMode === 'time' });
+        }
+    }
+};
+
+function drawH2HChart(canvas, tooltip, playersElo, opts = {}) {
+    if (!canvas || !playersElo.length) return;
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const W = rect.width || canvas.offsetWidth || 600;
+    const H = rect.height || canvas.offsetHeight || 260;
+
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    const theme = document.body.getAttribute('data-theme') || 'aero';
+    const isLight = (theme === 'aero');
+
+    // Compute global ELO range
+    const allElos = playersElo.flatMap(p => p.pts.map(pt => pt.elo));
+    const minElo = Math.min(...allElos) - 20;
+    const maxElo = Math.max(...allElos) + 20;
+    const eloRange = maxElo - minElo || 1;
+
+    const PAD = { top: 20, right: 20, bottom: 36, left: 56 };
+    const gW = W - PAD.left - PAD.right;
+    const gH = H - PAD.top - PAD.bottom;
+
+    const timeBased = !!opts.stepLine;
+    const nowSec = Date.now() / 1000;
+    const minTime = nowSec - 14 * 86400;
+    const maxTime = nowSec;
+    const timeRange = maxTime - minTime;
+
+    const toX = (pt, i, len) => {
+        if (timeBased) {
+            return PAD.left + ((pt.date - minTime) / timeRange) * gW;
+        } else {
+            return PAD.left + ((len <= 1 ? 0 : i / (len - 1)) * gW);
+        }
+    };
+    const toY = (elo) => PAD.top + gH - ((elo - minElo) / eloRange) * gH;
+
+    let progress = 0;
+    const DURATION = 700;
+    const startTime = performance.now();
+
+    function frame(now) {
+        progress = Math.min((now - startTime) / DURATION, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Background
+        ctx.fillStyle = isLight ? 'rgba(0, 90, 140, 0.03)' : 'rgba(0,0,0,0.15)';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(0, 0, W, H, 8); else ctx.rect(0, 0, W, H);
+        ctx.fill();
+
+        // Grid
+        const gridSteps = 4;
+        ctx.strokeStyle = isLight ? 'rgba(0, 90, 140, 0.08)' : 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= gridSteps; i++) {
+            const y = PAD.top + (gH / gridSteps) * i;
+            ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+            const label = Math.round(maxElo - (eloRange / gridSteps) * i);
+            ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.6)' : 'rgba(255,255,255,0.25)';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(label, PAD.left - 6, y + 4);
+        }
+
+        // Draw each player line
+        playersElo.forEach(player => {
+            const pts = player.pts;
+            const visLen = Math.max(2, Math.round(eased * pts.length));
+            const vpts = pts.slice(0, visLen);
+            if (vpts.length < 2) return;
+
+            // Area fill
+            ctx.beginPath();
+            ctx.moveTo(toX(vpts[0], 0, pts.length), H - PAD.bottom);
+            ctx.lineTo(toX(vpts[0], 0, pts.length), toY(vpts[0].elo));
+            for (let i = 1; i < vpts.length; i++) {
+                if (timeBased) {
+                    ctx.lineTo(toX(vpts[i], i, pts.length), toY(vpts[i - 1].elo));
+                }
+                ctx.lineTo(toX(vpts[i], i, pts.length), toY(vpts[i].elo));
+            }
+            ctx.lineTo(toX(vpts[vpts.length - 1], vpts.length - 1, pts.length), H - PAD.bottom);
+            ctx.closePath();
+            ctx.fillStyle = hexToRgba(player.color, 0.07);
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            ctx.moveTo(toX(vpts[0], 0, pts.length), toY(vpts[0].elo));
+            for (let i = 1; i < vpts.length; i++) {
+                if (timeBased) {
+                    ctx.lineTo(toX(vpts[i], i, pts.length), toY(vpts[i - 1].elo));
+                }
+                ctx.lineTo(toX(vpts[i], i, pts.length), toY(vpts[i].elo));
+            }
+            ctx.strokeStyle = player.color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Dots
+            vpts.forEach((pt, i) => {
+                ctx.beginPath();
+                ctx.arc(toX(pt, i, pts.length), toY(pt.elo), 3.5, 0, Math.PI * 2);
+                ctx.fillStyle = player.color;
+                ctx.fill();
+            });
+        });
+
+        // X axis labels
+        if (timeBased) {
+            const firstLabel = new Date(minTime * 1000).toLocaleDateString('es-AR', { month: 'short', day: 'numeric' });
+            ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.55)' : 'rgba(255,255,255,0.28)';
+            ctx.font = '9px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(firstLabel, PAD.left, H - PAD.bottom + 14);
+            ctx.textAlign = 'right';
+            ctx.fillText('ahora', W - PAD.right, H - PAD.bottom + 14);
+        } else {
+            const labelsPlayer = playersElo.reduce((a, b) => a.pts.length >= b.pts.length ? a : b);
+            ctx.fillStyle = isLight ? 'rgba(0, 18, 30, 0.55)' : 'rgba(255,255,255,0.28)';
+            ctx.font = '9px sans-serif';
+            if (labelsPlayer.pts.length > 0) {
+                ctx.textAlign = 'left';
+                ctx.fillText(labelsPlayer.pts[0].label, PAD.left, H - PAD.bottom + 14);
+            }
+            if (labelsPlayer.pts.length > 1) {
+                ctx.textAlign = 'right';
+                ctx.fillText(labelsPlayer.pts[labelsPlayer.pts.length - 1].label, W - PAD.right, H - PAD.bottom + 14);
+            }
+        }
+
+        if (progress < 1) {
+            requestAnimationFrame(frame);
+        } else {
+            // Hover tooltip for H2H
+            canvas.onmousemove = (e) => {
+                const r = canvas.getBoundingClientRect();
+                const mx = e.clientX - r.left;
+                
+                let lines = '';
+                let dateLabel = '';
+
+                if (timeBased) {
+                    const hoverTime = minTime + ((mx - PAD.left) / gW) * timeRange;
+                    lines = playersElo.map(p => {
+                        let closestPt = p.pts[0];
+                        let minDt = Infinity;
+                        p.pts.forEach(pt => {
+                            const dt = Math.abs(pt.date - hoverTime);
+                            if (dt < minDt) { minDt = dt; closestPt = pt; }
+                        });
+                        return `<div style="color:${p.color};">${p.nickname}: <strong>${fmtNum(closestPt?.elo||0)}</strong></div>`;
+                    }).join('');
+
+                    let minGlobalDt = Infinity;
+                    playersElo.forEach(p => {
+                        p.pts.forEach(pt => {
+                            const dt = Math.abs(pt.date - hoverTime);
+                            if (dt < minGlobalDt) { minGlobalDt = dt; dateLabel = pt.label; }
+                        });
+                    });
+                } else {
+                    const refPlayer = playersElo.reduce((a, b) => a.pts.length >= b.pts.length ? a : b);
+                    const refLen = refPlayer.pts.length;
+                    
+                    let nearestI = 0, minDx = Infinity;
+                    for (let i = 0; i < refLen; i++) {
+                        const x = PAD.left + ((refLen <= 1 ? 0 : i / (refLen - 1)) * gW);
+                        const d = Math.abs(mx - x);
+                        if (d < minDx) { minDx = d; nearestI = i; }
+                    }
+
+                    lines = playersElo.map(p => {
+                        const idx = Math.round((nearestI / (refLen - 1)) * (p.pts.length - 1));
+                        const pt = p.pts[idx] || p.pts[p.pts.length - 1];
+                        return `<div style="color:${p.color};">${p.nickname}: <strong>${fmtNum(pt?.elo||0)}</strong></div>`;
+                    }).join('');
+
+                    const idx = Math.round((nearestI / (refLen - 1)) * (refPlayer.pts.length - 1));
+                    dateLabel = refPlayer.pts[idx]?.label || '';
+                }
+
+                if (tooltip) {
+                    tooltip.style.display = 'block';
+                    tooltip.style.color = 'var(--text-main)';
+                    tooltip.innerHTML = `<div style="font-size:0.65rem;color:var(--text-muted);margin-bottom:3px;">${dateLabel}</div>${lines}`;
+                    tooltip.style.left = `${Math.min(mx + 10, W - 160)}px`;
+                    tooltip.style.top = '8px';
+                }
+            };
+            canvas.onmouseleave = () => { if (tooltip) tooltip.style.display = 'none'; };
+        }
+    }
+
+    requestAnimationFrame(frame);
+}
+
+function renderH2HCompareTable(validData, playersElo) {
+    const wrap = document.getElementById('h2h-table-wrap');
+    if (!wrap) return;
+
+    const stats = [
+        { label: 'Rank', fn: (pd) => pd.raw.eloRank || 9999, fmt: (v, raw) => raw.eloRank ? `#${raw.eloRank}` : '—', higher: false },
+        {
+            label: 'Average',
+            fn: (pd) => {
+                const s = pd.raw.statistics;
+                const ct = s?.season?.completionTime?.ranked || s?.total?.completionTime?.ranked || 0;
+                const cc = s?.season?.completions?.ranked || s?.total?.completions?.ranked || 0;
+                return (ct && cc) ? ct / cc : Infinity;
+            },
+            fmt: (v) => v !== Infinity ? fmtTime(v) : '—',
+            higher: false
+        },
+        { label: 'Best Time', fn: (pd) => pd.raw.statistics?.total?.bestTime?.ranked || Infinity, fmt: (v) => v !== Infinity ? fmtTime(v) : '—', higher: false },
+        { label: 'Wins', fn: (pd) => pd.raw.statistics?.season?.wins?.ranked || 0, fmt: (v) => fmtNum(v), higher: true },
+        { label: 'Winrate', fn: (pd) => { const pl = pd.raw.statistics?.season?.playedMatches?.ranked||0; const w = pd.raw.statistics?.season?.wins?.ranked||0; return pl>0?(w/pl)*100:0; }, fmt: (v) => `${v.toFixed(1)}%`, higher: true },
+        { label: 'Peak ELO', fn: (pd) => pd.raw.seasonResult?.highest || 0, fmt: (v) => fmtNum(v), higher: true },
+    ];
+
+    const playerColHeaders = playersElo.map(p =>
+        `<th class="player-col" style="color:${p.color};">${p.nickname}</th>`
+    ).join('');
+
+    const rows = stats.map(stat => {
+        const vals = validData.map(pd => stat.fn(pd));
+        const winner = stat.higher
+            ? vals.indexOf(Math.max(...vals))
+            : vals.indexOf(Math.min(...vals));
+
+        const cells = validData.map((pd, i) => {
+            const isWinner = i === winner && vals.filter((v, j) => v === vals[winner]).length === 1;
+            const display = stat.fmt(vals[i], pd.raw);
+            return `<td class="${isWinner ? 'winner-val' : ''}">${display}</td>`;
+        }).join('');
+
+        return `<tr><td class="stat-label-col">${stat.label}</td>${cells}</tr>`;
+    }).join('');
+
+    wrap.innerHTML = `
+        <table class="h2h-compare-table">
+            <thead><tr><th class="stat-col">stat</th>${playerColHeaders}</tr></thead>
+            <tbody>${rows}</tbody>
+        </table>
+    `;
+}
+
 window.changeLeaderboardSeason = changeLeaderboardSeason;
 window.setTimesFilter = setTimesFilter;
+window.openProfile = openProfile;
+window.switchProfileTab = switchProfileTab;
+window.h2hChangeCount = h2hChangeCount;
+window.h2hSearch = h2hSearch;
+window.h2hSelectPlayer = h2hSelectPlayer;
+window.h2hClearSlot = h2hClearSlot;
 
 // == ACA ENTRA EL DOMContentLoaded Y ARRANCA TODO ==
 document.addEventListener('DOMContentLoaded', () => {
@@ -1597,4 +3047,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLiveMatch();
     setInterval(loadActivity, 60000);
     setInterval(loadLiveMatch, 30000);
+
+    // Profile modal close handlers
+    const modal = document.getElementById('profile-modal');
+    const closeBtn = document.getElementById('profile-modal-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeProfile);
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeProfile(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProfile(); });
 });

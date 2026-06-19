@@ -68,7 +68,8 @@ export function TimeDataTable({ columns, initialData, allRunners }: TimeDataTabl
     let currentIndex = 0;
 
     async function loadNextBatch() {
-      if (!isMounted || currentIndex >= pending.length) {
+      // Stop progressive loading once we have loaded 100 total players (avoid fetching all 400)
+      if (!isMounted || currentIndex >= pending.length || (initialData.length + currentIndex) >= 100) {
         if (isMounted) setIsProgressiveLoading(false);
         return;
       }
