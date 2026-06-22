@@ -439,7 +439,7 @@ const API = (typeof location !== 'undefined' && location.protocol === 'file:')
     : '/api/mcsr';
 const SKIN_HEAD = n => `https://mc-heads.net/avatar/${n}/48`;
 const SKIN_BODY = n => `https://nmsr.nickac.dev/fullbody/${n}?width=300`;
-const BLOCKED = ['tommy21_'];
+const BLOCKED = ['tommy21_', 'ccbrito'];
 
 //  lista de paises con banderas
 const COUNTRIES = {
@@ -1184,12 +1184,17 @@ function renderActivityList(newGlobalMatches = null) {
     // Combinar globales recientes filtradas con las obtenidas en background
     const recentGlobalHisp = lastFetchedGlobalMatches.filter(m => {
         const users = m.players || [];
+        const hasBlocked = users.some(u => BLOCKED.includes(u.nickname?.toLowerCase()));
+        if (hasBlocked) return false;
         return users.some(u => HISPANIC_CODES.includes(u.country?.toLowerCase()));
     });
 
     const allMatches = [
         ...recentGlobalHisp,
-        ...backgroundHispanicMatches
+        ...backgroundHispanicMatches.filter(m => {
+            const users = m.players || [];
+            return !users.some(u => BLOCKED.includes(u.nickname?.toLowerCase()));
+        })
     ];
 
     // De-duplicar por ID
@@ -1271,6 +1276,8 @@ async function loadLiveMatch() {
         const matches = json.data?.liveMatches || [];
         let activeHispMatches = matches.filter(m => {
             const players = m.players || [];
+            const hasBlocked = players.some(p => BLOCKED.includes(p.nickname?.toLowerCase()));
+            if (hasBlocked) return false;
             return players.some(p => HISPANIC_CODES.includes(p.country?.toLowerCase()));
         });
         if (activeHispMatches.length === 0) { setLiveNoMatch(); return; }
