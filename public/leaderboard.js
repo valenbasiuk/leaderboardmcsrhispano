@@ -437,8 +437,16 @@ window.pickLang = pickLang;
 const API = (typeof location !== 'undefined' && location.protocol === 'file:')
     ? 'https://mcsrranked.com/api'
     : '/api/mcsr';
-const SKIN_HEAD = n => `https://mc-heads.net/avatar/${n}/48`;
-const SKIN_BODY = n => `https://nmsr.nickac.dev/fullbody/${n}?width=300`;
+const SKIN_HEAD = (n, uuid) => {
+    if (uuid) {
+        return `https://crafatar.com/avatars/${uuid}?size=48&overlay`;
+    }
+    return `https://minotar.net/helm/${n}/48`;
+};
+const SKIN_BODY = (n, uuid) => {
+    const id = uuid || n;
+    return `https://nmsr.nickac.dev/fullbody/${id}?width=300`;
+};
 const BLOCKED = ['tommy21_', 'ccbrito'];
 
 //  lista de paises con banderas
@@ -975,7 +983,7 @@ function renderPodium(players) {
       <div class="podium-rank-badge ${rankClass}" aria-hidden="true">#${rankNum}</div>
       <div class="badge-country" aria-label="${info.name}">${info.flag}</div>
       <div class="podium-skin-wrap">
-        <img src="${SKIN_BODY(p.nickname)}" alt="skin de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.25'" style="max-height:200px; max-width:100%; width:auto; height:auto; object-fit:contain;" />
+        <img src="${SKIN_BODY(p.nickname, p.uuid)}" alt="skin de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.25'" style="max-height:200px; max-width:100%; width:auto; height:auto; object-fit:contain;" />
       </div>
       <div class="podium-info">
         <div class="podium-name">${p.nickname}</div>
@@ -1021,7 +1029,7 @@ function renderRow4to10(players) {
         card.innerHTML = `
       <div class="mini-badge-rank" aria-hidden="true">#${rankNum}</div>
       <div class="mini-skin-wrap">
-        <img src="${SKIN_HEAD(p.nickname)}" alt="avatar de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
+        <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="avatar de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
         <div class="mini-flag-badge" aria-label="${info.name}">${info.flag}</div>
       </div>
       <div class="mini-name">${p.nickname}</div>
@@ -1062,7 +1070,7 @@ function renderFullTable(players) {
       <td><span class="${rankCls}">${rankNum}</span></td>
       <td>
         <div class="lb-player">
-          <img src="${SKIN_HEAD(p.nickname)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
+          <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
           <span class="lb-player-name">${p.nickname}</span>
           ${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : ''}
         </div>
@@ -1103,7 +1111,7 @@ searchInput.addEventListener('input', () => {
     if (!matches.length) { searchResults.innerHTML = ''; searchResults.classList.remove('open'); return; }
     searchResults.innerHTML = matches.map(p => `
     <div class="search-result-item" tabindex="0" role="option" data-nick="${p.nickname}">
-      <img src="${SKIN_HEAD(p.nickname)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
+      <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
       <span class="search-result-name">${p.nickname}</span>
       <span class="search-result-elo">${fmtNum(p.eloRate || 0)} elo</span>
     </div>
@@ -1562,7 +1570,7 @@ function renderTimesTable(players) {
         <td><span class="lb-rank">${start + i + 1}</span></td>
         <td>
           <div class="lb-player">
-            <img src="${SKIN_HEAD(p.nickname)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
+            <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
             <span class="lb-player-name">${p.nickname}</span>
           </div>
         </td>
@@ -1788,7 +1796,7 @@ window.openProfile = async function(uuid, nickname, country) {
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     document.getElementById('profile-name').textContent = nickname;
-    document.getElementById('profile-avatar').src = SKIN_HEAD(nickname);
+    document.getElementById('profile-avatar').src = SKIN_HEAD(nickname, uuid);
     document.getElementById('profile-meta').innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem;">${t('profile.loading')}</span>`;
     document.getElementById('profile-rank-row').innerHTML = '';
     const _soc = document.getElementById('profile-socials'); if (_soc) _soc.innerHTML = '';
@@ -1872,7 +1880,7 @@ function renderProfileHeader(data) {
     const rankIcon = getRankIcon(elo);
 
     document.getElementById('profile-name').textContent = data.nickname;
-    document.getElementById('profile-avatar').src = SKIN_HEAD(data.nickname);
+    document.getElementById('profile-avatar').src = SKIN_HEAD(data.nickname, data.uuid);
 
     const ts = d.timestamp || {};
     const lastRanked = ts.lastRanked ? timeAgo(ts.lastRanked) : null;
@@ -2456,7 +2464,7 @@ function renderProfileMatchesList(data, filter) {
         }
 
         return `<a class="profile-match-row ${rowCls}" href="${matchUrl}" target="_blank" rel="noopener" title="${seed}">
-            <img class="profile-match-avatar" src="${SKIN_HEAD(oppName)}" alt="${oppName}" onerror="this.style.opacity='0.2'" />
+            <img class="profile-match-avatar" src="${SKIN_HEAD(oppName, opponent?.uuid)}" alt="${oppName}" onerror="this.style.opacity='0.2'" />
             <span class="profile-match-opponent">${oppName}</span>
             <span class="profile-match-type ${typeCls}">${typeLabel}</span>
             <span class="profile-match-result ${rowCls}">${resultLabel}</span>
@@ -2608,7 +2616,7 @@ function renderH2HSlots() {
             </div>
             ${sel ? `
             <div class="h2h-slot-selected" id="h2h-sel-${slot}">
-                <img class="h2h-slot-selected-avatar" src="${SKIN_HEAD(sel.nickname)}" alt="${sel.nickname}" onerror="this.style.opacity='0.2'" />
+                <img class="h2h-slot-selected-avatar" src="${SKIN_HEAD(sel.nickname, sel.uuid)}" alt="${sel.nickname}" onerror="this.style.opacity='0.2'" />
                 <div class="h2h-slot-selected-info">
                     <span class="h2h-slot-selected-name">${sel.nickname}</span>
                     <span class="h2h-slot-selected-elo">${countryInfo(sel.country).flag} ${fmtNum(sel.elo || 0)} ELO</span>
@@ -2634,7 +2642,7 @@ window.h2hSearch = function(slot, query) {
     sug.innerHTML = matches.map(p => {
         const info = countryInfo(p.country);
         return `<div class="h2h-sug-item" onclick="h2hSelectPlayer(${slot},'${p.uuid}','${p.nickname.replace(/'/g,"\\'")}','${p.country}')">
-            <img src="${SKIN_HEAD(p.nickname)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
+            <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
             <span>${p.nickname}</span>
             <span class="h2h-sug-elo">${info.flag} ${fmtNum(p.eloRate||0)} elo</span>
         </div>`;
