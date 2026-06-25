@@ -438,10 +438,8 @@ const API = (typeof location !== 'undefined' && location.protocol === 'file:')
     ? 'https://mcsrranked.com/api'
     : '/api/mcsr';
 const SKIN_HEAD = (n, uuid) => {
-    if (uuid) {
-        return `https://crafatar.com/avatars/${uuid}?size=48&overlay`;
-    }
-    return `https://minotar.net/helm/${n}/48`;
+    const id = uuid || n;
+    return `https://minotar.net/helm/${id}/48`;
 };
 const SKIN_BODY = (n, uuid) => {
     const id = uuid || n;
