@@ -446,6 +446,8 @@ const SKIN_BODY = (n, uuid) => {
     return `https://nmsr.nickac.dev/fullbody/${id}?width=300`;
 };
 const BLOCKED = ['tommy21_', 'ccbrito'];
+// Restricted: stay in leaderboard but removed from live/ticker/socials + warning badge
+const RESTRICTED = ['hassan_0901'];
 
 //  lista de paises con banderas
 const COUNTRIES = {
@@ -774,6 +776,7 @@ async function loadLeaderboard() {
                 const changes = m.changes || [];
                 players.forEach(p => {
                     if (HISPANIC_CODES.includes(p.country?.toLowerCase())) {
+                        if (RESTRICTED.includes(p.nickname?.toLowerCase())) return;
                         const changeObj = changes.find(c => c.uuid === p.uuid);
                         if (changeObj && changeObj.change !== 0 && !playerChanges.has(p.nickname)) {
                             playerChanges.set(p.nickname, changeObj.change);
@@ -1192,6 +1195,8 @@ function renderActivityList(newGlobalMatches = null) {
         const users = m.players || [];
         const hasBlocked = users.some(u => BLOCKED.includes(u.nickname?.toLowerCase()));
         if (hasBlocked) return false;
+        const hasRestricted = users.some(u => RESTRICTED.includes(u.nickname?.toLowerCase()));
+        if (hasRestricted) return false;
         return users.some(u => HISPANIC_CODES.includes(u.country?.toLowerCase()));
     });
 
@@ -1199,7 +1204,9 @@ function renderActivityList(newGlobalMatches = null) {
         ...recentGlobalHisp,
         ...backgroundHispanicMatches.filter(m => {
             const users = m.players || [];
-            return !users.some(u => BLOCKED.includes(u.nickname?.toLowerCase()));
+            if (users.some(u => BLOCKED.includes(u.nickname?.toLowerCase()))) return false;
+            if (users.some(u => RESTRICTED.includes(u.nickname?.toLowerCase()))) return false;
+            return true;
         })
     ];
 
@@ -1284,6 +1291,8 @@ async function loadLiveMatch() {
             const players = m.players || [];
             const hasBlocked = players.some(p => BLOCKED.includes(p.nickname?.toLowerCase()));
             if (hasBlocked) return false;
+            const hasRestricted = players.some(p => RESTRICTED.includes(p.nickname?.toLowerCase()));
+            if (hasRestricted) return false;
             return players.some(p => HISPANIC_CODES.includes(p.country?.toLowerCase()));
         });
         if (activeHispMatches.length === 0) { setLiveNoMatch(); return; }
@@ -1901,6 +1910,17 @@ function renderProfileHeader(data) {
 
     // Socials section
     const conn = d.connections || {};
+    const socialsEl = document.getElementById('profile-socials');
+
+    const isRestricted = RESTRICTED.includes(data.nickname?.toLowerCase());
+    if (isRestricted) {
+        // Show a warning flag badge instead of socials
+        if (socialsEl) {
+            socialsEl.innerHTML = `<span class="profile-restricted-badge" title="los perfiles de este jugador se han ocultado manualmente por ser obscenos y/o tener contenido ilegal.">🚩 perfil restringido</span>`;
+        }
+        return;
+    }
+
     const socials = [];
     if (conn.twitch?.id) socials.push({
         href: `https://twitch.tv/${conn.twitch.id}`, label: conn.twitch.id, color: '#9146ff',
@@ -1922,7 +1942,6 @@ function renderProfileHeader(data) {
         });
     }
 
-    const socialsEl = document.getElementById('profile-socials');
     if (socialsEl) {
         socialsEl.innerHTML = socials.length ? socials.map(s => s.href
             ? `<a class="profile-social-link" href="${s.href}" target="_blank" rel="noopener" style="color:${s.color};">${s.icon}<span>${s.label}</span></a>`

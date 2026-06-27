@@ -3912,6 +3912,42 @@
       border-radius: 0;
     }
 
+    .profile-restricted-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: #f87171;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: help;
+      position: relative;
+    }
+    .profile-restricted-badge:hover::after {
+      content: attr(title);
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      white-space: normal;
+      max-width: 280px;
+      background: rgba(10, 16, 28, 0.97);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 6px;
+      padding: 7px 11px;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: #fca5a5;
+      z-index: 200;
+      pointer-events: none;
+      line-height: 1.5;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
     .profile-modal-info {
       flex: 1;
       min-width: 0;
