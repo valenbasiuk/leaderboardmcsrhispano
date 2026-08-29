@@ -900,6 +900,42 @@ async function chunkedPromiseAll(items, fn, chunkSize = 15) {
 }
 
 async function loadEloMovement24h() {
+    const CACHE_KEY = 'mcsr_elo_movement_24h_v1';
+    const CACHE_TTL = 5 * 60 * 1000; // 5 minutos de cache
+
+    try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Date.now() - (parsed.timestamp || 0) < CACHE_TTL && parsed.changes && parsed.matches) {
+                const changeMap = new Map(parsed.changes.map(c => [c.nickname, c.eloChange]));
+                allPlayers.forEach(p => {
+                    if (changeMap.has(p.nickname)) {
+                        p.eloChange = changeMap.get(p.nickname);
+                    }
+                });
+                backgroundHispanicMatches = parsed.matches;
+                renderActivityList(null);
+                const changedPlayers = allPlayers.filter(p => p.eloChange !== undefined && p.eloChange !== 0);
+                if (changedPlayers.length > 0) {
+                    const changes = changedPlayers.slice(0, 20).map(p => ({ player: p.nickname, change: p.eloChange }));
+                    lastCalculatedChanges = changes;
+                    const theme = document.body.dataset.theme || 'aero';
+                    renderTickerMarquee(changes, theme, true);
+                }
+                const filteredForBg = activeCountryFilter
+                    ? allPlayers.filter(p => (p.country || '').toLowerCase() === activeCountryFilter)
+                    : allPlayers;
+                renderFullTable(filteredForBg);
+                renderPodium(allPlayers.slice(0, 3));
+                renderRow4to10(allPlayers.slice(3, 10));
+                return;
+            }
+        }
+    } catch (e) {
+        // ignore sessionStorage errors
+    }
+
     // Solo top 75 para no pegarle a la API xd
     const toFetch = allPlayers.slice(0, 75);
     const matchesMap = new Map();
@@ -946,6 +982,18 @@ async function loadEloMovement24h() {
     const uniqueMatches = Array.from(matchesMap.values());
     uniqueMatches.sort((a, b) => (b.date || 0) - (a.date || 0));
     backgroundHispanicMatches = uniqueMatches;
+
+    // Guardar en sessionStorage para evitar repetir 75 requests en recargas
+    try {
+        const changesToCache = allPlayers
+            .filter(p => p.eloChange !== undefined)
+            .map(p => ({ nickname: p.nickname, eloChange: p.eloChange }));
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+            timestamp: Date.now(),
+            changes: changesToCache,
+            matches: uniqueMatches
+        }));
+    } catch (e) { }
 
     // Renderizar activity feed con los nuevos datos
     renderActivityList(null);
@@ -3080,6 +3128,40 @@ window.h2hSearch = h2hSearch;
 window.h2hSelectPlayer = h2hSelectPlayer;
 window.h2hClearSlot = h2hClearSlot;
 
+let activityIntervalId = null;
+let liveMatchIntervalId = null;
+
+function setupVisibilityHandler() {
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            document.body.classList.add('is-tab-hidden');
+            if (tickerRAF) {
+                cancelAnimationFrame(tickerRAF);
+                tickerRAF = null;
+            }
+            if (liveIntervalId) {
+                clearInterval(liveIntervalId);
+                liveIntervalId = null;
+            }
+            if (activityIntervalId) {
+                clearInterval(activityIntervalId);
+                activityIntervalId = null;
+            }
+            if (liveMatchIntervalId) {
+                clearInterval(liveMatchIntervalId);
+                liveMatchIntervalId = null;
+            }
+        } else {
+            document.body.classList.remove('is-tab-hidden');
+            startTicker();
+            loadActivity();
+            loadLiveMatch();
+            if (!activityIntervalId) activityIntervalId = setInterval(loadActivity, 60000);
+            if (!liveMatchIntervalId) liveMatchIntervalId = setInterval(loadLiveMatch, 30000);
+        }
+    });
+}
+
 // == ACA ENTRA EL DOMContentLoaded Y ARRANCA TODO ==
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -3087,12 +3169,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initBokeh();
     initMetroSpecks();
+    setupVisibilityHandler();
     window.addEventListener('resize', measureTickerWidth, { passive: true });
     loadLeaderboard();
     loadActivity();
     loadLiveMatch();
-    setInterval(loadActivity, 60000);
-    setInterval(loadLiveMatch, 30000);
+    activityIntervalId = setInterval(loadActivity, 60000);
+    liveMatchIntervalId = setInterval(loadLiveMatch, 30000);
 
     // Profile modal close handlers
     const modal = document.getElementById('profile-modal');

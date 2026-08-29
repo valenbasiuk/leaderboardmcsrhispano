@@ -4587,6 +4587,11 @@
       .profile-match-time, .profile-match-date { display: none; }
     }
 
+    /* Pausar animaciones cuando la pestaña está en segundo plano o minimizada */
+    body.is-tab-hidden * {
+      animation-play-state: paused !important;
+    }
+
   </style>
 
   <div class="bg-blob bg-blob-1"></div>

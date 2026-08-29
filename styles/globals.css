@@ -411,6 +411,11 @@ body::before {
   background: rgba(0, 160, 210, 0.6);
 }
 
+/* Pausar animaciones cuando la pestaña está en segundo plano o minimizada */
+body.is-tab-hidden * {
+  animation-play-state: paused !important;
+}
+
 /* ═══════════════════════════════════════════════════
    ACCESIBILIDAD: reduce animaciones cuando el usuario lo pide
    ═══════════════════════════════════════════════════ */
@@ -418,10 +423,6 @@ body::before {
   .bubble {
     animation: none !important;
     opacity: 0 !important;
-  }
-
-  .aurora-wave {
-    animation: none !important;
   }
 
   .aero-shine::after {
