@@ -1476,6 +1476,43 @@ let cachedTimesData = null;
 let timesFilter = 'season'; // 'season' | 'historico'
 let currentSeasonNum = null;
 
+let timesFullyLoaded = false;
+
+async function fetchPlayerTime(p, onDone) {
+    try {
+        const r = await fetch(`${API}/users/${p.uuid}`);
+        const j = r.ok ? await r.json() : null;
+        if (!j || !j.data) return null;
+        const userData = j.data;
+        const seasonBestTime = userData.statistics?.season?.bestTime?.ranked || null;
+        const totalBestTime = userData.statistics?.total?.bestTime?.ranked || null;
+
+        let totalBestTimeSeason = null;
+        if (totalBestTime) {
+            if (seasonBestTime && fmtTime(seasonBestTime) === fmtTime(totalBestTime)) {
+                totalBestTimeSeason = latestSeasonNum;
+            } else {
+                const bestTimeAch =
+                    userData.achievements?.display?.find(a => a.id === 'bestTime') ||
+                    userData.achievements?.total?.find(a => a.id === 'bestTime');
+
+                if (bestTimeAch && bestTimeAch.date) {
+                    totalBestTimeSeason = getSeasonFromTimestamp(bestTimeAch.date);
+                } else if (seasonBestTime === totalBestTime) {
+                    totalBestTimeSeason = latestSeasonNum;
+                }
+            }
+        }
+
+        if (!seasonBestTime && !totalBestTime) return null;
+        return { ...p, seasonBestTime, totalBestTime, totalBestTimeSeason };
+    } catch {
+        return null;
+    } finally {
+        if (onDone) onDone();
+    }
+}
+
 async function loadTimes() {
     const tbody = document.getElementById('times-tbody');
     if (!tbody) return;
@@ -1492,7 +1529,9 @@ async function loadTimes() {
             await loadLeaderboard();
         }
 
-        const total = allPlayers.length;
+        // Lazy: solo top-100 en la primer carga
+        const firstBatch = allPlayers.slice(0, 100);
+        const total = firstBatch.length;
         let done = 0;
 
         const showProgress = () => {
@@ -1511,43 +1550,7 @@ async function loadTimes() {
 
         showProgress();
 
-        const fetchPlayerTime = async (p) => {
-            try {
-                const r = await fetch(`${API}/users/${p.uuid}`);
-                const j = r.ok ? await r.json() : null;
-                if (!j || !j.data) return null;
-                const userData = j.data;
-                const seasonBestTime = userData.statistics?.season?.bestTime?.ranked || null;
-                const totalBestTime = userData.statistics?.total?.bestTime?.ranked || null;
-
-                let totalBestTimeSeason = null;
-                if (totalBestTime) {
-                    if (seasonBestTime && fmtTime(seasonBestTime) === fmtTime(totalBestTime)) {
-                        totalBestTimeSeason = latestSeasonNum;
-                    } else {
-                        const bestTimeAch =
-                            userData.achievements?.display?.find(a => a.id === 'bestTime') ||
-                            userData.achievements?.total?.find(a => a.id === 'bestTime');
-
-                        if (bestTimeAch && bestTimeAch.date) {
-                            totalBestTimeSeason = getSeasonFromTimestamp(bestTimeAch.date);
-                        } else if (seasonBestTime === totalBestTime) {
-                            totalBestTimeSeason = latestSeasonNum;
-                        }
-                    }
-                }
-
-                if (!seasonBestTime && !totalBestTime) return null;
-                return { ...p, seasonBestTime, totalBestTime, totalBestTimeSeason };
-            } catch {
-                return null;
-            } finally {
-                done++;
-                showProgress();
-            }
-        };
-
-        const rawResults = await chunkedPromiseAll(allPlayers, fetchPlayerTime, 12);
+        const rawResults = await chunkedPromiseAll(firstBatch, (p) => fetchPlayerTime(p, () => { done++; showProgress(); }), 12);
 
         cachedTimesData = rawResults
             .filter(r => r.status === 'fulfilled' && r.value)
@@ -1555,11 +1558,45 @@ async function loadTimes() {
 
         updateTimesSeasonLabel();
         renderTimesTable(cachedTimesData);
+
+        // Mostrar botón de cargar todos si quedan jugadores
+        if (allPlayers.length > 100) {
+            const wrap = document.getElementById('times-load-all-wrap');
+            if (wrap) wrap.style.display = '';
+        } else {
+            timesFullyLoaded = true;
+        }
     } catch (e) {
         console.warn('loadTimes error:', e);
         tbody.innerHTML = `<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);">error cargando tiempos //</td></tr>`;
     }
 }
+
+window.loadTimesAll = async function() {
+    if (timesFullyLoaded) return;
+
+    const btn = document.getElementById('times-load-all-btn');
+    const wrap = document.getElementById('times-load-all-wrap');
+    if (btn) btn.disabled = true;
+    if (btn) btn.textContent = '⏳ cargando...';
+
+    try {
+        const remaining = allPlayers.slice(100);
+        const extraResults = await chunkedPromiseAll(remaining, (p) => fetchPlayerTime(p, null), 12);
+        const extraData = extraResults
+            .filter(r => r.status === 'fulfilled' && r.value)
+            .map(r => r.value);
+
+        cachedTimesData = [...(cachedTimesData || []), ...extraData];
+        timesFullyLoaded = true;
+        if (wrap) wrap.style.display = 'none';
+        renderTimesTable(cachedTimesData);
+    } catch (e) {
+        console.warn('loadTimesAll error:', e);
+        if (btn) btn.disabled = false;
+        if (btn) btn.textContent = '🔽 cargar todos los tiempos';
+    }
+};
 
 function updateTimesSeasonLabel() {
     const el = document.getElementById('times-season-label');
@@ -1878,7 +1915,8 @@ window.openProfile = async function(uuid, nickname, country) {
     // Switch to general tab
     switchProfileTab('general');
 
-    const data = await loadProfileData(uuid, nickname, country);
+    const season = currentLeaderboardSeason || latestSeasonNum;
+    const data = await loadProfileData(uuid, nickname, country, season);
     if (!data) {
         document.getElementById('profile-meta').innerHTML = `<span style="color:#f87171;">${t('profile.error')}</span>`;
         return;
@@ -1906,13 +1944,17 @@ window.switchProfileTab = function(tab) {
     }
 };
 
-async function loadProfileData(uuid, nickname, country) {
-    if (profileCache[uuid]) return profileCache[uuid];
+async function loadProfileData(uuid, nickname, country, season) {
+    const isCurrentSeason = !season || String(season) === String(latestSeasonNum);
+    const cacheKey = `${uuid}_s${season || latestSeasonNum}`;
+    if (profileCache[cacheKey]) return profileCache[cacheKey];
     try {
+        // Para temporadas pasadas, agregar &season= al fetch de matches
+        const seasonParam = !isCurrentSeason ? `&season=${season}` : '';
         const [userRes, matchRes, rankedRes] = await Promise.all([
             fetch(`${API}/users/${uuid}`),
-            fetch(`${API}/users/${uuid}/matches?count=50`),
-            fetch(`${API}/users/${uuid}/matches?count=100&type=2`),
+            fetch(`${API}/users/${uuid}/matches?count=50${seasonParam}`),
+            fetch(`${API}/users/${uuid}/matches?count=100&type=2${seasonParam}`),
         ]);
         if (!userRes.ok) return null;
         const userJson = await userRes.json();
@@ -1931,8 +1973,33 @@ async function loadProfileData(uuid, nickname, country) {
             rankedMatches = rankedJson?.data || [];
         }
 
-        const result = { uuid, nickname: d.nickname || nickname, country: d.country || country, raw: d, matches, rankedMatches };
-        profileCache[uuid] = result;
+        // Si la API no soporta el param de season, filtrar matches por temporada usando m.season
+        if (!isCurrentSeason) {
+            const seasonNum = Number(season);
+            if (matches.length > 0 && matches[0].season !== undefined) {
+                matches = matches.filter(m => m.season === seasonNum);
+                rankedMatches = rankedMatches.filter(m => m.season === seasonNum);
+            }
+        }
+
+        // Para temporadas pasadas, usar seasonResult de esa temporada si está disponible
+        let seasonResult = d.seasonResult || {};
+        if (!isCurrentSeason && d.seasons) {
+            const pastSeason = d.seasons.find(s => String(s.number || s.season) === String(season));
+            if (pastSeason) seasonResult = pastSeason;
+        }
+
+        const result = {
+            uuid,
+            nickname: d.nickname || nickname,
+            country: d.country || country,
+            raw: { ...d, seasonResult },
+            matches,
+            rankedMatches,
+            season: season || latestSeasonNum,
+            isCurrentSeason
+        };
+        profileCache[cacheKey] = result;
         return result;
     } catch {
         return null;
@@ -1952,8 +2019,10 @@ function renderProfileHeader(data) {
 
     const ts = d.timestamp || {};
     const lastRanked = ts.lastRanked ? timeAgo(ts.lastRanked) : null;
+    const seasonBadge = data.season ? `Temporada ${data.season}` : null;
 
     const chips = [
+        seasonBadge,
         `${info.flag} ${info.name}`,
         rank ? `#${rank} global` : null,
         lastRanked ? `${t('profile.lastRanked')}: ${lastRanked}` : null,

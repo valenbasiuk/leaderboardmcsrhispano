@@ -116,8 +116,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-      font-size: 16px;
-      zoom: 1.10;
+      font-size: 17.6px;
     }
 
     @media (min-width: 1700px) {
@@ -2920,6 +2919,11 @@
       .h2h-cards-row { grid-template-columns: 1fr; }
       .h2h-divider { flex-direction: row; flex-wrap: wrap; }
       .h2h-stat-line { grid-template-columns: 1fr 120px 1fr; }
+      /* Ticker no es útil en mobile: ocupa espacio sin aportar valor en pantalla pequeña */
+      #ticker-bar { display: none !important; }
+      /* Al quitar ticker (28px), el sticky header de tabla sube al tope del navbar (52px) */
+      .lb-table th { top: 52px; }
+      body[data-theme="metro"] .lb-table th { top: 52px; }
     }
 
     /* cuadritos de creditos */
@@ -3565,11 +3569,7 @@
       /* metro ticker 28px + sticky navbar 52px */
     }
 
-    .lb-table tbody tr,
-    .times-table tbody tr {
-      content-visibility: auto;
-      contain-intrinsic-size: 0 44px;
-    }
+    /* content-visibility no aplica a <tr>, se aplicaría en tbody si hubiera scroll virtual */
 
     .lb-table td {
       padding: 10px 14px;
@@ -4909,6 +4909,12 @@
             </div>
           </div>
           <div id="times-pagination-bottom" class="pagination-controls"></div>
+          <div id="times-load-all-wrap" style="display:none;text-align:center;padding:16px 0;">
+            <button id="times-load-all-btn" onclick="loadTimesAll()"
+              style="padding:8px 22px;border-radius:20px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-main);font-size:0.8rem;cursor:pointer;letter-spacing:0.04em;backdrop-filter:blur(8px);">
+              🔽 cargar todos los tiempos
+            </button>
+          </div>
         </div>
 
         <!-- PAGE: head to head -->
