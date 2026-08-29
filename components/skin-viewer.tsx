@@ -153,8 +153,11 @@ export function SkinViewer({
           }
         }
 
-        // Shadow rendering
-        viewer.renderer.shadowMap.enabled = true
+        // Disable continuous RAF animation loop to eliminate background GPU draw calls
+        viewer.autoRender = false
+
+        // Force single high-res render of the static pose
+        viewer.render()
 
         setLoading(false)
       } catch (err) {

@@ -115,6 +115,7 @@
     @apply bg-background text-foreground font-sans min-h-screen relative overflow-x-hidden;
     font-feature-settings: "rlig" 1, "calt" 1;
     background-attachment: fixed;
+    zoom: 1.10;
   }
 }
 
