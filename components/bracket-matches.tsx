@@ -107,7 +107,7 @@ export default function BracketMatches(props: BracketMatchesProps) {
             </Card>
             <TwitchEmbed
               channel="Feinberg"
-              autoplay
+              autoplay={false}
               withChat={false}
               darkMode
               hideControls
