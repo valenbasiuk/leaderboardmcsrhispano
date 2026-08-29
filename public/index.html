@@ -237,140 +237,26 @@
     }
 
     /* EFECTOS DE FONDO (AURORAS, BLOBS, BOKEH, ETC) */
-    .aurora-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
 
-    body[data-theme="metro"] .aurora-container {
-      display: none;
-    }
 
-    .aurora-wave {
-      position: absolute;
-      width: 180%;
-      height: 180%;
-      top: -40%;
-      left: -40%;
-      filter: blur(80px);
-      mix-blend-mode: screen;
-      transform-origin: center center;
-      pointer-events: none;
-    }
-
-    @keyframes auroraShift1 {
-      0% {
-        transform: translate(-5%, -8%) rotate(-3deg) scale(1.0);
-      }
-
-      33% {
-        transform: translate(3%, 5%) rotate(6deg) scale(1.06);
-      }
-
-      66% {
-        transform: translate(-2%, 10%) rotate(-4deg) scale(0.97);
-      }
-
-      100% {
-        transform: translate(6%, -4%) rotate(8deg) scale(1.04);
-      }
-    }
-
-    @keyframes auroraShift2 {
-      0% {
-        transform: translate(5%, 4%) rotate(4deg) scale(1.02);
-      }
-
-      33% {
-        transform: translate(-4%, -6%) rotate(-8deg) scale(0.96);
-      }
-
-      66% {
-        transform: translate(8%, 2%) rotate(5deg) scale(1.08);
-      }
-
-      100% {
-        transform: translate(-3%, 8%) rotate(-6deg) scale(0.98);
-      }
-    }
-
-    @keyframes auroraShift3 {
-      0% {
-        transform: translate(0%, 0%) rotate(0deg) scale(1.0);
-      }
-
-      50% {
-        transform: translate(-6%, 12%) rotate(10deg) scale(1.05);
-      }
-
-      100% {
-        transform: translate(4%, -8%) rotate(-5deg) scale(0.95);
-      }
-    }
-
-    /* auroras de aero ODIO html WOW */
-    body:not([data-theme]) .aurora-wave.aero-aurora-1,
-    body[data-theme="aero"] .aurora-wave.aero-aurora-1 {
-      background: radial-gradient(ellipse at 18% 22%, rgba(0, 210, 255, 0.65) 0%, rgba(0, 160, 220, 0.38) 38%, transparent 68%);
-      animation: auroraShift1 20s ease-in-out infinite alternate;
-      opacity: 0.65;
-    }
-
-    body:not([data-theme]) .aurora-wave.aero-aurora-2,
-    body[data-theme="aero"] .aurora-wave.aero-aurora-2 {
-      background: radial-gradient(ellipse at 82% 78%, rgba(160, 230, 255, 0.45) 0%, rgba(0, 200, 255, 0.25) 42%, transparent 68%);
-      animation: auroraShift2 26s ease-in-out infinite alternate-reverse;
-      opacity: 0.55;
-    }
-
-    body:not([data-theme]) .aurora-wave.aero-aurora-3,
-    body[data-theme="aero"] .aurora-wave.aero-aurora-3 {
-      background: radial-gradient(ellipse at 48% 8%, rgba(255, 255, 255, 0.40) 0%, rgba(120, 210, 255, 0.20) 45%, transparent 72%);
-      animation: auroraShift3 34s ease-in-out infinite alternate;
-      opacity: 0.50;
-    }
-
-    /* auroras de leaf (verdes) */
-    body[data-theme="leaf"] .aurora-wave.leaf-aurora-1 {
-      background: radial-gradient(ellipse at 25% 45%, rgba(150, 230, 0, 0.52) 0%, rgba(100, 190, 0, 0.28) 40%, transparent 65%);
-      animation: auroraShift1 22s ease-in-out infinite alternate;
-      opacity: 0.48;
-    }
-
-    body[data-theme="leaf"] .aurora-wave.leaf-aurora-2 {
-      background: radial-gradient(ellipse at 78% 65%, rgba(210, 255, 60, 0.40) 0%, rgba(170, 240, 30, 0.20) 42%, transparent 65%);
-      animation: auroraShift2 30s ease-in-out infinite alternate-reverse;
-      opacity: 0.35;
-    }
-
-    body[data-theme="leaf"] .aurora-wave.leaf-aurora-3 {
-      background: radial-gradient(ellipse at 50% 12%, rgba(255, 255, 120, 0.25) 0%, rgba(200, 240, 0, 0.12) 42%, transparent 68%);
-      animation: auroraShift3 38s ease-in-out infinite alternate;
-      opacity: 0.28;
-    }
-
-    /* manchas de color de fondo (??????????????????) borrar despues supoongo*/
+    /* manchas de color de fondo optimizadas */
     .bg-blob {
       position: fixed;
       border-radius: 50%;
       pointer-events: none;
       z-index: 0;
-      filter: blur(60px);
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      contain: strict;
     }
 
     @keyframes blobDrift {
       from {
-        transform: translate(0, 0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
       }
 
       to {
-        transform: translate(30px, 20px) scale(1.08);
+        transform: translate3d(30px, 20px, 0) scale(1.08);
       }
     }
 
@@ -400,29 +286,29 @@
 
     body:not([data-theme]) .bg-blob-1,
     body[data-theme="aero"] .bg-blob-1 {
-      background: rgba(0, 200, 255, 0.15);
+      background: radial-gradient(circle, rgba(0, 200, 255, 0.16) 0%, rgba(0, 200, 255, 0.05) 45%, transparent 70%);
     }
 
     body:not([data-theme]) .bg-blob-2,
     body[data-theme="aero"] .bg-blob-2 {
-      background: rgba(0, 170, 240, 0.12);
+      background: radial-gradient(circle, rgba(0, 170, 240, 0.14) 0%, rgba(0, 170, 240, 0.04) 45%, transparent 70%);
     }
 
     body:not([data-theme]) .bg-blob-3,
     body[data-theme="aero"] .bg-blob-3 {
-      background: rgba(80, 210, 255, 0.10);
+      background: radial-gradient(circle, rgba(80, 210, 255, 0.12) 0%, rgba(80, 210, 255, 0.03) 45%, transparent 70%);
     }
 
     body[data-theme="leaf"] .bg-blob-1 {
-      background: rgba(190, 240, 50, 0.18);
+      background: radial-gradient(circle, rgba(190, 240, 50, 0.20) 0%, rgba(190, 240, 50, 0.05) 45%, transparent 70%);
     }
 
     body[data-theme="leaf"] .bg-blob-2 {
-      background: rgba(110, 190, 0, 0.14);
+      background: radial-gradient(circle, rgba(110, 190, 0, 0.16) 0%, rgba(110, 190, 0, 0.04) 45%, transparent 70%);
     }
 
     body[data-theme="leaf"] .bg-blob-3 {
-      background: rgba(150, 220, 20, 0.12);
+      background: radial-gradient(circle, rgba(150, 220, 20, 0.14) 0%, rgba(150, 220, 20, 0.03) 45%, transparent 70%);
     }
 
     body[data-theme="metro"] .bg-blob {
@@ -438,6 +324,7 @@
       height: 400px;
       pointer-events: none;
       z-index: 0;
+      contain: strict;
     }
 
     body:not([data-theme]) .bg-lens,
@@ -460,6 +347,7 @@
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
+      contain: strict;
     }
 
     .bokeh {
@@ -467,11 +355,14 @@
       border-radius: 50%;
       animation: bokehFloat linear infinite;
       opacity: 0.18;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      contain: strict;
     }
 
     @keyframes bokehFloat {
       from {
-        transform: translateY(110vh) scale(0.8);
+        transform: translate3d(0, 110vh, 0) scale(0.8);
         opacity: 0;
       }
 
@@ -484,7 +375,7 @@
       }
 
       to {
-        transform: translateY(-10vh) scale(1.2);
+        transform: translate3d(0, -10vh, 0) scale(1.2);
         opacity: 0;
       }
     }
@@ -4696,12 +4587,7 @@
     }
 
   </style>
-  <!--
-  <div class="aurora-container">
-    <div class="aurora-wave aero-aurora-2 leaf-aurora-2" id="aurora-2"></div>
-    <div class="aurora-wave aero-aurora-3 leaf-aurora-3" id="aurora-3"></div>
-  </div>
-  -->
+
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
   <div class="bg-blob bg-blob-3"></div>

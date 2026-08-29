@@ -181,122 +181,12 @@ body::before {
       transparent 100%);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   AURORA WAVE ANIMATION — Enhanced fluid movement
-   ═══════════════════════════════════════════════════════════════ */
 
-/* ─────────────────────────────────────────────────────────────
-   AURORA KEYFRAMES — ONLY vertical movement + scale from center
-   ZERO horizontal translate → left edge NEVER clips
-   ───────────────────────────────────────────────────────────── */
-
-@keyframes auroraWave1 {
-  0% {
-    transform: scaleX(1.00) scaleY(1.00) translateY(0%);
-  }
-
-  20% {
-    transform: scaleX(1.04) scaleY(1.12) translateY(-4%);
-  }
-
-  45% {
-    transform: scaleX(0.97) scaleY(0.90) translateY(3%);
-  }
-
-  70% {
-    transform: scaleX(1.05) scaleY(1.08) translateY(-2%);
-  }
-
-  100% {
-    transform: scaleX(1.00) scaleY(1.00) translateY(0%);
-  }
-}
-
-@keyframes auroraWave2 {
-  0% {
-    transform: scaleX(1.00) scaleY(1.00) translateY(0%);
-  }
-
-  30% {
-    transform: scaleX(1.06) scaleY(1.15) translateY(5%);
-  }
-
-  60% {
-    transform: scaleX(0.95) scaleY(0.88) translateY(-4%);
-  }
-
-  100% {
-    transform: scaleX(1.00) scaleY(1.00) translateY(0%);
-  }
-}
-
-@keyframes auroraWave3 {
-  0% {
-    transform: scaleX(1.00) scaleY(1.00) translateY(0%);
-  }
-
-  25% {
-    transform: scaleX(1.03) scaleY(1.10) translateY(3%);
-  }
-
-  55% {
-    transform: scaleX(0.98) scaleY(0.92) translateY(-3%);
-  }
-
-  80% {
-    transform: scaleX(1.04) scaleY(1.05) translateY(2%);
-  }
-
-  100% {
-    transform: scaleX(1.00) scaleY(1.00) translateY(0%);
-  }
-}
-
-/* Container: left:0 right:0 width:100% + overflow:hidden
-   The SVG always fills 100% — scaling never exposes edges */
-.aurora-wave {
-  position: fixed;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  z-index: -6;
-  overflow: hidden;
-  /* safe now — no horizontal translation */
-  transform-origin: center center;
-}
-
-.aurora-wave svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform-origin: center center;
-}
-
-.aurora-wave-1 {
-  top: -8%;
-  width: 100%;
-  height: 65%;
-  animation: auroraWave1 18s ease-in-out infinite;
-}
-
-.aurora-wave-2 {
-  top: 25%;
-  width: 100%;
-  height: 55%;
-  animation: auroraWave2 26s ease-in-out infinite;
-}
-
-.aurora-wave-3 {
-  bottom: -12%;
-  width: 100%;
-  height: 60%;
-  animation: auroraWave3 14s ease-in-out infinite;
-}
 
 /* animacion de las burbujitas */
 @keyframes bubbleFloat {
   0% {
-    transform: translateY(100vh) scale(0.6);
+    transform: translate3d(0, 100vh, 0) scale(0.6);
     opacity: 0;
   }
 
@@ -309,20 +199,8 @@ body::before {
   }
 
   100% {
-    transform: translateY(-12vh) scale(1.3);
+    transform: translate3d(0, -12vh, 0) scale(1.3);
     opacity: 0;
-  }
-}
-
-@keyframes bubbleSway {
-
-  0%,
-  100% {
-    margin-left: 0;
-  }
-
-  50% {
-    margin-left: 22px;
   }
 }
 
@@ -331,8 +209,10 @@ body::before {
   border-radius: 50%;
   pointer-events: none;
   z-index: -5;
-  animation: bubbleFloat var(--duration, 18s) infinite linear var(--delay, 0s),
-    bubbleSway calc(var(--duration, 18s) * 0.4) infinite ease-in-out var(--delay, 0s);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  contain: strict;
+  animation: bubbleFloat var(--duration, 18s) infinite linear var(--delay, 0s);
   /* Enhanced Aero water bubble with stronger specular reflection */
   background:
     radial-gradient(circle at 28% 24%,
@@ -342,7 +222,6 @@ body::before {
       rgba(100, 200, 240, 0.18) 60%,
       transparent 100%);
   border: 1.5px solid rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(3px);
   box-shadow:
     inset 0 -4px 8px rgba(100, 200, 255, 0.15),
     inset 0 2px 4px rgba(255, 255, 255, 0.7),
