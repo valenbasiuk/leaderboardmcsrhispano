@@ -588,26 +588,35 @@ function getEloChangeHTML(p, extraStyle) {
     return `<span class="elo-change ${cls}"${style}>${arrow} ${change > 0 ? '+' : ''}${change}</span>`;
 }
 
-// === EL TICKER DE ARRIBA (NO TOCAR X FAVOR) ===
+// === EL TICKER DE ARRIBA (OPTIMIZADO CERO-REFLOW) ===
 let tickerX = 0, tickerRAF = null, lastTickerTime = null, tickerHalfWidth = 0;
 let lastCalculatedChanges = [];
 const TICKER_PX_SEC = 55;
+
+function measureTickerWidth() {
+    const track = document.getElementById('ticker-track');
+    if (track) {
+        tickerHalfWidth = track.scrollWidth / 2;
+    }
+}
 
 function startTicker() {
     const track = document.getElementById('ticker-track');
     if (!track) return;
     if (tickerRAF) { cancelAnimationFrame(tickerRAF); tickerRAF = null; }
     lastTickerTime = null;
+    if (!tickerHalfWidth) {
+        tickerHalfWidth = track.scrollWidth / 2;
+    }
     function step(ts) {
         if (lastTickerTime === null) lastTickerTime = ts;
         const dt = Math.min(ts - lastTickerTime, 80);
         lastTickerTime = ts;
         tickerX -= (TICKER_PX_SEC * dt) / 1000;
-        tickerHalfWidth = track.scrollWidth / 2;
         if (tickerHalfWidth > 0 && tickerX <= -tickerHalfWidth) {
             tickerX += tickerHalfWidth;
         }
-        track.style.transform = `translateX(${tickerX}px)`;
+        track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
         tickerRAF = requestAnimationFrame(step);
     }
     tickerRAF = requestAnimationFrame(step);
@@ -631,8 +640,11 @@ function renderTickerMarquee(changes, theme, preserveScroll = false) {
         const repeatCount = Math.max(2, Math.ceil(20 / (changes.length || 1)));
         const repeated = items.repeat(repeatCount);
         track.innerHTML = repeated + repeated;
+        // Medir ancho una sola vez al mutar HTML (fuera del RAF loop)
+        tickerHalfWidth = track.scrollWidth / 2;
     } else {
         track.innerHTML = '';
+        tickerHalfWidth = 0;
     }
 
     if (!preserveScroll) {
@@ -1048,7 +1060,7 @@ function renderRow4to10(players) {
     });
 }
 
-// ==== LA TABLA COMPLETA DE ABAJO (con paginado) ====
+// ==== LA TABLA COMPLETA DE ABAJO (con paginado optimizado) ====
 function renderFullTable(players) {
     const totalPages = Math.ceil(players.length / PAGE_SIZE);
     if (currentLbPage > totalPages) currentLbPage = 1;
@@ -1058,39 +1070,40 @@ function renderFullTable(players) {
 
     const tbody = document.getElementById('lb-tbody');
     if (!tbody) return;
-    tbody.innerHTML = '';
-    slice.forEach((p, i) => {
+
+    tbody.innerHTML = slice.map((p, i) => {
         const info = countryInfo(p.country);
         const elo = p.eloRate || 0;
         const rankName = getRankName(elo);
         const rankNum = start + i + 1;
         const phase = p.seasonResult?.phasePoint ?? 0;
         const rankCls = rankNum === 1 ? 'lb-rank top1' : rankNum === 2 ? 'lb-rank top2' : rankNum === 3 ? 'lb-rank top3' : 'lb-rank';
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-      <td><span class="${rankCls}">${rankNum}</span></td>
-      <td>
-        <div class="lb-player">
-          <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
-          <span class="lb-player-name">${p.nickname}</span>
-          ${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : ''}
-        </div>
-      </td>
-      <td><span class="lb-country">${info.flag} ${info.name}</span></td>
-      <td>
-        <span class="lb-elo">${fmtNum(elo)}</span>
-        ${getEloChangeHTML(p, 'font-size:0.7rem;margin-left:6px;')}
-      </td>
-      <td>
-        <span class="lb-rank-badge" style="display:inline-flex;align-items:center;gap:4px;">
-          <img src="${getRankIcon(elo)}" alt="${rankName}" style="width:20px;height:20px;image-rendering:pixelated;" />
-          <span>${rankName}</span>
-        </span>
-      </td>
-      <td>${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : '<span style="color:var(--text-muted);font-size:0.72rem;">--</span>'}</td>
+
+        return `
+      <tr>
+        <td><span class="${rankCls}">${rankNum}</span></td>
+        <td>
+          <div class="lb-player">
+            <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" decoding="async" onerror="this.style.opacity='0.2'" />
+            <span class="lb-player-name">${p.nickname}</span>
+            ${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : ''}
+          </div>
+        </td>
+        <td><span class="lb-country">${info.flag} ${info.name}</span></td>
+        <td>
+          <span class="lb-elo">${fmtNum(elo)}</span>
+          ${getEloChangeHTML(p, 'font-size:0.7rem;margin-left:6px;')}
+        </td>
+        <td>
+          <span class="lb-rank-badge" style="display:inline-flex;align-items:center;gap:4px;">
+            <img src="${getRankIcon(elo)}" alt="${rankName}" style="width:20px;height:20px;image-rendering:pixelated;" decoding="async" />
+            <span>${rankName}</span>
+          </span>
+        </td>
+        <td>${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : '<span style="color:var(--text-muted);font-size:0.72rem;">--</span>'}</td>
+      </tr>
     `;
-        tbody.appendChild(tr);
-    });
+    }).join('');
 
     renderPaginationControls(
         'lb-pagination-top',
@@ -3074,6 +3087,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initBokeh();
     initMetroSpecks();
+    window.addEventListener('resize', measureTickerWidth, { passive: true });
     loadLeaderboard();
     loadActivity();
     loadLiveMatch();
