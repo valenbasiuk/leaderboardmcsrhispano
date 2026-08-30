@@ -658,8 +658,8 @@ let allPlayers = [];
 let lastFetchedGlobalMatches = [];
 let backgroundHispanicMatches = [];
 
-let currentLeaderboardSeason = '11'; // default/current season
-let latestSeasonNum = 11; // the actual current season number
+let currentLeaderboardSeason = '12'; // default/current season
+let latestSeasonNum = 12; // the actual current season number
 let activeCountryFilter = ''; // filtro de pais activo ('' = todos)
 
 // ==================== PAGINACION ====================
@@ -1803,6 +1803,7 @@ function getSeasonFromTimestamp(ts) {
         { season: 9, start: 1755734400 }, // 2025-08-21
         { season: 10, start: 1767312000 }, // 2026-01-02
         { season: 11, start: 1777507200 }, // 2026-04-30
+        { season: 12, start: 1788048000 }, // 2026-08-30 (Season 12)
     ];
     for (let i = seasonStarts.length - 1; i >= 0; i--) {
         if (ts >= seasonStarts[i].start) {
