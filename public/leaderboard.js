@@ -663,7 +663,7 @@ let latestSeasonNum = 12; // the actual current season number
 let activeCountryFilter = ''; // filtro de pais activo ('' = todos)
 
 // ==================== PAGINACION ====================
-const PAGE_SIZE = 100;
+const PAGE_SIZE = 50;
 let currentLbPage = 1;
 let currentTimesPage = 1;
 
@@ -1047,7 +1047,7 @@ function renderPodium(players) {
         <img src="${SKIN_BODY(p.nickname, p.uuid)}" alt="skin de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.25'" style="max-height:200px; max-width:100%; width:auto; height:auto; object-fit:contain;" />
       </div>
       <div class="podium-info">
-        <div class="podium-name">${p.nickname}</div>
+        <div class="podium-name clickable" data-uuid="${p.uuid}" data-nickname="${p.nickname}" data-country="${p.country}">${p.nickname}</div>
         <div class="podium-country-label">${info.flag} ${info.name}</div>
         <div>
           <span class="podium-elo">${fmtNum(elo)}</span>
@@ -1093,7 +1093,7 @@ function renderRow4to10(players) {
         <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="avatar de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
         <div class="mini-flag-badge" aria-label="${info.name}">${info.flag}</div>
       </div>
-      <div class="mini-name">${p.nickname}</div>
+      <div class="mini-name clickable" data-uuid="${p.uuid}" data-nickname="${p.nickname}" data-country="${p.country}">${p.nickname}</div>
       <div class="mini-elo">
         ${fmtNum(elo)}
         ${getEloChangeHTML(p, 'display:block;font-size:0.72rem;margin-top:2px;')}
@@ -1133,7 +1133,7 @@ function renderFullTable(players) {
         <td>
           <div class="lb-player">
             <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" decoding="async" onerror="this.style.opacity='0.2'" />
-            <span class="lb-player-name">${p.nickname}</span>
+            <span class="lb-player-name clickable" data-uuid="${p.uuid}" data-nickname="${p.nickname}" data-country="${p.country}">${p.nickname}</span>
             ${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : ''}
           </div>
         </td>
@@ -2658,52 +2658,21 @@ function closeProfile() {
 // MAKE PLAYER NAMES CLICKABLE (lb table + mini-cards + podium)
 // =====================================================
 
-// Patch renderFullTable to make names clickable
-const _origRenderFullTable = renderFullTable;
-window.renderFullTable = function(players) {
-    _origRenderFullTable(players);
-    document.querySelectorAll('#lb-tbody .lb-player-name').forEach(el => {
-        el.classList.add('clickable');
-        el.addEventListener('click', (e) => {
+// =====================================================
+// DELEGATED PLAYER CLICK HANDLERS (Zero-overhead O(1))
+// =====================================================
+function initPlayerClickDelegation() {
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest('.clickable[data-uuid]');
+        if (target) {
             e.stopPropagation();
-            const p = players.find(pl => pl.nickname === el.textContent.trim());
-            if (p) openProfile(p.uuid, p.nickname, p.country);
-        });
-    });
-};
-
-// Patch renderRow4to10 to make names clickable
-const _origRenderRow4to10 = renderRow4to10;
-window.renderRow4to10 = function(players) {
-    _origRenderRow4to10(players);
-    document.querySelectorAll('#row-scroll-inner .mini-name').forEach((el, i) => {
-        el.classList.add('clickable');
-        const p = players[i];
-        if (p) {
-            el.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openProfile(p.uuid, p.nickname, p.country);
-            });
+            const uuid = target.dataset.uuid;
+            const nickname = target.dataset.nickname || target.textContent.trim();
+            const country = target.dataset.country || '';
+            if (uuid) openProfile(uuid, nickname, country);
         }
     });
-};
-
-// Patch renderPodium to make names clickable
-const _origRenderPodium = renderPodium;
-window.renderPodium = function(players) {
-    _origRenderPodium(players);
-    document.querySelectorAll('#podium .podium-name').forEach(el => {
-        el.classList.add('clickable');
-        const nick = el.textContent.trim();
-        const p = players.find(pl => pl.nickname === nick);
-        if (p) {
-            el.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openProfile(p.uuid, p.nickname, p.country);
-            });
-        }
-    });
-};
+}
 
 // =====================================================
 // HEAD TO HEAD — multi-player comparator (1-10)
@@ -3239,6 +3208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initBokeh();
     initMetroSpecks();
+    initPlayerClickDelegation();
     setupVisibilityHandler();
     window.addEventListener('resize', measureTickerWidth, { passive: true });
     loadLeaderboard();
