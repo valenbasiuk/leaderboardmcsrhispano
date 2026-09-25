@@ -4,5 +4,5 @@
  */
 export const BANNED_PLAYERS: string[] = [
   "tommy21_",
-  "looting_1",
+  "Looting_I",
 ]
