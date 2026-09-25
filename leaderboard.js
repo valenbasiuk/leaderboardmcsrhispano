@@ -445,7 +445,7 @@ const SKIN_BODY = (n, uuid) => {
     const id = uuid || n;
     return `https://nmsr.nickac.dev/fullbody/${id}?width=300`;
 };
-const BLOCKED = ['tommy21_', 'ccbrito'];
+const BLOCKED = ['tommy21_', 'ccbrito', 'looting_i', 'looting_1', 'looting_l'];
 // Restricted: stay in leaderboard but removed from live/ticker/socials + warning badge
 const RESTRICTED = ['hassan_0901'];
 
