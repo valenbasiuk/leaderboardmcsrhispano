@@ -599,9 +599,8 @@ function getEloChangeHTML(p, extraStyle) {
 
 // actualiza los badges de elo ya renderizados (podio, top 4-10, tabla) sin recrear las cards ni recargar las skins
 function patchEloBadges() {
-    const byUuid = new Map(allPlayers.map(p => [p.uuid, p]));
     document.querySelectorAll('.elo-change[data-elo-uuid]').forEach(el => {
-        const p = byUuid.get(el.dataset.eloUuid);
+        const p = playerByUuid(el.dataset.eloUuid);
         if (!p) return;
         const change = eloChangeValue(p);
         if (change === 0) {
@@ -682,6 +681,15 @@ function renderTickerMarquee(changes, theme, preserveScroll = false) {
 
 // ==================== CARGA DE DATOS DE LA API ====================
 let allPlayers = [];
+// indice uuid -> jugador, se reconstruye solo cuando allPlayers cambia de referencia
+let _playerMap = null, _playerMapSrc = null;
+function playerByUuid(uuid) {
+    if (_playerMapSrc !== allPlayers) {
+        _playerMap = new Map(allPlayers.map(p => [p.uuid, p]));
+        _playerMapSrc = allPlayers;
+    }
+    return _playerMap.get(uuid);
+}
 let lastFetchedGlobalMatches = [];
 let backgroundHispanicMatches = [];
 
@@ -1183,7 +1191,13 @@ function renderFullTable(players) {
 const searchInput = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');
 
+let searchDebounce = null;
 searchInput.addEventListener('input', () => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(runSearch, 120);
+});
+
+function runSearch() {
     const q = searchInput.value.trim().toLowerCase();
     if (!q || !allPlayers.length) { searchResults.innerHTML = ''; searchResults.classList.remove('open'); return; }
     const matches = allPlayers.filter(p => p.nickname.toLowerCase().includes(q)).slice(0, 8);
@@ -1196,7 +1210,7 @@ searchInput.addEventListener('input', () => {
     </div>
   `).join('');
     searchResults.classList.add('open');
-});
+}
 
 searchResults.addEventListener('click', e => {
     const item = e.target.closest('.search-result-item');
@@ -1387,7 +1401,7 @@ async function loadLiveMatch() {
                 return Math.max(...players
                     .filter(p => HISPANIC_CODES.includes(p.country?.toLowerCase()))
                     .map(p => {
-                        const found = allPlayers.find(ap => ap.uuid === p.uuid);
+                        const found = playerByUuid(p.uuid);
                         return found?.eloRate || 0;
                     })
                 );
@@ -1404,8 +1418,8 @@ async function loadLiveMatch() {
         const mp2 = mainPlayers[1] || { nickname: '--' };
 
         // Obtener ELO de los jugadores del match principal desde allPlayers
-        const mp1Data = allPlayers.find(p => p.uuid === mp1.uuid);
-        const mp2Data = allPlayers.find(p => p.uuid === mp2.uuid);
+        const mp1Data = playerByUuid(mp1.uuid);
+        const mp2Data = playerByUuid(mp2.uuid);
         const mp1Elo = mp1Data?.eloRate ? `<span style="font-size:0.72rem;opacity:0.75;margin-left:3px;">[${fmtNum(mp1Data.eloRate)}]</span>` : '';
         const mp2Elo = mp2Data?.eloRate ? `<span style="font-size:0.72rem;opacity:0.75;margin-right:3px;">[${fmtNum(mp2Data.eloRate)}]</span>` : '';
 
@@ -1441,8 +1455,8 @@ async function loadLiveMatch() {
                 const p2LiveSub = m.data?.[p2.uuid]?.liveUrl;
                 const subInfo1 = countryInfo(p1.country);
                 const subInfo2 = countryInfo(p2.country);
-                const p1sub = allPlayers.find(ap => ap.uuid === p1.uuid);
-                const p2sub = allPlayers.find(ap => ap.uuid === p2.uuid);
+                const p1sub = playerByUuid(p1.uuid);
+                const p2sub = playerByUuid(p2.uuid);
                 const p1SubElo = p1sub?.eloRate ? ` [${fmtNum(p1sub.eloRate)}]` : '';
                 const p2SubElo = p2sub?.eloRate ? ` [${fmtNum(p2sub.eloRate)}]` : '';
 
@@ -2806,7 +2820,7 @@ window.h2hSearch = function(slot, query) {
 };
 
 window.h2hSelectPlayer = async function(slot, uuid, nickname, country) {
-    const pObj = allPlayers.find(p => p.uuid === uuid) || {};
+    const pObj = playerByUuid(uuid) || {};
     const elo = pObj.eloRate || 0;
     h2hSelected[slot] = { uuid, nickname, country, elo };
     renderH2HSlots();
