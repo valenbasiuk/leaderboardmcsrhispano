@@ -728,43 +728,6 @@
       border-color: #00CC00;
     }
 
-    .perf-btn.perf-on {
-      color: var(--text-main);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent) inset;
-    }
-
-    /* MODO RENDIMIENTO: sin backdrop-filter, sin animaciones, sin capas decorativas */
-    body.perf-lite *,
-    body.perf-lite *::before,
-    body.perf-lite *::after {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-      animation: none !important;
-      transition: none !important;
-    }
-
-    body.perf-lite .bg-blob,
-    body.perf-lite .bg-lens,
-    body.perf-lite .bokeh-wrap,
-    body.perf-lite .leaf-bg-elements,
-    body.perf-lite #metro-bg-layer {
-      display: none !important;
-    }
-
-    body.perf-lite .glass {
-      background: var(--glass-bg-solid, rgba(20, 30, 20, 0.82));
-    }
-
-    body[data-theme="metro"].perf-lite .glass {
-      background: #141414;
-    }
-
-    body[data-theme="aero"].perf-lite .glass,
-    body:not([data-theme]).perf-lite .glass {
-      background: rgba(225, 242, 255, 0.78);
-    }
-
     /* anulaciones para el boton activo */
     .theme-btn[data-theme="aero"].active {
       background: linear-gradient(180deg, #55b8ee 0%, #1177bb 100%) !important;
@@ -4715,8 +4678,6 @@
         <button class="theme-btn" data-theme="leaf" aria-label="tema leaf">leaf</button>
         <button class="theme-btn active" data-theme="aero" aria-label="tema aero">aero</button>
         <button class="theme-btn" data-theme="metro" aria-label="tema metro">metro</button>
-        <button class="theme-btn perf-btn" id="perf-toggle" aria-pressed="false"
-          title="modo rendimiento: sin blur ni animaciones (util si jugas con la web abierta)">⚡ lite</button>
       </div>
       <div class="lang-dropdown" id="lang-dropdown">
         <button class="lang-current-btn" id="lang-current-btn" onclick="toggleLangDropdown()" aria-haspopup="listbox">
