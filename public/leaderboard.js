@@ -412,11 +412,6 @@ function initLanguage() {
     document.querySelectorAll('.lang-option').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === currentLang);
     });
-    // Fix logo path: relative works for both file:// and served
-    const logoImg = document.getElementById('nav-logo-img');
-    if (logoImg) {
-        logoImg.src = (location.protocol === 'file:') ? 'public/mcsrrankedhispana.png' : '/mcsrrankedhispana.png';
-    }
     // Close dropdown when clicking outside
     document.addEventListener('click', e => {
         const dd = document.getElementById('lang-dropdown');
@@ -3254,7 +3249,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initBokeh();
     initPlayerClickDelegation();
     setupVisibilityHandler();
-    window.addEventListener('resize', measureTickerWidth, { passive: true });
+    // re-medir el ticker solo cuando termina el resize (scrollWidth fuerza layout)
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(measureTickerWidth, 200);
+    }, { passive: true });
     loadLeaderboard();
     loadActivity();
     loadLiveMatch();
