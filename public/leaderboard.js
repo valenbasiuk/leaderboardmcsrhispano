@@ -432,9 +432,19 @@ window.pickLang = pickLang;
 const API = (typeof location !== 'undefined' && location.protocol === 'file:')
     ? 'https://mcsrranked.com/api'
     : '/api/mcsr';
+// expone devicePixelRatio como --dpr para que .skin-head redondee a pixeles reales de pantalla
+function syncDpr() {
+    const dpr = window.devicePixelRatio || 1;
+    document.documentElement.style.setProperty('--dpr', String(dpr));
+    // matchMedia avisa cuando cambia la resolucion (zoom del navegador, otro monitor, escala de windows)
+    window.matchMedia(`(resolution: ${dpr}dppx)`).addEventListener('change', syncDpr, { once: true });
+}
+syncDpr();
+
 const SKIN_HEAD = (n, uuid) => {
     const id = uuid || n;
-    return `https://minotar.net/helm/${id}/48`;
+    // 8 = resolucion nativa de la cara: el navegador la agranda con pixelated a un multiplo exacto (ver .skin-head)
+    return `https://minotar.net/helm/${id}/8`;
 };
 const SKIN_BODY = (n, uuid) => {
     const id = uuid || n;
@@ -1116,7 +1126,7 @@ function renderRow4to10(players) {
         card.innerHTML = `
       <div class="mini-badge-rank" aria-hidden="true">#${rankNum}</div>
       <div class="mini-skin-wrap">
-        <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="avatar de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
+        <img class="skin-head" src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="avatar de ${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
         <div class="mini-flag-badge" aria-label="${info.name}">${info.flag}</div>
       </div>
       <div class="mini-name clickable" data-uuid="${p.uuid}" data-nickname="${p.nickname}" data-country="${p.country}">${p.nickname}</div>
@@ -1158,7 +1168,7 @@ function renderFullTable(players) {
         <td><span class="${rankCls}">${rankNum}</span></td>
         <td>
           <div class="lb-player">
-            <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" decoding="async" onerror="this.style.opacity='0.2'" />
+            <img class="skin-head" src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" decoding="async" onerror="this.style.opacity='0.2'" />
             <span class="lb-player-name clickable" data-uuid="${p.uuid}" data-nickname="${p.nickname}" data-country="${p.country}">${p.nickname}</span>
             ${phase > 0 ? `<span class="lb-phase">${phase} pts</span>` : ''}
           </div>
@@ -1205,7 +1215,7 @@ function runSearch() {
     if (!matches.length) { searchResults.innerHTML = ''; searchResults.classList.remove('open'); return; }
     searchResults.innerHTML = matches.map(p => `
     <div class="search-result-item" tabindex="0" role="option" data-nick="${p.nickname}">
-      <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
+      <img class="skin-head" src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
       <span class="search-result-name">${p.nickname}</span>
       <span class="search-result-elo">${fmtNum(p.eloRate || 0)} elo</span>
     </div>
@@ -1732,7 +1742,7 @@ function renderTimesTable(players) {
         <td><span class="lb-rank">${start + i + 1}</span></td>
         <td>
           <div class="lb-player">
-            <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
+            <img class="skin-head" src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" loading="lazy" onerror="this.style.opacity='0.2'" />
             <span class="lb-player-name">${p.nickname}</span>
           </div>
         </td>
@@ -2649,7 +2659,7 @@ function renderProfileMatchesList(data, filter) {
         }
 
         return `<a class="profile-match-row ${rowCls}" href="${matchUrl}" target="_blank" rel="noopener" title="${seed}">
-            <img class="profile-match-avatar" src="${SKIN_HEAD(oppName, opponent?.uuid)}" alt="${oppName}" onerror="this.style.opacity='0.2'" />
+            <img class="profile-match-avatar skin-head" src="${SKIN_HEAD(oppName, opponent?.uuid)}" alt="${oppName}" onerror="this.style.opacity='0.2'" />
             <span class="profile-match-opponent">${oppName}</span>
             <span class="profile-match-type ${typeCls}">${typeLabel}</span>
             <span class="profile-match-result ${rowCls}">${resultLabel}</span>
@@ -2770,7 +2780,7 @@ function renderH2HSlots() {
             </div>
             ${sel ? `
             <div class="h2h-slot-selected" id="h2h-sel-${slot}">
-                <img class="h2h-slot-selected-avatar" src="${SKIN_HEAD(sel.nickname, sel.uuid)}" alt="${sel.nickname}" onerror="this.style.opacity='0.2'" />
+                <img class="h2h-slot-selected-avatar skin-head" src="${SKIN_HEAD(sel.nickname, sel.uuid)}" alt="${sel.nickname}" onerror="this.style.opacity='0.2'" />
                 <div class="h2h-slot-selected-info">
                     <span class="h2h-slot-selected-name">${sel.nickname}</span>
                     <span class="h2h-slot-selected-elo">${countryInfo(sel.country).flag} ${fmtNum(sel.elo || 0)} ELO</span>
@@ -2796,7 +2806,7 @@ window.h2hSearch = function(slot, query) {
     sug.innerHTML = matches.map(p => {
         const info = countryInfo(p.country);
         return `<div class="h2h-sug-item" onclick="h2hSelectPlayer(${slot},'${p.uuid}','${p.nickname.replace(/'/g,"\\'")}','${p.country}')">
-            <img src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
+            <img class="skin-head" src="${SKIN_HEAD(p.nickname, p.uuid)}" alt="${p.nickname}" onerror="this.style.opacity='0.2'" />
             <span>${p.nickname}</span>
             <span class="h2h-sug-elo">${info.flag} ${fmtNum(p.eloRate||0)} elo</span>
         </div>`;
