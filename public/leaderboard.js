@@ -1372,6 +1372,8 @@ async function loadActivity() {
 
 // WIDGET DE PARTIDAS EN VIVO (Tremendo quilombo hacer esto)
 let liveIntervalId = null;
+let liveSignature = null;   // firma de las partidas ya dibujadas
+let liveActive = [];        // partidas que lee el timer de 1s
 
 async function loadLiveMatch() {
     try {
@@ -1408,6 +1410,15 @@ async function loadLiveMatch() {
             };
             return getMaxElo(b) - getMaxElo(a);
         });
+
+        // si las partidas son las mismas, no reconstruyo el widget: solo resincronizo los timers
+        const sig = activeHispMatches.map(m => m.matchKey).join('|') + '#' + (allPlayers.length ? 1 : 0);
+        if (sig === liveSignature && liveIntervalId) {
+            liveActive = activeHispMatches;
+            return;
+        }
+        liveSignature = sig;
+        liveActive = activeHispMatches;
 
         const widgetBody = document.querySelector('.live-body');
         if (!widgetBody) return;
@@ -1480,7 +1491,7 @@ async function loadLiveMatch() {
         if (liveIntervalId) clearInterval(liveIntervalId);
         if (appPaused) return;
         liveIntervalId = setInterval(() => {
-            activeHispMatches.forEach((m, idx) => {
+            liveActive.forEach((m, idx) => {
                 const elapsed = Math.max(0, Date.now() - m.startTime);
                 const displayTime = fmtTime(elapsed);
                 if (idx === 0) {
@@ -1498,6 +1509,10 @@ async function loadLiveMatch() {
 function setLiveNoMatch() {
     const body = document.querySelector('.live-body');
     if (!body) return;
+    if (liveIntervalId) { clearInterval(liveIntervalId); liveIntervalId = null; }
+    liveActive = [];
+    if (liveSignature === 'none') return;
+    liveSignature = 'none';
     body.innerHTML = `<div class="live-no-match">${t('live.noMatch')}</div>`;
 }
 
