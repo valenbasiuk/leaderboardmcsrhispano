@@ -180,8 +180,8 @@
     /* PANELES VIDRIO (AERO / LEAF) Y SOLIDOS (METRO) */
     .glass {
       background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       border-radius: var(--border-radius-panel);
@@ -482,8 +482,8 @@
     /* BARRA DE NAVEGACION (MENU) */
     #navbar {
       background: var(--nav-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-bottom: 2px solid rgba(140, 200, 240, 0.60);
       border-top: 1px solid rgba(255, 255, 255, 0.90);
       box-shadow: 0 2px 8px rgba(0, 80, 160, 0.15);
@@ -498,8 +498,8 @@
     }
 
     body[data-theme="leaf"] #navbar {
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(160, 220, 40, 0.35);
       border-top: 1px solid rgba(220, 255, 100, 0.20);
       box-shadow: none;
@@ -1130,8 +1130,8 @@
       align-items: center;
       border-radius: var(--border-radius-panel);
       background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       overflow: visible;
@@ -1253,7 +1253,6 @@
       border: 1px solid var(--glass-border);
       color: var(--text-main);
       z-index: 5;
-      backdrop-filter: blur(8px);
     }
 
     .podium-rank-badge.r1 {
@@ -1423,7 +1422,6 @@
     body:not([data-theme]) .podium-phase,
     body[data-theme="aero"] .podium-phase {
       background: rgba(255, 200, 80, 0.85);
-      backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 220, 120, 0.6);
       color: #1a1200;
     }
@@ -1718,7 +1716,6 @@
     body:not([data-theme]) .lb-phase,
     body[data-theme="aero"] .lb-phase {
       background: rgba(255, 200, 80, 0.85);
-      backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 220, 120, 0.5);
       color: #1a1200;
     }
@@ -1780,8 +1777,6 @@
       padding: 6px 16px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       border-radius: 20px;
       color: var(--text-main);
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
@@ -2301,7 +2296,6 @@
       border-bottom: 1px solid var(--glass-border);
       font-weight: 600;
       background: var(--glass-bg);
-      backdrop-filter: blur(8px);
     }
 
     body[data-theme="metro"] .times-table th {
@@ -3268,8 +3262,8 @@
       flex-direction: column;
       align-items: stretch;
       background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius-panel);
       padding: 8px 14px;
@@ -3490,8 +3484,6 @@
       font-weight: 600;
       position: sticky;
       z-index: 10;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       /* Aero default — opaque dark so rows don't show through */
       color: #0099cc;
       background: rgba(0, 28, 50, 0.97);
@@ -4874,7 +4866,7 @@
           <div id="times-pagination-bottom" class="pagination-controls"></div>
           <div id="times-load-all-wrap" style="display:none;text-align:center;padding:16px 0;">
             <button id="times-load-all-btn" onclick="loadTimesAll()"
-              style="padding:8px 22px;border-radius:20px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-main);font-size:0.8rem;cursor:pointer;letter-spacing:0.04em;backdrop-filter:blur(8px);">
+              style="padding:8px 22px;border-radius:20px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-main);font-size:0.8rem;cursor:pointer;letter-spacing:0.04em;">
               🔽 cargar todos los tiempos
             </button>
           </div>
