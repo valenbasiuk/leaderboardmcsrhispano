@@ -234,19 +234,7 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 0;
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
       contain: strict;
-    }
-
-    @keyframes blobDrift {
-      from {
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-
-      to {
-        transform: translate3d(30px, 20px, 0) scale(1.08);
-      }
     }
 
     .bg-blob-1 {
@@ -254,7 +242,6 @@
       height: 320px;
       top: 10%;
       left: 5%;
-      animation: blobDrift 18s ease-in-out infinite alternate;
     }
 
     .bg-blob-2 {
@@ -262,7 +249,6 @@
       height: 410px;
       top: 50%;
       right: 8%;
-      animation: blobDrift 22s ease-in-out infinite alternate-reverse;
     }
 
     .bg-blob-3 {
@@ -270,7 +256,6 @@
       height: 260px;
       bottom: 15%;
       left: 30%;
-      animation: blobDrift 26s ease-in-out infinite alternate;
     }
 
     body:not([data-theme]) .bg-blob-1,
@@ -339,38 +324,14 @@
       contain: strict;
     }
 
+    /* bokeh estatico: sin animation, sin filter blur y sin mix-blend-mode (el degradado radial ya simula el desenfoque) */
     .bokeh {
       position: absolute;
       border-radius: 50%;
-      animation: bokehFloat linear infinite;
       opacity: 0.18;
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
-      contain: strict;
-    }
-
-    @keyframes bokehFloat {
-      from {
-        transform: translate3d(0, 110vh, 0) scale(0.8);
-        opacity: 0;
-      }
-
-      10% {
-        opacity: 0.18;
-      }
-
-      90% {
-        opacity: 0.12;
-      }
-
-      to {
-        transform: translate3d(0, -10vh, 0) scale(1.2);
-        opacity: 0;
-      }
     }
 
     body[data-theme="leaf"] .bokeh {
-      mix-blend-mode: overlay;
       opacity: 0.22;
     }
 

@@ -1757,25 +1757,25 @@ function initNav() {
     });
 }
 
-// circulitos de fondo (bokeh) flotando por ahi
+// circulitos de fondo (bokeh), estaticos: el desenfoque lo da el radial-gradient, sin filter ni animacion
 function initBokeh() {
     const wrap = document.getElementById('bokeh-wrap');
     if (!wrap) return;
-    const colors = ['rgba(0,200,230,0.22)', 'rgba(100,230,200,0.18)', 'rgba(200,240,255,0.16)'];
+    const colors = [
+        ['rgba(0,200,230,0.30)', 'rgba(0,200,230,0)'],
+        ['rgba(100,230,200,0.26)', 'rgba(100,230,200,0)'],
+        ['rgba(200,240,255,0.24)', 'rgba(200,240,255,0)']
+    ];
+    const frag = document.createDocumentFragment();
     for (let i = 0; i < 12; i++) {
         const b = document.createElement('div');
         b.className = 'bokeh';
-        const size = 18 + Math.random() * 28;
-        b.style.cssText = `
-            width:${size}px; height:${size}px;
-            left:${Math.random() * 100}%;
-            background:${colors[Math.floor(Math.random() * colors.length)]};
-            filter: blur(${2 + Math.random() * 4}px);
-            animation-duration: ${18 + Math.random() * 22}s;
-            animation-delay: -${Math.random() * 20}s;
-        `;
-        wrap.appendChild(b);
+        const size = 22 + Math.random() * 34;
+        const c = colors[Math.floor(Math.random() * colors.length)];
+        b.style.cssText = `width:${size}px;height:${size}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;background:radial-gradient(circle, ${c[0]} 0%, ${c[0]} 45%, ${c[1]} 72%);`;
+        frag.appendChild(b);
     }
+    wrap.appendChild(frag);
 }
 
 // e
