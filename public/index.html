@@ -4555,6 +4555,17 @@
       animation-play-state: paused !important;
     }
 
+    /* si el sistema pide menos movimiento: sin animaciones ni transiciones */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
   </style>
 
   <div class="bg-blob bg-blob-1"></div>
