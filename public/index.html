@@ -107,11 +107,19 @@
       padding: 0;
     }
 
-    body {
+    /* el fondo vive en su propia capa fija (en vez de background-attachment: fixed, que repinta en cada scroll) */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
       background: var(--bg-gradient);
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
+      contain: strict;
+    }
+
+    body {
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
@@ -143,12 +151,9 @@
       width: 100%;
     }
 
-    body[data-theme="metro"] {
+    body[data-theme="metro"] #bg-layer {
       background-color: #060906;
       background-image: var(--metro-bg-custom, none);
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
     }
 
     body[data-theme="metro"]::before {
@@ -4560,6 +4565,7 @@
 
   </style>
 
+  <div id="bg-layer" aria-hidden="true"></div>
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
   <div class="bg-blob bg-blob-3"></div>
