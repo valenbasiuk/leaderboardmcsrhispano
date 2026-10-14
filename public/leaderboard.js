@@ -1766,14 +1766,6 @@ function applyTheme(theme) {
     const metroBg = document.getElementById('metro-bg-layer');
     if (metroBg) metroBg.style.display = theme === 'metro' ? 'block' : 'none';
 
-    // Update aurora wave classes to match theme
-    const aurora1 = document.getElementById('aurora-1');
-    const aurora2 = document.getElementById('aurora-2');
-    const aurora3 = document.getElementById('aurora-3');
-    if (aurora1) aurora1.className = `aurora-wave ${theme}-aurora-1`;
-    if (aurora2) aurora2.className = `aurora-wave ${theme}-aurora-2`;
-    if (aurora3) aurora3.className = `aurora-wave ${theme}-aurora-3`;
-
     // Update active theme button
     document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.theme === theme);
@@ -1855,18 +1847,6 @@ function initBokeh() {
         frag.appendChild(b);
     }
     wrap.appendChild(frag);
-}
-
-// e
-function initMetroSpecks() {
-    const wrap = document.getElementById('metro-specks');
-    if (!wrap) return;
-    for (let i = 0; i < 22; i++) {
-        const s = document.createElement('div');
-        s.className = 'metro-speck';
-        s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;opacity:${0.3 + Math.random() * 0.5};`;
-        wrap.appendChild(s);
-    }
 }
 
 function getSeasonFromTimestamp(ts) {
@@ -3292,7 +3272,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initLanguage();
     initNav();
     initBokeh();
-    initMetroSpecks();
     initPlayerClickDelegation();
     setupVisibilityHandler();
     window.addEventListener('resize', measureTickerWidth, { passive: true });
