@@ -175,18 +175,7 @@
       z-index: 0;
     }
 
-    /* blur sutil para el fondo en el tema leaf */
-    body[data-theme="leaf"]::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-
+    /* el blur sutil de leaf ahora esta horneado en backgrounds/lefa.webp (antes era un backdrop-filter a pantalla completa) */
 
     /* PANELES VIDRIO (AERO / LEAF) Y SOLIDOS (METRO) */
     .glass {
