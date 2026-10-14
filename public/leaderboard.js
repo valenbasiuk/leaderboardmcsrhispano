@@ -741,6 +741,11 @@ function renderPaginationControls(topId, bottomId, currentPage, totalPages, onPa
     if (bot) bot.innerHTML = html;
 }
 
+// si un fetch falla los skeleton quedaban animando para siempre (repintan en cada frame)
+function stopShimmers() {
+    document.querySelectorAll('.shimmer-load').forEach(el => el.classList.remove('shimmer-load'));
+}
+
 async function loadLeaderboard() {
     try {
         const isCurrentSeason = String(currentLeaderboardSeason) === String(latestSeasonNum);
@@ -885,6 +890,7 @@ async function loadLeaderboard() {
         }
     } catch (e) {
         console.error('loadLeaderboard error:', e);
+        stopShimmers();
         const tbody = document.getElementById('lb-tbody');
         if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);">error cargando datos. reintenta. //</td></tr>`;
     }
@@ -1322,11 +1328,12 @@ function renderActivityList(newGlobalMatches = null) {
     if (!el) return;
 
     if (!toRender.length) {
+        delete el.dataset.lastHtml;
         el.innerHTML = `<div style="color:var(--text-muted);font-size:0.72rem;padding:8px 4px;">${t('activity.noMatches')}</div>`;
         return;
     }
 
-    el.innerHTML = toRender.map(m => {
+    const html = toRender.map(m => {
         const players = m.players || [];
         const p1 = players[0], p2 = players[1];
         if (!p1 || !p2) return '';
@@ -1350,6 +1357,10 @@ function renderActivityList(newGlobalMatches = null) {
         </div>
       `;
     }).filter(Boolean).join('');
+    if (el.dataset.lastHtml !== html) {
+        el.innerHTML = html;
+        el.dataset.lastHtml = html;
+    }
 }
 
 async function loadActivity() {
@@ -1361,11 +1372,15 @@ async function loadActivity() {
         renderActivityList(matches.filter(m => m.type === 2));
     } catch (e) {
         console.warn('loadActivity error:', e);
+        stopShimmers();
         if (backgroundHispanicMatches.length > 0) {
             renderActivityList(null);
         } else {
             const el = document.getElementById('activity-list');
-            if (el) el.innerHTML = `<div style="color:var(--text-muted);font-size:0.72rem;padding:8px 4px;">error cargando matches //</div>`;
+            if (el) {
+                delete el.dataset.lastHtml;
+                el.innerHTML = `<div style="color:var(--text-muted);font-size:0.72rem;padding:8px 4px;">error cargando matches //</div>`;
+            }
         }
     }
 }
