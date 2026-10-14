@@ -1714,7 +1714,7 @@ function applyTheme(theme) {
     if (aurora3) aurora3.className = `aurora-wave ${theme}-aurora-3`;
 
     // Update active theme button
-    document.querySelectorAll('.theme-btn').forEach(btn => {
+    document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.theme === theme);
     });
 
@@ -1734,9 +1734,28 @@ function initTheme() {
     try { saved = localStorage.getItem('lb-theme') || 'leaf'; } catch (e) { }
     applyTheme(saved);
 
-    document.querySelectorAll('.theme-btn').forEach(btn => {
+    document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
         btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
     });
+}
+
+// modo rendimiento (sin blur ni animaciones), se recuerda en localStorage
+function setPerfLite(on) {
+    document.body.classList.toggle('perf-lite', on);
+    const btn = document.getElementById('perf-toggle');
+    if (btn) {
+        btn.classList.toggle('perf-on', on);
+        btn.setAttribute('aria-pressed', String(on));
+    }
+    try { localStorage.setItem('lb-perf', on ? '1' : '0'); } catch (e) { }
+}
+
+function initPerfToggle() {
+    let on = false;
+    try { on = localStorage.getItem('lb-perf') === '1'; } catch (e) { }
+    setPerfLite(on);
+    const btn = document.getElementById('perf-toggle');
+    if (btn) btn.addEventListener('click', () => setPerfLite(!document.body.classList.contains('perf-lite')));
 }
 
 // clicks en la barra de navegacion
@@ -3208,6 +3227,7 @@ function setupVisibilityHandler() {
 // == ACA ENTRA EL DOMContentLoaded Y ARRANCA TODO ==
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initPerfToggle();
     initLanguage();
     initNav();
     initBokeh();
