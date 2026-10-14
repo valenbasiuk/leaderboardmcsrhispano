@@ -443,7 +443,14 @@
       align-items: center;
       height: 100%;
       white-space: nowrap;
+      width: max-content;
+      /* la animacion la activa JS (applyTickerAnimation) cuando hay datos y ya midio el ancho */
       will-change: transform;
+    }
+
+    @keyframes tickerScroll {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(var(--ticker-shift, -50%), 0, 0); }
     }
 
     /* Metro theme uses the unified JS marquee for perfect stability */

@@ -588,39 +588,35 @@ function getEloChangeHTML(p, extraStyle) {
     return `<span class="elo-change ${cls}"${style}>${arrow} ${change > 0 ? '+' : ''}${change}</span>`;
 }
 
-// === EL TICKER DE ARRIBA (OPTIMIZADO CERO-REFLOW) ===
-let tickerX = 0, tickerRAF = null, lastTickerTime = null, tickerHalfWidth = 0;
+// === EL TICKER DE ARRIBA ===
+// ahora es una animacion css (translate en el compositor), sin requestAnimationFrame ni JS por frame.
+// JS solo mide el ancho una vez y le pasa --ticker-shift / --ticker-dur al css.
+let tickerHalfWidth = 0;
 let lastCalculatedChanges = [];
 const TICKER_PX_SEC = 55;
 
 function measureTickerWidth() {
     const track = document.getElementById('ticker-track');
-    if (track) {
-        tickerHalfWidth = track.scrollWidth / 2;
+    if (!track) return;
+    tickerHalfWidth = track.scrollWidth / 2;
+    applyTickerAnimation(track);
+}
+
+function applyTickerAnimation(track) {
+    if (!tickerHalfWidth) {
+        track.style.animation = 'none';
+        return;
     }
+    track.style.setProperty('--ticker-shift', `${-tickerHalfWidth}px`);
+    track.style.setProperty('--ticker-dur', `${tickerHalfWidth / TICKER_PX_SEC}s`);
+    track.style.animation = 'tickerScroll var(--ticker-dur) linear infinite';
 }
 
 function startTicker() {
     const track = document.getElementById('ticker-track');
     if (!track) return;
-    if (tickerRAF) { cancelAnimationFrame(tickerRAF); tickerRAF = null; }
-    if (appPaused) return;
-    lastTickerTime = null;
-    if (!tickerHalfWidth) {
-        tickerHalfWidth = track.scrollWidth / 2;
-    }
-    function step(ts) {
-        if (lastTickerTime === null) lastTickerTime = ts;
-        const dt = Math.min(ts - lastTickerTime, 80);
-        lastTickerTime = ts;
-        tickerX -= (TICKER_PX_SEC * dt) / 1000;
-        if (tickerHalfWidth > 0 && tickerX <= -tickerHalfWidth) {
-            tickerX += tickerHalfWidth;
-        }
-        track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
-        tickerRAF = requestAnimationFrame(step);
-    }
-    tickerRAF = requestAnimationFrame(step);
+    if (!tickerHalfWidth) tickerHalfWidth = track.scrollWidth / 2;
+    applyTickerAnimation(track);
 }
 
 function renderTickerMarquee(changes, theme, preserveScroll = false) {
@@ -641,16 +637,19 @@ function renderTickerMarquee(changes, theme, preserveScroll = false) {
         const repeatCount = Math.max(2, Math.ceil(20 / (changes.length || 1)));
         const repeated = items.repeat(repeatCount);
         track.innerHTML = repeated + repeated;
-        // Medir ancho una sola vez al mutar HTML (fuera del RAF loop)
+        // medir una sola vez al mutar el html
         tickerHalfWidth = track.scrollWidth / 2;
     } else {
         track.innerHTML = '';
         tickerHalfWidth = 0;
     }
+    applyTickerAnimation(track);
 
     if (!preserveScroll) {
-        tickerX = 0;
-        lastTickerTime = null;
+        // reiniciar la animacion desde 0
+        track.style.animation = 'none';
+        void track.offsetWidth;
+        applyTickerAnimation(track);
     }
 }
 
@@ -3179,10 +3178,6 @@ function pauseApp() {
     if (appPaused) return;
     appPaused = true;
     document.body.classList.add('is-tab-hidden');
-    if (tickerRAF) {
-        cancelAnimationFrame(tickerRAF);
-        tickerRAF = null;
-    }
     if (liveIntervalId) { clearInterval(liveIntervalId); liveIntervalId = null; }
     if (activityIntervalId) { clearInterval(activityIntervalId); activityIntervalId = null; }
     if (liveMatchIntervalId) { clearInterval(liveMatchIntervalId); liveMatchIntervalId = null; }
