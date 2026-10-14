@@ -604,6 +604,7 @@ function startTicker() {
     const track = document.getElementById('ticker-track');
     if (!track) return;
     if (tickerRAF) { cancelAnimationFrame(tickerRAF); tickerRAF = null; }
+    if (appPaused) return;
     lastTickerTime = null;
     if (!tickerHalfWidth) {
         tickerHalfWidth = track.scrollWidth / 2;
@@ -1447,6 +1448,7 @@ async function loadLiveMatch() {
             widgetBody.appendChild(sub);
         }
         if (liveIntervalId) clearInterval(liveIntervalId);
+        if (appPaused) return;
         liveIntervalId = setInterval(() => {
             activeHispMatches.forEach((m, idx) => {
                 const elapsed = Math.max(0, Date.now() - m.startTime);
@@ -3170,35 +3172,42 @@ window.h2hClearSlot = h2hClearSlot;
 let activityIntervalId = null;
 let liveMatchIntervalId = null;
 
+// pausa todo cuando la pestaña se oculta O la ventana pierde el foco (ej: jugando mc en otro monitor)
+let appPaused = false;
+
+function pauseApp() {
+    if (appPaused) return;
+    appPaused = true;
+    document.body.classList.add('is-tab-hidden');
+    if (tickerRAF) {
+        cancelAnimationFrame(tickerRAF);
+        tickerRAF = null;
+    }
+    if (liveIntervalId) { clearInterval(liveIntervalId); liveIntervalId = null; }
+    if (activityIntervalId) { clearInterval(activityIntervalId); activityIntervalId = null; }
+    if (liveMatchIntervalId) { clearInterval(liveMatchIntervalId); liveMatchIntervalId = null; }
+}
+
+function resumeApp() {
+    if (!appPaused) return;
+    appPaused = false;
+    document.body.classList.remove('is-tab-hidden');
+    startTicker();
+    loadActivity();
+    loadLiveMatch();
+    if (!activityIntervalId) activityIntervalId = setInterval(loadActivity, 60000);
+    if (!liveMatchIntervalId) liveMatchIntervalId = setInterval(loadLiveMatch, 30000);
+}
+
+function syncPauseState() {
+    if (document.hidden || !document.hasFocus()) pauseApp();
+    else resumeApp();
+}
+
 function setupVisibilityHandler() {
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            document.body.classList.add('is-tab-hidden');
-            if (tickerRAF) {
-                cancelAnimationFrame(tickerRAF);
-                tickerRAF = null;
-            }
-            if (liveIntervalId) {
-                clearInterval(liveIntervalId);
-                liveIntervalId = null;
-            }
-            if (activityIntervalId) {
-                clearInterval(activityIntervalId);
-                activityIntervalId = null;
-            }
-            if (liveMatchIntervalId) {
-                clearInterval(liveMatchIntervalId);
-                liveMatchIntervalId = null;
-            }
-        } else {
-            document.body.classList.remove('is-tab-hidden');
-            startTicker();
-            loadActivity();
-            loadLiveMatch();
-            if (!activityIntervalId) activityIntervalId = setInterval(loadActivity, 60000);
-            if (!liveMatchIntervalId) liveMatchIntervalId = setInterval(loadLiveMatch, 30000);
-        }
-    });
+    document.addEventListener('visibilitychange', syncPauseState);
+    window.addEventListener('blur', syncPauseState);
+    window.addEventListener('focus', syncPauseState);
 }
 
 // == ACA ENTRA EL DOMContentLoaded Y ARRANCA TODO ==
@@ -3216,6 +3225,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLiveMatch();
     activityIntervalId = setInterval(loadActivity, 60000);
     liveMatchIntervalId = setInterval(loadLiveMatch, 30000);
+    // si la pagina abre sin foco (otro monitor), carga una vez y queda pausada
+    syncPauseState();
 
     // Profile modal close handlers
     const modal = document.getElementById('profile-modal');
