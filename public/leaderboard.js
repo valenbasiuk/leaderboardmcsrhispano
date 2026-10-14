@@ -577,15 +577,42 @@ function timeAgo(ts) {
 }
 
 // el numerito verde/rojo de cuanto elo ganaste o perdiste
-function getEloChangeHTML(p, extraStyle) {
+// siempre emite el span (oculto si no hay cambio) con data-elo-uuid para poder parchearlo despues sin re-renderizar todo
+function eloChangeValue(p) {
     const raw = p.eloChange ?? p.eloRate24h ?? null;
-    if (raw === null || raw === undefined) return '';
+    if (raw === null || raw === undefined) return 0;
     const change = Math.round(Number(raw));
-    if (isNaN(change) || change === 0) return '';
+    return isNaN(change) ? 0 : change;
+}
+
+function getEloChangeHTML(p, extraStyle) {
+    const change = eloChangeValue(p);
+    const xs = extraStyle || '';
+    if (change === 0) {
+        return `<span class="elo-change" data-elo-uuid="${p.uuid}" data-xs="${xs}" style="display:none"></span>`;
+    }
     const cls = change > 0 ? 'pos' : 'neg';
     const arrow = change > 0 ? '▲' : '▼';
-    const style = extraStyle ? ` style="${extraStyle}"` : '';
-    return `<span class="elo-change ${cls}"${style}>${arrow} ${change > 0 ? '+' : ''}${change}</span>`;
+    const style = xs ? ` style="${xs}"` : '';
+    return `<span class="elo-change ${cls}" data-elo-uuid="${p.uuid}" data-xs="${xs}"${style}>${arrow} ${change > 0 ? '+' : ''}${change}</span>`;
+}
+
+// actualiza los badges de elo ya renderizados (podio, top 4-10, tabla) sin recrear las cards ni recargar las skins
+function patchEloBadges() {
+    const byUuid = new Map(allPlayers.map(p => [p.uuid, p]));
+    document.querySelectorAll('.elo-change[data-elo-uuid]').forEach(el => {
+        const p = byUuid.get(el.dataset.eloUuid);
+        if (!p) return;
+        const change = eloChangeValue(p);
+        if (change === 0) {
+            el.style.display = 'none';
+            el.textContent = '';
+            return;
+        }
+        el.className = `elo-change ${change > 0 ? 'pos' : 'neg'}`;
+        el.textContent = `${change > 0 ? '▲' : '▼'} ${change > 0 ? '+' : ''}${change}`;
+        el.style.cssText = el.dataset.xs || '';
+    });
 }
 
 // === EL TICKER DE ARRIBA ===
@@ -923,12 +950,7 @@ async function loadEloMovement24h() {
                     const theme = document.body.dataset.theme || 'aero';
                     renderTickerMarquee(changes, theme, true);
                 }
-                const filteredForBg = activeCountryFilter
-                    ? allPlayers.filter(p => (p.country || '').toLowerCase() === activeCountryFilter)
-                    : allPlayers;
-                renderFullTable(filteredForBg);
-                renderPodium(allPlayers.slice(0, 3));
-                renderRow4to10(allPlayers.slice(3, 10));
+                patchEloBadges();
                 return;
             }
         }
@@ -1006,13 +1028,8 @@ async function loadEloMovement24h() {
         const theme = document.body.dataset.theme || 'aero';
         renderTickerMarquee(changes, theme, true);
     }
-    // Actualizar tabla sin resetear la página actual (respetando el filtro de pais activo)
-    const filteredForBg = activeCountryFilter
-        ? allPlayers.filter(p => (p.country || '').toLowerCase() === activeCountryFilter)
-        : allPlayers;
-    renderFullTable(filteredForBg);
-    renderRow4to10(allPlayers.slice(3, 10));
-    renderPodium(allPlayers.slice(0, 3));
+    // parchear los badges en el lugar: no recrea podio/cards/tabla ni vuelve a pedir las skins
+    patchEloBadges();
 }
 
 // ------------- EL PODIo -------------
