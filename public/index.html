@@ -1566,10 +1566,8 @@
     }
 
     .mini-skin-wrap img {
-      width: 56px;
-      height: 56px;
+      --head: 56px;
       object-fit: contain;
-      image-rendering: pixelated;
       border-radius: 4px;
     }
 
@@ -1661,15 +1659,14 @@
     }
 
     .lb-player img {
-      width: 28px;
-      height: 28px;
-      image-rendering: pixelated;
+      --head: 32px;
       border-radius: 3px;
     }
 
     body[data-theme="metro"] .lb-player img {
       border-radius: 0;
-      border: 1px solid var(--accent-dark);
+      /* box-shadow en vez de border: el border le comia 2px al contenido y rompia la escala exacta */
+      box-shadow: 0 0 0 1px var(--accent-dark);
     }
 
     .lb-player-name {
@@ -2531,9 +2528,7 @@
     }
 
     .h2h-sug-item img {
-      width: 24px;
-      height: 24px;
-      image-rendering: pixelated;
+      --head: 24px;
       border-radius: 3px;
     }
 
@@ -3126,8 +3121,7 @@
       }
 
       .mini-skin-wrap img {
-        width: 40px;
-        height: 40px;
+        --head: 40px;
       }
 
       #live-widget {
@@ -3397,10 +3391,8 @@
     }
 
     .search-result-item img {
-      width: 28px;
-      height: 28px;
+      --head: 32px;
       border-radius: 3px;
-      image-rendering: pixelated;
     }
 
     body[data-theme="metro"] .search-result-item img {
@@ -3694,9 +3686,7 @@
     }
 
     .profile-avatar {
-      width: 80px;
-      height: 80px;
-      image-rendering: pixelated;
+      --head: 80px;
       border-radius: 8px;
       display: block;
       object-fit: contain;
@@ -4193,9 +4183,7 @@
     }
 
     .profile-match-avatar {
-      width: 32px;
-      height: 32px;
-      image-rendering: pixelated;
+      --head: 32px;
       border-radius: 4px;
     }
 
@@ -4339,9 +4327,7 @@
     }
 
     .h2h-slot-selected-avatar {
-      width: 40px;
-      height: 40px;
-      image-rendering: pixelated;
+      --head: 40px;
       border-radius: 5px;
       flex-shrink: 0;
     }
@@ -4518,7 +4504,7 @@
     @media (max-width: 640px) {
       .profile-modal-panel { padding: 18px 14px; }
       .profile-modal-header { flex-direction: column; align-items: center; text-align: center; }
-      .profile-avatar { width: 72px; height: 72px; }
+      .profile-avatar { --head: 72px; }
       .profile-modal-name { font-size: 1.2rem; }
       .profile-kpi-grid { grid-template-columns: repeat(2, 1fr); }
       .h2h-slots-grid { grid-template-columns: 1fr 1fr; }
@@ -4542,6 +4528,17 @@
       }
     }
 
+    /* CARITAS DE SKIN: la cara es de 8x8, asi que el tamaño en pixeles REALES de pantalla tiene que ser
+       multiplo de 8 para que cada pixel de la skin ocupe exactamente los mismos px (sin ojos desparejos).
+       --head es el tamaño deseado en css px y --dpr lo pone JS (devicePixelRatio: zoom / escala de windows). */
+    .skin-head {
+      width: var(--head, 32px);
+      height: var(--head, 32px);
+      width: calc(round(nearest, var(--head, 32px) * var(--dpr, 1), 8px) / var(--dpr, 1));
+      height: calc(round(nearest, var(--head, 32px) * var(--dpr, 1), 8px) / var(--dpr, 1));
+      image-rendering: pixelated;
+      flex-shrink: 0;
+    }
   </style>
 
   <div id="bg-layer" aria-hidden="true"></div>
@@ -4961,7 +4958,7 @@
 
       <div class="profile-modal-header" id="profile-modal-header">
         <div class="profile-modal-avatar-wrap">
-          <img id="profile-avatar" class="profile-avatar" src="" alt="avatar" />
+          <img id="profile-avatar" class="profile-avatar skin-head" src="" alt="avatar" />
         </div>
         <div class="profile-modal-info">
           <div class="profile-modal-name" id="profile-name">—</div>
