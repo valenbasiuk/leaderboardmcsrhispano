@@ -1659,7 +1659,7 @@
     }
 
     .lb-player img {
-      --head: 32px;
+      --head: 28px;
       border-radius: 3px;
     }
 
@@ -3391,7 +3391,7 @@
     }
 
     .search-result-item img {
-      --head: 32px;
+      --head: 28px;
       border-radius: 3px;
     }
 
@@ -4530,12 +4530,13 @@
 
     /* CARITAS DE SKIN: la cara es de 8x8, asi que el tamaño en pixeles REALES de pantalla tiene que ser
        multiplo de 8 para que cada pixel de la skin ocupe exactamente los mismos px (sin ojos desparejos).
-       --head es el tamaño deseado en css px y --dpr lo pone JS (devicePixelRatio: zoom / escala de windows). */
+       --head es el tamaño MAXIMO en css px (redondea hacia abajo, nunca queda mas grande) y --dpr lo pone JS
+       (devicePixelRatio: zoom / escala de windows). */
     .skin-head {
-      width: var(--head, 32px);
-      height: var(--head, 32px);
-      width: calc(round(nearest, var(--head, 32px) * var(--dpr, 1), 8px) / var(--dpr, 1));
-      height: calc(round(nearest, var(--head, 32px) * var(--dpr, 1), 8px) / var(--dpr, 1));
+      width: var(--head, 28px);
+      height: var(--head, 28px);
+      width: calc(round(down, var(--head, 28px) * var(--dpr, 1), 8px) / var(--dpr, 1));
+      height: calc(round(down, var(--head, 28px) * var(--dpr, 1), 8px) / var(--dpr, 1));
       image-rendering: pixelated;
       flex-shrink: 0;
     }
