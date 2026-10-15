@@ -116,7 +116,8 @@ export async function GET(
   }
 
   const isProfilePath = params.path && params.path[0] === "users" && params.path.length === 2
-  const cacheKey = path
+  // el query string entra en la key: /users/x?season=8 y /users/x son respuestas distintas
+  const cacheKey = searchParams ? `${path}?${searchParams}` : path
   const now = Date.now()
 
   if (isProfilePath && profileCache[cacheKey] && (now - profileCache[cacheKey].timestamp < PROFILE_CACHE_TTL)) {
