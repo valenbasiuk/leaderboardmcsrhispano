@@ -751,7 +751,14 @@ function stopShimmers() {
     document.querySelectorAll('.shimmer-load').forEach(el => el.classList.remove('shimmer-load'));
 }
 
+// cada carga se marca con un id; si el usuario cambia de season antes de que termine,
+// la carga vieja se descarta en vez de pisar los datos de la nueva
+let lbLoadId = 0;
+let currentSeasonPlayers = null; // lista de la season actual (la usa mejores tiempos)
+
 async function loadLeaderboard() {
+    const loadId = ++lbLoadId;
+    const isStale = () => loadId !== lbLoadId;
     try {
         const isCurrentSeason = String(currentLeaderboardSeason) === String(latestSeasonNum);
         const seasonParam = currentLeaderboardSeason ? `?season=${currentLeaderboardSeason}` : '';
@@ -803,7 +810,7 @@ async function loadLeaderboard() {
         }
 
         // For past seasons, use seasonResult.eloRate instead of the user's current eloRate
-        allPlayers = Array.from(merged.values())
+        const players = Array.from(merged.values())
             .filter(p => !BLOCKED.includes(p.nickname?.toLowerCase()))
             .map(p => {
                 if (!isCurrentSeason && p.seasonResult) {
@@ -817,6 +824,9 @@ async function loadLeaderboard() {
             })
             .sort((a, b) => (b.eloRate ?? 0) - (a.eloRate ?? 0))
             .map((p, i) => ({ ...p, eloRank: i + 1 }));
+        if (isStale()) return;
+        allPlayers = players;
+        if (isCurrentSeason) currentSeasonPlayers = players;
 
         // Only fetch matches and ticker data for the current season
         if (isCurrentSeason) {
@@ -828,6 +838,7 @@ async function loadLeaderboard() {
                 recentMatches = rawMatches.filter(m => m.type === 2);
             }
             const playerChanges = new Map();
+            if (isStale()) return;
             recentMatches.forEach(m => {
                 const players = m.players || [];
                 const changes = m.changes || [];
@@ -861,7 +872,7 @@ async function loadLeaderboard() {
         }
 
         // Fetch detailed statistics for the top 10 players to get average completion time
-        const top10 = allPlayers.slice(0, 10);
+        const top10 = players.slice(0, 10);
         await Promise.allSettled(
             top10.map(async (p) => {
                 try {
@@ -877,6 +888,8 @@ async function loadLeaderboard() {
                 }
             })
         );
+
+        if (isStale()) return;
 
         renderPodium(allPlayers.slice(0, 3));
         renderRow4to10(allPlayers.slice(3, 10));
@@ -894,6 +907,7 @@ async function loadLeaderboard() {
             loadEloMovement24h();
         }
     } catch (e) {
+        if (isStale()) return;
         console.error('loadLeaderboard error:', e);
         stopShimmers();
         const tbody = document.getElementById('lb-tbody');
@@ -1068,8 +1082,8 @@ function renderPodium(players) {
         const cardClass = { 1: 'rank-1', 2: 'rank-2', 3: 'rank-3' }[rankNum] || '';
 
         const stats = p.detailedStats;
-        const completionTime = stats?.season?.completionTime?.ranked || stats?.total?.completionTime?.ranked;
-        const completions = stats?.season?.completions?.ranked || stats?.total?.completions?.ranked;
+        const completionTime = stats?.season?.completionTime?.ranked;
+        const completions = stats?.season?.completions?.ranked;
         const avgTime = (completionTime && completions) ? fmtTime(completionTime / completions) : '--:--';
 
         const card = document.createElement('div');
@@ -1114,8 +1128,8 @@ function renderRow4to10(players) {
         const rankNum = i + 4;
 
         const stats = p.detailedStats;
-        const completionTime = stats?.season?.completionTime?.ranked || stats?.total?.completionTime?.ranked;
-        const completions = stats?.season?.completions?.ranked || stats?.total?.completions?.ranked;
+        const completionTime = stats?.season?.completionTime?.ranked;
+        const completions = stats?.season?.completions?.ranked;
         const avgTime = (completionTime && completions) ? fmtTime(completionTime / completions) : '--:--';
 
         const card = document.createElement('div');
@@ -1580,6 +1594,23 @@ async function fetchPlayerTime(p, onDone) {
     }
 }
 
+// mejores tiempos siempre es de la season actual, aunque la leaderboard este mostrando una pasada
+async function getCurrentSeasonPlayers() {
+    if (currentSeasonPlayers) return currentSeasonPlayers;
+    if (String(currentLeaderboardSeason) !== String(latestSeasonNum)) {
+        const res = await fetch(`${API}/leaderboard/hispanic?season=${latestSeasonNum}`);
+        if (!res.ok) throw new Error('Failed to fetch hispanic leaderboard');
+        const json = await res.json();
+        currentSeasonPlayers = (json.data?.users || [])
+            .filter(p => p?.uuid && !BLOCKED.includes(p.nickname?.toLowerCase()))
+            .sort((a, b) => (b.eloRate ?? 0) - (a.eloRate ?? 0))
+            .map((p, i) => ({ ...p, eloRank: i + 1 }));
+        return currentSeasonPlayers;
+    }
+    await loadLeaderboard();
+    return currentSeasonPlayers || allPlayers;
+}
+
 async function loadTimes() {
     const tbody = document.getElementById('times-tbody');
     if (!tbody) return;
@@ -1592,12 +1623,10 @@ async function loadTimes() {
     tbody.innerHTML = `<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">cargando tiempos... //</td></tr>`;
 
     try {
-        if (!allPlayers || allPlayers.length === 0) {
-            await loadLeaderboard();
-        }
+        const timesPlayers = await getCurrentSeasonPlayers();
 
         // Lazy: solo top-100 en la primer carga
-        const firstBatch = allPlayers.slice(0, 100);
+        const firstBatch = timesPlayers.slice(0, 100);
         const total = firstBatch.length;
         let done = 0;
 
@@ -1627,7 +1656,7 @@ async function loadTimes() {
         renderTimesTable(cachedTimesData);
 
         // Mostrar botón de cargar todos si quedan jugadores
-        if (allPlayers.length > 100) {
+        if (timesPlayers.length > 100) {
             const wrap = document.getElementById('times-load-all-wrap');
             if (wrap) wrap.style.display = '';
         } else {
@@ -1648,7 +1677,7 @@ window.loadTimesAll = async function() {
     if (btn) btn.textContent = '⏳ cargando...';
 
     try {
-        const remaining = allPlayers.slice(100);
+        const remaining = (await getCurrentSeasonPlayers()).slice(100);
         const extraResults = await chunkedPromiseAll(remaining, (p) => fetchPlayerTime(p, null), 12);
         const extraData = extraResults
             .filter(r => r.status === 'fulfilled' && r.value)
@@ -2000,7 +2029,7 @@ async function loadProfileData(uuid, nickname, country, season) {
         // Para temporadas pasadas, agregar &season= al fetch de matches
         const seasonParam = !isCurrentSeason ? `&season=${season}` : '';
         const [userRes, matchRes, rankedRes] = await Promise.all([
-            fetch(`${API}/users/${uuid}`),
+            fetch(`${API}/users/${uuid}${!isCurrentSeason ? `?season=${season}` : ''}`),
             fetch(`${API}/users/${uuid}/matches?count=50${seasonParam}`),
             fetch(`${API}/users/${uuid}/matches?count=100&type=2${seasonParam}`),
         ]);
@@ -2302,8 +2331,8 @@ function renderProfileGeneral(data) {
     const ts = d.timestamp || {};
     const totalStats = d.statistics?.total || {};
     const seasonStats = d.statistics?.season || {};
-    const compTime = seasonStats.completionTime?.ranked || totalStats.completionTime?.ranked || 0;
-    const compCount = seasonStats.completions?.ranked || totalStats.completions?.ranked || 0;
+    const compTime = seasonStats.completionTime?.ranked || 0;
+    const compCount = seasonStats.completions?.ranked || 0;
     const avgTime = (compTime && compCount) ? fmtTime(compTime / compCount) : '\u2014';
 
     document.getElementById('profile-general-chips').innerHTML = [
@@ -3165,8 +3194,8 @@ function renderH2HCompareTable(validData, playersElo) {
             label: 'Average',
             fn: (pd) => {
                 const s = pd.raw.statistics;
-                const ct = s?.season?.completionTime?.ranked || s?.total?.completionTime?.ranked || 0;
-                const cc = s?.season?.completions?.ranked || s?.total?.completions?.ranked || 0;
+                const ct = s?.season?.completionTime?.ranked || 0;
+                const cc = s?.season?.completions?.ranked || 0;
                 return (ct && cc) ? ct / cc : Infinity;
             },
             fmt: (v) => v !== Infinity ? fmtTime(v) : '—',
