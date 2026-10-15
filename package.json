@@ -1,6 +1,6 @@
 {
   "name": "next-template",
-  "version": "1.001m",
+  "version": "1.100b",
   "private": true,
   "scripts": {
     "dev": "next dev",
